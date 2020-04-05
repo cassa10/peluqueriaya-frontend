@@ -7,7 +7,7 @@
 
 ### Peluqueria Ya es una plataforma que permite a cualquier peluquero/a brindar sus servicios a domicilio
 
-#### :sparkles: Ver la wiki de este repo para la documentación
+#### :sparkles: Ver la wiki
 
 #### :sparkles: [Frontend](https://github.com/cassa10/peluqueriaya-frontend)
 

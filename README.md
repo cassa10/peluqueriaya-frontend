@@ -1,5 +1,5 @@
 # Peluqueria Ya - Frontend
-[![Build Status](https://travis-ci.org/cassa10/peluqueriaya-frontend.svg?branch=master)](https://travis-ci.org/cassa10/peluqueriaya-frontend)
+[![Build Status](https://travis-ci.com/cassa10/peluqueriaya-frontend.svg?branch=master)](https://travis-ci.com/cassa10/peluqueriaya-frontend)
 
 :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber:
 

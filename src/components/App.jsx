@@ -1,16 +1,22 @@
 import React from 'react';
-import { Switch, Route } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
+import {Route, Switch} from 'react-router';
+import {BrowserRouter} from 'react-router-dom';
+import Container from "@material-ui/core/Container";
+import Bar from "./Bar";
+import HomePage from "./HomePage";
 
-export default class App extends React.Component {
-  render() {
+const App = () => {
+
     return (
-      
         <BrowserRouter>
-          <Switch>
-            <Route exact path="/" render={() => <div> HELLO WORLD! </div>} />
-          </Switch>
+            <Bar/>
+            <Container maxWidth="lg" >
+                <Switch>
+                    <Route exact path="/" render={HomePage}/>
+                </Switch>
+            </Container>
         </BrowserRouter>
     );
-  }
-}
+};
+
+export default App;

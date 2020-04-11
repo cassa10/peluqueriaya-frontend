@@ -1,15 +1,13 @@
-# Peluqueria Ya
+# Peluqueria Ya - Frontend
+[![Build Status](https://travis-ci.com/cassa10/peluqueriaya-frontend.svg?branch=master)](https://travis-ci.com/cassa10/peluqueriaya-frontend)
 
 :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber:
 
-<img src="https://fontmeme.com/permalink/200405/e125dd6dd3ffded35646019501492a0b.png" width="440">
-
+<img src="https://raw.githubusercontent.com/lisar01/peluqueriaya-doc/master/peluqueriaya-logo.png" alt="logo" height="105">
 
 ### Peluqueria Ya es una plataforma que permite a cualquier peluquero/a brindar sus servicios a domicilio
 
 #### :sparkles: [Documentacion & Wiki](https://github.com/lisar01/peluqueriaya-doc)
-
-#### :sparkles: [Frontend](https://github.com/cassa10/peluqueriaya-frontend)
 
 #### :sparkles: [Backend](https://github.com/lisar01/peluqueriaya-backend)
 
@@ -18,4 +16,3 @@
 :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber:
 
 ## Instalación de Peluqueria Ya
-

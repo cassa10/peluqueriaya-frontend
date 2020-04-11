@@ -3,7 +3,7 @@ import {Route, Switch} from 'react-router';
 import {BrowserRouter} from 'react-router-dom';
 import Container from "@material-ui/core/Container";
 import Bar from "./Bar";
-import HomePage from "./HomePage";
+import HomePage from "../views/HomePage";
 
 const App = () => {
 

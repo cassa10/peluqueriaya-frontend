@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import SearchInput from "./SearchInput";
+import SearchInput from "../components/SearchInput";
 
 const HomePage = props => {
 

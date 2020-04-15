@@ -12,7 +12,7 @@ const App = () => {
             <Bar/>
             <Container maxWidth="lg" >
                 <Switch>
-                    <Route exact path="/" render={LoggedOutHomePage}/>
+                  <Route exact path="/" render={LoggedOutHomePage}/>
                 </Switch>
             </Container>
         </BrowserRouter>

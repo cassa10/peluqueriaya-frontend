@@ -3,7 +3,7 @@ import {Route, Switch} from 'react-router';
 import {BrowserRouter} from 'react-router-dom';
 import Container from "@material-ui/core/Container";
 import Bar from "./Bar";
-import HomePage from "../views/HomePage";
+import LoggedOutHomePage from "../views/LoggedOutHomePage";
 
 const App = () => {
 
@@ -12,7 +12,7 @@ const App = () => {
             <Bar/>
             <Container maxWidth="lg" >
                 <Switch>
-                    <Route exact path="/" render={HomePage}/>
+                    <Route exact path="/" render={LoggedOutHomePage}/>
                 </Switch>
             </Container>
         </BrowserRouter>

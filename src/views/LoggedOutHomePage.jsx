@@ -1,9 +1,9 @@
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import SearchInput from "../components/SearchInput";
+import LocationAutocomplete from "../components/LocationAutocomplete";
 
-const HomePage = props => {
+const LoggedOutHomePage = props => {
 
     return <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={10}>
         <img
@@ -17,10 +17,10 @@ const HomePage = props => {
             Busque su peluquero mas cercano.
         </Typography>
         <Box display="flex" justifyContent="center" p={4}>
-            <SearchInput/>
+            <LocationAutocomplete/>
         </Box>
         </Box>
 
 };
 
-export default HomePage;
+export default LoggedOutHomePage;

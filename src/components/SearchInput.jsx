@@ -31,25 +31,17 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const initialStateLocations = [
-    // { title: 'The Shawshank Redemption', position: {lat: "12.4353,45", lng:"-40.2343,24"} },
-    // { title: 'The Godfather', position: {lat: "12.4353,45", lng:"-40.2343,24"} },
-    // { title: 'The Godfather: Part II', position: {lat: "12.4353,45", lng:"-40.2343,24"} },
-    // { title: 'The Dark Knight', position: {lat: "12.4353,45", lng:"-40.2343,24"} },
-    // { title: '12 Angry Men', position: {lat: "12.4353,45", lng:"-40.2343,24"} }
-];
-
 const SearchInput = () => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState(null);
-    const [locations, setLocations] = useState(initialStateLocations);
+    const [locations, setLocations] = useState([]);
 
     useEffect(() => {
-         if (!loading && selected !== null && selected.title.length > 15) {
+         if (!loading && selected !== null && selected.title.length > 10) {
             setLoading(true);
             MapsAPI.getLocationByAddress(selected.title)
-                .then(({data}) => setLocations(data.items))
+                .then(({data}) => setLocations(data[0].items))
                 .catch((error) => console.log(error))
             setLoading(false);
         }
@@ -80,6 +72,13 @@ const SearchInput = () => {
         });
     };
 
+    const searchHairdresser = () => {
+        if (selected.position) {
+            //TODO: enviar get request de peluqueros con la ubicacion
+            // y mostrarme a los peluqueros mas cercanos
+        }
+    };
+
     return <Grid container className={classes.root}>
         <Grid item xs={1}>
             <IconButton color="secondary" className={classes.classButton}
@@ -96,6 +95,7 @@ const SearchInput = () => {
                     onChange={handleOnChange}
                     onInputChange={handleOnInputChange}
                     options={locations}
+                    loading={loading}
                     getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
                     renderInput={(params) =>
                         <TextField
@@ -113,6 +113,7 @@ const SearchInput = () => {
                     size="large"
                     color="secondary"
                     type="submit"
+                    onClick={() => searchHairdresser()}
                     disabled={loading}>
                 <SearchIcon/>
             </Button>

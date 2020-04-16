@@ -1,9 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import LocationAutocomplete from "../components/LocationAutocomplete";
+import SearchIcon from "@material-ui/icons/Search";
+import Button from "@material-ui/core/Button";
 
-const LoggedOutHomePage = props => {
+const LoggedOutHomePage = () => {
+    const [location, setLocation] = useState(null);
+
+    const searchHairdresser = () => {
+        if (location.position) {
+            //TODO: enviar get request de peluqueros con la ubicacion
+            // y mostrarme a los peluqueros mas cercanos
+        }
+    };
 
     return <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={10}>
         <img
@@ -17,7 +27,19 @@ const LoggedOutHomePage = props => {
             Busque su peluquero mas cercano.
         </Typography>
         <Box display="flex" justifyContent="center" p={4}>
-            <LocationAutocomplete/>
+            <LocationAutocomplete
+                location={location}
+                setLocation={setLocation}
+                optionalButton={(className, disabled) =>
+                    <Button variant="contained"
+                            className={className}
+                            size="large"
+                            color="secondary"
+                            type="submit"
+                            onClick={() => searchHairdresser()}
+                            disabled={disabled}>
+                        <SearchIcon/>
+                    </Button>}/>
         </Box>
         </Box>
 

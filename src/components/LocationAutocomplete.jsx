@@ -2,7 +2,6 @@ import {makeStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import AddLocationIcon from '@material-ui/icons/AddLocation';
-import SearchIcon from "@material-ui/icons/Search";
 import ErrorIcon from "@material-ui/icons/Error";
 import DoneIcon from "@material-ui/icons/Done";
 import React, {useEffect, useState} from "react";
@@ -10,7 +9,6 @@ import MapsAPI from "../service/mapsApi";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,10 +34,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const LocationAutocomplete = (props) => {
+const LocationAutocomplete = ({location, setLocation, optionalButton}) => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
-    const [location, setLocation] = useState(null);
     const [locations, setLocations] = useState([]);
 
     const hasSelectedAPosition = () => {
@@ -54,7 +51,6 @@ const LocationAutocomplete = (props) => {
 
     useEffect(() => {
         // eslint-disable-next-line
-        console.log(props);
         if (!loading && !hasSelectedAPosition() && hasValidInputAddress()) {
             setLoading(true);
             MapsAPI.getLocationByAddress(location.title)
@@ -68,6 +64,7 @@ const LocationAutocomplete = (props) => {
     const getLocationByCoords = () => {
         setLoading(true)
         navigator.geolocation.getCurrentPosition(({coords}) => {
+            console.log(coords);
             const {latitude, longitude} = coords;
             MapsAPI.getLocationByCoords({latitude, longitude})
                 .then(({data}) => {
@@ -91,13 +88,6 @@ const LocationAutocomplete = (props) => {
                     lng: ""
                 }
             });
-        }
-    };
-
-    const searchHairdresser = () => {
-        if (location.position) {
-            //TODO: enviar get request de peluqueros con la ubicacion
-            // y mostrarme a los peluqueros mas cercanos
         }
     };
 
@@ -143,15 +133,9 @@ const LocationAutocomplete = (props) => {
             </Paper>
         </Grid>
         <Grid item xs={1}>
-            <Button variant="contained"
-                    className={classes.classButton}
-                    size="large"
-                    color="secondary"
-                    type="submit"
-                    onClick={() => searchHairdresser()}
-                    disabled={loading || !hasSelectedAPosition()}>
-                <SearchIcon/>
-            </Button>
+            {optionalButton && optionalButton(
+                classes.classButton,
+                loading || !hasSelectedAPosition())}
         </Grid>
     </Grid>
 }

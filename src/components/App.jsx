@@ -4,6 +4,7 @@ import {BrowserRouter} from 'react-router-dom';
 import Container from "@material-ui/core/Container";
 import Bar from "./Bar";
 import LoggedOutHomePage from "../views/LoggedOutHomePage";
+import SearchResults from "../views/SearchResults";
 
 const App = () => {
 
@@ -12,7 +13,8 @@ const App = () => {
             <Bar/>
             <Container maxWidth="lg" >
                 <Switch>
-                  <Route exact path="/" render={LoggedOutHomePage}/>
+                  <Route exact path="/" render={ (props) => LoggedOutHomePage({...props})}/>
+                  <Route path="/search" render={ (props) => SearchResults({...props})} />
                 </Switch>
             </Container>
         </BrowserRouter>

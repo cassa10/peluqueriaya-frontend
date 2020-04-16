@@ -96,8 +96,10 @@ const LocationAutocomplete = (props) => {
 
     const searchHairdresser = () => {
         if (location.position) {
-            //TODO: enviar get request de peluqueros con la ubicacion
-            // y mostrarme a los peluqueros mas cercanos
+            props.history.push({
+                pathname: '/search',
+                state: {}
+            });
         }
     };
 
@@ -148,7 +150,7 @@ const LocationAutocomplete = (props) => {
                     size="large"
                     color="secondary"
                     type="submit"
-                    onClick={() => searchHairdresser()}
+                    onClick={searchHairdresser}
                     disabled={loading || !hasSelectedAPosition()}>
                 <SearchIcon/>
             </Button>

@@ -17,7 +17,7 @@ const LoggedOutHomePage = props => {
             Busque su peluquero mas cercano.
         </Typography>
         <Box display="flex" justifyContent="center" p={4}>
-            <LocationAutocomplete/>
+            <LocationAutocomplete {...props}/>
         </Box>
         </Box>
 

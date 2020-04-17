@@ -5,13 +5,20 @@ import LocationAutocomplete from "../components/LocationAutocomplete";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
 
-const LoggedOutHomePage = () => {
+const LoggedOutHomePage = (props) => {
     const [location, setLocation] = useState(null);
 
     const searchHairdresser = () => {
+        
         if (location.position) {
-            //TODO: enviar get request de peluqueros con la ubicacion
-            // y mostrarme a los peluqueros mas cercanos
+
+            sessionStorage.setItem('userLocationLatitude',location.position.lat)
+            sessionStorage.setItem('userLocationLongitude',location.position.lng)
+
+            props.history.push({
+                pathname: '/search',
+                state: {}
+            });
         }
     };
 
@@ -28,6 +35,7 @@ const LoggedOutHomePage = () => {
         </Typography>
         <Box display="flex" justifyContent="center" p={4}>
             <LocationAutocomplete
+                {...props}
                 location={location}
                 setLocation={setLocation}
                 optionalButton={(className, disabled) =>
@@ -36,7 +44,7 @@ const LoggedOutHomePage = () => {
                             size="large"
                             color="secondary"
                             type="submit"
-                            onClick={() => searchHairdresser()}
+                            onClick={searchHairdresser}
                             disabled={disabled}>
                         <SearchIcon/>
                     </Button>}/>

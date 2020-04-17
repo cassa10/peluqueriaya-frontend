@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid"
 import HairdresserResults from '../components/HairdresserResults';
 import Button from "@material-ui/core/Button";
 import API from '../service/api';
-import '../dist/css/SearchResults.css'
+import '../css/SearchResults.css';
 
 const SearchResults = (props) => {
 

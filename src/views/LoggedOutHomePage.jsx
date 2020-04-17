@@ -5,11 +5,16 @@ import LocationAutocomplete from "../components/LocationAutocomplete";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
 
-const LoggedOutHomePage = () => {
+const LoggedOutHomePage = (props) => {
     const [location, setLocation] = useState(null);
 
     const searchHairdresser = () => {
+        
         if (location.position) {
+
+            sessionStorage.setItem('userLocationLatitude',location.position.lat)
+            sessionStorage.setItem('userLocationLongitude',location.position.lng)
+
             props.history.push({
                 pathname: '/search',
                 state: {}

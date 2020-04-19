@@ -5,83 +5,72 @@ import AddLocationIcon from '@material-ui/icons/AddLocation';
 import ErrorIcon from "@material-ui/icons/Error";
 import DoneIcon from "@material-ui/icons/Done";
 import React, {useEffect, useState} from "react";
-import MapsAPI from "../service/mapsApi";
+import MapasAPI from "../service/mapasAPI";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
+import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         display: 'flex',
         alignItems: 'stretch',
-        justify: "space-evenly",
+        justify: "center",
         width: "80%",
     },
     classButton: {
         width: "100%",
         height: "100%"
     },
-    wrapper: {
-        margin: theme.spacing(1),
-        position: 'relative',
-    },
-    fabProgress: {
-        position: 'absolute',
-        top: -6,
-        left: -6,
-        zIndex: 1,
-    }
 }));
 
-const LocationAutocomplete = ({location, setLocation, optionalButton}) => {
-    const classes = useStyles();
-    const [loading, setLoading] = useState(false);
-    const [locations, setLocations] = useState([]);
+const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => {
+    const clases = useStyles();
+    const [cargando, setCargando] = useState(false);
+    const [ubicaciones, setUbicaciones] = useState([]);
 
-    const hasSelectedAPosition = () => {
-        return location !== null &&
-            location.position.lat !== "" &&
-            location.position.lng !== "";
+    const seleccionoUnaPosicion = () => {
+        return ubicacion !== null &&
+            ubicacion.position.lat !== "" &&
+            ubicacion.position.lng !== "";
     }
 
-    const hasValidInputAddress = () => {
-        return location !== null && location.title.length > 10;
+    const esValidaUbicacionIngresada = () => {
+        return ubicacion !== null && ubicacion.title.length > 10;
     }
 
     useEffect(() => {
         // eslint-disable-next-line
-        if (!loading && !hasSelectedAPosition() && hasValidInputAddress()) {
-            setLoading(true);
-            MapsAPI.getLocationByAddress(location.title)
-                .then(({data}) => setLocations(data[0].items))
+        if (!cargando && !seleccionoUnaPosicion() && esValidaUbicacionIngresada()) {
+            setCargando(true);
+            MapasAPI.obtenerUbicacionConDireccion(ubicacion.title)
+                .then(({data}) => setUbicaciones(data.items))
                 .catch((error) => console.log(error))
-                .finally(() => setLoading(false))
+                .finally(() => setCargando(false))
         }
         // eslint-disable-next-line
-    }, [loading, location])
+    }, [cargando, ubicacion])
 
-    const getLocationByCoords = () => {
-        setLoading(true)
+    const obtenerUbicacionConCoords = () => {
+        setCargando(true)
         navigator.geolocation.getCurrentPosition(({coords}) => {
-            console.log(coords);
             const {latitude, longitude} = coords;
-            MapsAPI.getLocationByCoords({latitude, longitude})
-                .then(({data}) => {
-                    setLocation(data.items[0]);
-                })
+            MapasAPI.obtenerDireccionConCoords(latitude, longitude)
+                .then(({data}) => setUbicacion(data.items[0]))
                 .catch((error) => console.log(error))
-                .finally(() => setLoading(false))
+                .finally(() => setCargando(false))
         });
     };
 
-    const handleOnChange = (e, value) => {
-        setLocation(value);
+    const manejarOnChange = (e, value) => {
+        setUbicacion(value);
     }
 
-    const handleOnInputChange = (e, value, reason) => {
+    const manejarOnInputChange = (e, value, reason) => {
         if (reason !== "reset") {
-            setLocation({
+            setUbicacion({
                 title: value,
                 position: {
                     lat: "",
@@ -91,25 +80,24 @@ const LocationAutocomplete = ({location, setLocation, optionalButton}) => {
         }
     };
 
-    return <Grid container className={classes.root}>
+    return <Grid container className={clases.root}>
         <Grid item xs={1}>
-            <IconButton color="secondary" className={classes.classButton}
-                        onClick={() => getLocationByCoords()} disabled={loading}>
+            <IconButton color="secondary" className={clases.classButton}
+                        onClick={() => obtenerUbicacionConCoords()} disabled={cargando}>
                 <AddLocationIcon fontSize="large"/>
             </IconButton>
         </Grid>
         <Grid item xs={10}>
             <Paper>
                 <Autocomplete
-                    id="combo-box-demo"
                     disablePortal
                     freeSolo
-                    value={location}
-                    onChange={handleOnChange}
-                    onInputChange={handleOnInputChange}
+                    value={ubicacion}
+                    onChange={manejarOnChange}
+                    onInputChange={manejarOnInputChange}
                     noOptionsText={"No se encontraron resultados, escriba una dirección con más de 10 dígitos"}
-                    options={locations}
-                    loading={loading}
+                    options={ubicaciones}
+                    loading={cargando}
                     getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
                     renderInput={(params) => {
                         return <TextField
@@ -121,9 +109,9 @@ const LocationAutocomplete = ({location, setLocation, optionalButton}) => {
                                 ...params.InputProps,
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <div className={classes.wrapper}>
-                                            {hasSelectedAPosition()? <DoneIcon color="secondary"/>: <ErrorIcon color="secondary"/>}
-                                        </div>
+                                        {seleccionoUnaPosicion() ?
+                                            <DoneIcon color="secondary"/> :
+                                            <ErrorIcon color="secondary"/>}
                                     </InputAdornment>
                                 )
                             }}
@@ -133,11 +121,18 @@ const LocationAutocomplete = ({location, setLocation, optionalButton}) => {
             </Paper>
         </Grid>
         <Grid item xs={1}>
-            {optionalButton && optionalButton(
-                classes.classButton,
-                loading || !hasSelectedAPosition())}
+            {botonOpcional &&
+            <Button variant="contained"
+                    className={clases.classButton}
+                    size="large"
+                    color="secondary"
+                    type="submit"
+                    onClick={botonOpcional.onClick}
+                    disabled={cargando || !seleccionoUnaPosicion()}>
+                <SearchIcon/>
+            </Button>}
         </Grid>
     </Grid>
 }
 
-export default LocationAutocomplete;
+export default AutocompletadoDeUbicacion;

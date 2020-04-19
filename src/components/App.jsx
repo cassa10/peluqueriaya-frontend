@@ -2,19 +2,19 @@ import React from 'react';
 import {Route, Switch} from 'react-router';
 import {BrowserRouter} from 'react-router-dom';
 import Container from "@material-ui/core/Container";
-import Bar from "./Bar";
-import LoggedOutHomePage from "../views/LoggedOutHomePage";
-import SearchResults from "../views/SearchResults";
+import Barra from "./Barra";
+import PaginaPrincipal from "../views/PaginaPrincipal";
+import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
 
 const App = () => {
 
     return (
         <BrowserRouter>
-            <Bar/>
+            <Barra/>
             <Container maxWidth="lg" >
                 <Switch>
-                  <Route exact path="/" component={ (props) => LoggedOutHomePage({...props})}/>
-                  <Route path="/search" component={ (props) => SearchResults({...props})} />
+                  <Route exact path="/" component={ (props) => PaginaPrincipal({...props})}/>
+                  <Route path="/search" component={ (props) => PaginaBusquedaPeluqueros({...props})} />
                 </Switch>
             </Container>
         </BrowserRouter>

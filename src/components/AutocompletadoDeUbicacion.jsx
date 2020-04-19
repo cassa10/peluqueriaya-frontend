@@ -4,8 +4,8 @@ import IconButton from "@material-ui/core/IconButton";
 import AddLocationIcon from '@material-ui/icons/AddLocation';
 import ErrorIcon from "@material-ui/icons/Error";
 import DoneIcon from "@material-ui/icons/Done";
-import React, {useEffect, useState} from "react";
-import MapasAPI from "../service/mapasAPI";
+import React, {useState} from "react";
+import MapasAPI from "../service/MapasAPI";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -37,31 +37,20 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
             ubicacion.position.lng !== "";
     }
 
-    const esValidaUbicacionIngresada = () => {
-        return ubicacion !== null && ubicacion.title.length > 10;
+    const obtenerUbicacionConCoords = () => {
+        setCargando(true);
+        MapasAPI.obtenerUbicacionConCoords(
+            ({items}) => {setUbicacion(items[0]);},
+            () => setCargando(false))
     }
 
-    useEffect(() => {
-        // eslint-disable-next-line
-        if (!cargando && !seleccionoUnaPosicion() && esValidaUbicacionIngresada()) {
+    const obtenerUbicacionConDireccion = value => {
+        if (!cargando && !seleccionoUnaPosicion() && value.length > 10) {
             setCargando(true);
-            MapasAPI.obtenerUbicacionConDireccion(ubicacion.title)
-                .then(({data}) => setUbicaciones(data.items))
-                .catch((error) => console.log(error))
-                .finally(() => setCargando(false))
+            MapasAPI.obtenerUbicacionConDireccion(ubicacion.title,
+                ({items}) => {setUbicaciones(items);},
+                () => setCargando(false))
         }
-        // eslint-disable-next-line
-    }, [cargando, ubicacion])
-
-    const obtenerUbicacionConCoords = () => {
-        setCargando(true)
-        navigator.geolocation.getCurrentPosition(({coords}) => {
-            const {latitude, longitude} = coords;
-            MapasAPI.obtenerDireccionConCoords(latitude, longitude)
-                .then(({data}) => setUbicacion(data.items[0]))
-                .catch((error) => console.log(error))
-                .finally(() => setCargando(false))
-        });
     };
 
     const manejarOnChange = (e, value) => {
@@ -78,6 +67,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
                 }
             });
         }
+        obtenerUbicacionConDireccion(value);
     };
 
     return <Grid container className={clases.root}>

@@ -24,11 +24,10 @@ const useStyles = makeStyles({
     },
 });
 
-const HairdresserResults = ({ results, buttonGoHome }) => {
-
+const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
     const classes = useStyles();
 
-    const emptyResult = () => {
+    const resultadoVacio = () => {
         return (
             <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={14}>
                 <Box bgcolor="primary.main" color="primary.contrastText" m={4}>
@@ -36,7 +35,7 @@ const HairdresserResults = ({ results, buttonGoHome }) => {
                         No hay peluqueros disponibles en tu zona :C
                     </Typography>
                     <Box m={1}>
-                        {buttonGoHome}  
+                        {botonIrPaginaPrincipal}  
                     </Box>    
                 </Box>
                 
@@ -45,7 +44,7 @@ const HairdresserResults = ({ results, buttonGoHome }) => {
         )
     }
 
-    const buildStatusHairdresser = (status) => {
+    const construirEstadoPeluquero = (status) => {
         if(status === "DISPONIBLE"){
             return (
                 <Typography className={classes.title} color="secondary" gutterBottom>
@@ -60,31 +59,30 @@ const HairdresserResults = ({ results, buttonGoHome }) => {
         );
     }
 
-    const defaultLogoIfNeed = (logoSrc) => {
+    const logoPredeterminado = (logoSrc) => {
         if (logoSrc.length > 0){
             return logoSrc
         }
         return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png"
     }
 
-    const buildCardHairdresser = (hairdresser) => {
-        console.log(hairdresser)
+    const costruirCardPeluquero = (peluquero) => {
         return (
-            <Box key={hairdresser.id} textAlign="center" m={2}>
+            <Box key={peluquero.id} textAlign="center" m={2}>
                 <Card className={classes.root} variant="outlined">
                     <CardContent>
-                        {buildStatusHairdresser(hairdresser.estado)}
+                        {construirEstadoPeluquero(peluquero.estado)}
                         <img
-                            src={defaultLogoIfNeed(hairdresser.logo)}
+                            src={logoPredeterminado(peluquero.logo)}
                             width="150"
                             alt="logo"
                         />
                         <Typography variant="h5" component="h2">
-                            {hairdresser.nombre}
+                            {peluquero.nombre}
                         </Typography>
                         <hr />
                         <Typography variant="body2" component="p">
-                            Corte minimo | ${hairdresser.corteMin}
+                            Corte minimo | ${peluquero.corteMin}
                         </Typography>
                     </CardContent>
                     <CardActions>
@@ -95,28 +93,27 @@ const HairdresserResults = ({ results, buttonGoHome }) => {
         );
     }
 
-    const buildResults = () => {
+    const construirResultados = () => {
         return (
             <div>
-                {results.map(h => buildCardHairdresser(h))}
+                {resultados.map(h => costruirCardPeluquero(h))}
             </div>
         );
     }
 
-    const lookupResults = (results) => {
-        console.log(results.length)
+    const resultadosDeBusqueda = (results) => {
         if (results.length <= 0) {
-            return (emptyResult());
+            return (resultadoVacio());
         }else {
-            return (buildResults());
+            return (construirResultados());
         }
     }
 
     return (
         <Box>
-            {lookupResults(results)}
+            {resultadosDeBusqueda(resultados)}
         </Box>
     );
 };
 
-export default HairdresserResults;
+export default ListaPeluqueros;

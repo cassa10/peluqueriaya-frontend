@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Bar(props) {
+const Barra = () => {
     const classes = useStyles();
 
     return (
@@ -32,6 +32,6 @@ function Bar(props) {
             </Toolbar>
         </AppBar>
     );
-}
+};
 
-export default Bar;
+export default Barra;

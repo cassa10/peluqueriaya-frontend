@@ -1,22 +1,22 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid"
-import HairdresserResults from '../components/HairdresserResults';
+import ListaPeluqueros from '../components/ListaPeluqueros';
 import Button from "@material-ui/core/Button";
 import API from '../service/api';
 import '../css/SearchResults.css';
 
-const SearchResults = (props) => {
+const PaginaBusquedaPeluqueros = (props) => {
 
-    const [userLocation] = useState(
+    const [ubicacion] = useState(
         {
             latitude: sessionStorage.getItem('userLocationLatitude'),
             longitude: sessionStorage.getItem('userLocationLongitude')
         });
 
-    const [results, setResults] = useState([])
+    const [resultados, setResultados] = useState([])
 
-    const goHome = useCallback(() => {
+    const irPaginaPrincipal = useCallback(() => {
         props.history.push({
             pathname: '/',
             state: {}
@@ -24,22 +24,13 @@ const SearchResults = (props) => {
     },[props.history]);
 
     useEffect(() => {
-        
-        if (!userLocation.latitude || !userLocation.longitude) {
-            goHome()
+        if (!ubicacion.latitude || !ubicacion.longitude) {
+            irPaginaPrincipal()
         }
-
-        API.get('/peluquero/search', userLocation)
-            .then((response) => searchResults(response))
+        API.get('/peluquero/search', ubicacion)
+            .then((response) => setResultados(response))
             .catch((error) => console.log(error))
-
-        const searchResults = (response) => {
-            setResults(response)
-        }
-
-
-    },[userLocation,goHome]);
-
+    },[ubicacion,irPaginaPrincipal]);
 
 
     return (
@@ -49,7 +40,7 @@ const SearchResults = (props) => {
                     className="logo_redirector"
                     src={'peluqueriaya-logo.png'}
                     alt="logo"
-                    onClick={goHome}
+                    onClick={irPaginaPrincipal}
                 />
             </Box>
             <Grid
@@ -58,10 +49,10 @@ const SearchResults = (props) => {
                 justify="flex-end"
                 alignItems="center"
             >
-                <HairdresserResults 
-                    results={results} 
-                    buttonGoHome={
-                        <Button size="small" color="secondary" onClick={goHome}>
+                <ListaPeluqueros
+                    resultados={resultados}
+                    botonIrPaginaPrincipal={
+                        <Button size="small" color="secondary" onClick={irPaginaPrincipal}>
                             Volver e intentar con otra ubicación
                         </Button>
                     }
@@ -71,4 +62,4 @@ const SearchResults = (props) => {
     );
 };
 
-export default SearchResults;
+export default PaginaBusquedaPeluqueros;

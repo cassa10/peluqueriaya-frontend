@@ -13,8 +13,8 @@ const App = () => {
             <Barra/>
             <Container maxWidth="lg" >
                 <Switch>
-                  <Route exact path="/" component={ (props) => PaginaPrincipal({...props})}/>
-                  <Route path="/search" component={ (props) => PaginaBusquedaPeluqueros({...props})} />
+                  <Route exact path="/" component={PaginaPrincipal}/>
+                  <Route path="/search" component={PaginaBusquedaPeluqueros} />
                 </Switch>
             </Container>
         </BrowserRouter>

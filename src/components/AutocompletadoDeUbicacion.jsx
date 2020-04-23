@@ -1,6 +1,5 @@
 import {makeStyles} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
 import AddLocationIcon from '@material-ui/icons/AddLocation';
 import ErrorIcon from "@material-ui/icons/Error";
 import DoneIcon from "@material-ui/icons/Done";
@@ -71,13 +70,13 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
     };
 
     return <Grid container className={clases.root}>
-        <Grid item xs={1}>
-            <IconButton color="secondary" className={clases.classButton}
+        <Grid item xs="auto">
+            <Button variant="contained" color="secondary" className={clases.classButton}
                         onClick={() => obtenerUbicacionConCoords()} disabled={cargando}>
                 <AddLocationIcon fontSize="large"/>
-            </IconButton>
+            </Button>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs="auto" sm={8} md={9} lg={10} >
             <Paper>
                 <Autocomplete
                     disablePortal

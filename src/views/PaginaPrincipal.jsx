@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
 import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
     img: {
@@ -13,6 +14,18 @@ const useStyles = makeStyles(() => ({
         maxHeight: '100%',
     },
 }));
+
+const theme = createMuiTheme();
+
+theme.typography.h6 = {
+  fontSize: '0.9rem',
+  '@media (min-width:500px)': {
+    fontSize: '1.4rem',
+  },
+  [theme.breakpoints.up('md')]: {
+    fontSize: '1.5rem',
+  },
+};
 
 const PaginaPrincipal = () => {
     const clases = useStyles();
@@ -34,12 +47,15 @@ const PaginaPrincipal = () => {
                     alt="logo"
                 />
         </Grid>
-        <Typography variant="h6" gutterBottom>
-            Plataforma que permite a cualquier peluquero/a brindar sus servicios a domicilio.
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-            Busque su peluquero mas cercano.
-        </Typography>
+        <hr />
+        <ThemeProvider theme={theme}>
+          <Typography variant="h6" gutterBottom>
+              Plataforma que permite a cualquier peluquero/a brindar sus servicios a domicilio.
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+              Busque su peluquero mas cercano.
+          </Typography>
+        </ThemeProvider>
         <Box display={"flex"} justifyContent={"center"} p={4}>
             <AutocompletadoDeUbicacion
                 ubicacion={ubicacion}

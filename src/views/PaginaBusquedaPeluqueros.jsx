@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid"
 import ListaPeluqueros from '../components/ListaPeluqueros';
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const PaginaBusquedaPeluqueros = (props) => {
+const PaginaBusquedaPeluqueros = () => {
     const clases = useStyles();
     const [ubicacion] = useState(
         {
@@ -26,12 +26,9 @@ const PaginaBusquedaPeluqueros = (props) => {
 
     const [resultados, setResultados] = useState([])
 
-    const irPaginaPrincipal = useCallback(() => {
-        props.history.push({
-            pathname: '/',
-            state: {}
-        });
-    },[props.history]);
+    const irPaginaPrincipal = () => {
+        window.location.href = '/';
+    };
 
     useEffect(() => {
         if (!ubicacion.latitude || !ubicacion.longitude) {
@@ -40,7 +37,7 @@ const PaginaBusquedaPeluqueros = (props) => {
         API.get('/peluquero/search', ubicacion)
             .then((response) => setResultados(response))
             .catch((error) => console.log(error))
-    },[ubicacion,irPaginaPrincipal]);
+    },[ubicacion]);
 
 
     return (

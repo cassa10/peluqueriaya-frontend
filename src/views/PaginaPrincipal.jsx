@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const PaginaPrincipal = (props) => {
+const PaginaPrincipal = () => {
     const clases = useStyles();
     const [ubicacion, setUbicacion] = useState(null);
 
@@ -22,10 +22,7 @@ const PaginaPrincipal = (props) => {
         if (ubicacion.position) {
             sessionStorage.setItem('userLocationLatitude',ubicacion.position.lat)
             sessionStorage.setItem('userLocationLongitude',ubicacion.position.lng)
-            props.history.push({
-                pathname: '/search',
-                state: {}
-            });
+            window.location.href = '/search';
         }
     };
 
@@ -45,7 +42,6 @@ const PaginaPrincipal = (props) => {
         </Typography>
         <Box display={"flex"} justifyContent={"center"} p={4}>
             <AutocompletadoDeUbicacion
-                {...props}
                 ubicacion={ubicacion}
                 setUbicacion={setUbicacion}
                 botonOpcional={{onClick: buscarPeluqueros}}/>

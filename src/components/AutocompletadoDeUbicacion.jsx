@@ -72,10 +72,10 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
 
     return <Grid container className={clases.root}>
         <Grid item xs={1}>
-            <IconButton color="secondary" className={clases.classButton}
+            <Button variant="contained" color="secondary" className={clases.classButton}
                         onClick={() => obtenerUbicacionConCoords()} disabled={cargando}>
                 <AddLocationIcon fontSize="large"/>
-            </IconButton>
+            </Button>
         </Grid>
         <Grid item xs={10}>
             <Paper>

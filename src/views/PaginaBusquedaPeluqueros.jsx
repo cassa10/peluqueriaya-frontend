@@ -4,10 +4,20 @@ import Grid from "@material-ui/core/Grid"
 import ListaPeluqueros from '../components/ListaPeluqueros';
 import Button from "@material-ui/core/Button";
 import API from '../service/api';
-import '../css/SearchResults.css';
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+    img: {
+        margin: 'auto',
+        display: 'block',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        cursor: 'pointer',
+    },
+}));
 
 const PaginaBusquedaPeluqueros = (props) => {
-
+    const clases = useStyles();
     const [ubicacion] = useState(
         {
             latitude: sessionStorage.getItem('userLocationLatitude'),
@@ -36,28 +46,24 @@ const PaginaBusquedaPeluqueros = (props) => {
     return (
         <div>
             <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
-                <img
-                    className="logo_redirector"
-                    src={'peluqueriaya-logo.png'}
-                    alt="logo"
-                    onClick={irPaginaPrincipal}
-                />
+                <Grid container justify="center">
+                    <img
+                        className={clases.img}
+                        src={'peluqueriaya-logo.png'}
+                        alt="logo"
+                        onClick={irPaginaPrincipal}
+                    />
+                </Grid>
             </Box>
-            <Grid
-                container
-                direction="column"
-                justify="flex-end"
-                alignItems="center"
-            >
-                <ListaPeluqueros
-                    resultados={resultados}
-                    botonIrPaginaPrincipal={
-                        <Button size="small" color="secondary" onClick={irPaginaPrincipal}>
-                            Volver e intentar con otra ubicación
-                        </Button>
-                    }
-                />
-            </Grid>
+            
+            <ListaPeluqueros
+                resultados={resultados}
+                botonIrPaginaPrincipal={
+                    <Button size="small" color="secondary" onClick={irPaginaPrincipal}>
+                        Volver e intentar con otra ubicación
+                    </Button>
+                }
+            />
         </div>
     );
 };

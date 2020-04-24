@@ -5,20 +5,20 @@ import Container from "@material-ui/core/Container";
 import Barra from "./Barra";
 import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
+import APIProvider from "../service/APIProvider";
 
-const App = () => {
-
-    return (
-        <BrowserRouter>
+const App = () => (
+    <BrowserRouter>
+        <APIProvider>
             <Barra/>
-            <Container maxWidth="lg" >
+            <Container maxWidth="lg">
                 <Switch>
-                  <Route exact path="/" component={PaginaPrincipal}/>
-                  <Route path="/search" component={PaginaBusquedaPeluqueros} />
+                    <Route exact path="/" component={PaginaPrincipal}/>
+                    <Route path="/search" component={PaginaBusquedaPeluqueros}/>
                 </Switch>
             </Container>
-        </BrowserRouter>
-    );
-};
+        </APIProvider>
+    </BrowserRouter>
+);
 
 export default App;

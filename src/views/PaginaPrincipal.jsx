@@ -47,7 +47,6 @@ const PaginaPrincipal = () => {
                     alt="logo"
                 />
         </Grid>
-        <hr />
         <ThemeProvider theme={theme}>
           <Typography variant="h6" gutterBottom>
               Plataforma que permite a cualquier peluquero/a brindar sus servicios a domicilio.

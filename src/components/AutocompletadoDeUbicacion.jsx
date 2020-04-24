@@ -4,13 +4,14 @@ import AddLocationIcon from '@material-ui/icons/AddLocation';
 import ErrorIcon from "@material-ui/icons/Error";
 import DoneIcon from "@material-ui/icons/Done";
 import React, {useState} from "react";
-import MapasAPI from "../service/MapasAPI";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
+import useMapasServicio from "../service/useMapasServicio";
+
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -29,6 +30,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
     const clases = useStyles();
     const [cargando, setCargando] = useState(false);
     const [ubicaciones, setUbicaciones] = useState([]);
+    const {obtenerUbicacionConCoords, obtenerUbicacionConDireccion} = useMapasServicio({setCargando});
 
     const seleccionoUnaPosicion = () => {
         return ubicacion !== null &&
@@ -36,19 +38,14 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
             ubicacion.position.lng !== "";
     }
 
-    const obtenerUbicacionConCoords = () => {
-        setCargando(true);
-        MapasAPI.obtenerUbicacionConCoords(
-            ({items}) => {setUbicacion(items[0]);},
-            () => setCargando(false))
+    const autocompletarUbicacionConCoords = () => {
+        obtenerUbicacionConCoords(({items}) => {setUbicacion(items[0]);});
     }
 
-    const obtenerUbicacionConDireccion = value => {
+    const autocompletarUbicacionConDireccion = value => {
         if (!cargando && !seleccionoUnaPosicion() && value.length > 10) {
-            setCargando(true);
-            MapasAPI.obtenerUbicacionConDireccion(ubicacion.title,
-                ({items}) => {setUbicaciones(items);},
-                () => setCargando(false))
+            obtenerUbicacionConDireccion(ubicacion.title,
+                ({items}) => {setUbicaciones(items);})
         }
     };
 
@@ -66,13 +63,13 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
                 }
             });
         }
-        obtenerUbicacionConDireccion(value);
+        autocompletarUbicacionConDireccion(value);
     };
 
     return <Grid container className={clases.root}>
         <Grid item xs="auto">
             <Button variant="contained" color="secondary" className={clases.classButton}
-                        onClick={() => obtenerUbicacionConCoords()} disabled={cargando}>
+                        onClick={() => autocompletarUbicacionConCoords()} disabled={cargando}>
                 <AddLocationIcon fontSize="large"/>
             </Button>
         </Grid>

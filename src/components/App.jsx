@@ -1,16 +1,24 @@
 import React from 'react';
-import { Switch, Route } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
+import {Route, Switch} from 'react-router';
+import {BrowserRouter} from 'react-router-dom';
+import Container from "@material-ui/core/Container";
+import Barra from "./Barra";
+import PaginaPrincipal from "../views/PaginaPrincipal";
+import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
 
-export default class App extends React.Component {
-  render() {
+const App = () => {
+
     return (
-      
         <BrowserRouter>
-          <Switch>
-            <Route exact path="/" render={() => <div> HELLO WORLD! </div>} />
-          </Switch>
+            <Barra/>
+            <Container maxWidth="lg" >
+                <Switch>
+                  <Route exact path="/" component={PaginaPrincipal}/>
+                  <Route path="/search" component={PaginaBusquedaPeluqueros} />
+                </Switch>
+            </Container>
         </BrowserRouter>
     );
-  }
-}
+};
+
+export default App;

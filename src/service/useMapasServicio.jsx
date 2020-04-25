@@ -6,14 +6,14 @@ const useMapasServicio = ({setCargando}) => {
 
     const obtenerUbicacionConDireccion = (title, then) => {
         setCargando(true);
-        return get("/mapas/geocoding", {direccion: title}, () => setCargando(false)).then(then)
+        return get("/mapas/geocodingggg", {direccion: title}, then, () => setCargando(false))
     }
 
     const obtenerUbicacionConCoords = (then) => {
         setCargando(true);
         return navigator.geolocation
             .getCurrentPosition(({coords: {latitude, longitude}}) => {
-                get("/mapas/reversegeocoding", {latitude, longitude}, () => setCargando(false)).then(then)
+                get("/mapas/reversegeocoding", {latitude, longitude}, then, () => setCargando(false))
             })
     }
 

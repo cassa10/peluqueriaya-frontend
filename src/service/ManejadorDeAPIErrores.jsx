@@ -3,19 +3,18 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import Typography from "@material-ui/core/Typography";
-import PaginaError from "../views/PaginaError";
+import PaginaError, {PaginaError404} from "../views/PaginaError";
 import {useHistory} from "react-router";
 
-const ManejadorDeErroresContext = React.createContext();
-export const useManejadorDeErrores = () => React.useContext(ManejadorDeErroresContext);
+const ManejadorDeAPIErroresContext = React.createContext();
+export const useManejadorDeAPIErrores = () => React.useContext(ManejadorDeAPIErroresContext);
 
-const ManejadorDeErrores = ({children}) => {
+const ManejadorDeAPIErrores = ({children}) => {
     const [error, setError] = useState();
     const history = useHistory();
 
     useEffect(() => {
-        const unlisten = history.listen(() => setError(undefined));
-        return unlisten;
+        return history.listen(() => setError(undefined));
         // eslint-disable-next-line
     }, [])
 
@@ -23,7 +22,10 @@ const ManejadorDeErrores = ({children}) => {
         return <PaginaError {...paginaErrorProps}/>
     }
 
-    const mostrarNotificadorDeErrores = (mensajes) => {
+    const mostrarNotificadorDeErrores = (message) => {
+        let mensajes;
+        if (typeof mensajes === 'string') mensajes = [message];
+        else mensajes = message;
         let abierto = true;
         const manejarClose = (event, reason) => {
             if (reason !== 'clickaway') {
@@ -48,27 +50,34 @@ const ManejadorDeErrores = ({children}) => {
         [setError]
     );
 
-
     const mostrarContenido = () => {
         let contenido = children;
 
         if (error) {
-            console.log(error);
             contenido = mostrarPaginaError({
                 titulo: "Error :(",
                 mensaje: "Ha ocurrido un error inesperado. Por favor intente nuevamente."
             });
             if (error.response) {
+                const {status, data} = error.response;
                 // eslint-disable-next-line
-                switch (error.response.status) {
+                switch (status) {
                     case 400:
-                        contenido = mostrarNotificadorDeErrores(error.response.data);
+                        contenido = mostrarNotificadorDeErrores(data.message);
                         break;
                     case 403:
+                        contenido = mostrarPaginaError({
+                            titulo: status,
+                            mensaje: "403 Forbidden: Usted no tiene permiso para ingresar a la pagina solicitada."
+                        });
+                        break;
+                    case 404:
+                        contenido = <PaginaError404/>;
+                        break;
                     case 500:
                         contenido = mostrarPaginaError({
-                            titulo: error.response.status,
-                            mensaje: error.response.data
+                            titulo: status,
+                            mensaje: "Error 500 Internal Server Error: Un error inesperado a ocurrido. Por favor intente nuevamente."
                         });
                 }
             }
@@ -77,10 +86,10 @@ const ManejadorDeErrores = ({children}) => {
     }
 
     return (
-        <ManejadorDeErroresContext.Provider value={contextPayload}>
+        <ManejadorDeAPIErroresContext.Provider value={contextPayload}>
             {mostrarContenido()}
-        </ManejadorDeErroresContext.Provider>
+        </ManejadorDeAPIErroresContext.Provider>
     )
 }
 
-export default ManejadorDeErrores;
+export default ManejadorDeAPIErrores;

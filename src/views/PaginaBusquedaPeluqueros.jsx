@@ -3,8 +3,9 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid"
 import ListaPeluqueros from '../components/ListaPeluqueros';
 import Button from "@material-ui/core/Button";
-import API from '../service/api';
 import {makeStyles} from "@material-ui/core/styles";
+import useServicioDePeluquero from "../service/useServicioDePeluquero";
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles(() => ({
     img: {
@@ -18,27 +19,16 @@ const useStyles = makeStyles(() => ({
 
 const PaginaBusquedaPeluqueros = () => {
     const clases = useStyles();
-    const [ubicacion] = useState(
-        {
-            latitude: sessionStorage.getItem('userLocationLatitude'),
-            longitude: sessionStorage.getItem('userLocationLongitude')
-        });
-
-    const [resultados, setResultados] = useState([])
-
-    const irPaginaPrincipal = () => {
-        window.location.href = '/';
-    };
+    const [resultados, setResultados] = useState([]);
+    const [{buscarPeluquero}] = useServicioDePeluquero();
+    const {push} = useHistory();
 
     useEffect(() => {
-        if (!ubicacion.latitude || !ubicacion.longitude) {
-            irPaginaPrincipal()
-        }
-        API.get('/peluquero/search', ubicacion)
-            .then((response) => setResultados(response))
-            .catch((error) => console.log(error))
-    },[ubicacion]);
+        buscarPeluquero((peluqueros) => setResultados(peluqueros));
+        // eslint-disable-next-line
+    },[]);
 
+    const irPaginaPrincipal = () => push("/");
 
     return (
         <div>

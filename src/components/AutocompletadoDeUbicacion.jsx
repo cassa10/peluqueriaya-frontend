@@ -41,7 +41,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
     const estanCargando = () => cargandoUDC || cargandoUDD;
 
     const autocompletarUbicacionConDireccion = value => {
-        if (!estanCargando() && !seleccionoUnaPosicion() && value.length > 10) {
+        if (!estanCargando() && !seleccionoUnaPosicion() && value.trim().length > 10) {
             ubicacionDandoDireccion(ubicacion.title, (ubicaciones) => setUbicaciones(ubicaciones));
         }
     };

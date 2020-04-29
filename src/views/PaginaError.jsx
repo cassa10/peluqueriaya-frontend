@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles((theme) => ({
     root: {
         justifyContent: "center",
-        marginTop: "8%",
+        marginTop: "5%",
         padding: "4%",
         backgroundColor: theme.palette.primary.main
     },
@@ -46,12 +46,19 @@ const PaginaError = ({titulo, mensaje}) => {
             </Grid>
             <Grid item className={clases.gridItem}>
                 <ButtonGroup variant="contained" color="secondary">
-                    <Button onClick={() => goBack()}>Regresar</Button>
+                    {/*<Button onClick={() => goBack()}>Regresar</Button>*/}
                     <Button onClick={() => push("/")}>Home</Button>
                 </ButtonGroup>
             </Grid>
         </Grid>
     </Container>
 }
+
+export const PaginaError404 = () => (
+    <PaginaError
+        titulo={"404"}
+        mensaje={"Error 404 Not Found: La pagina solicitada no existe en nuestro servidor."}
+    />
+);
 
 export default PaginaError;

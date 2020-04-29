@@ -10,7 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
-import useMapasServicio from "../service/useMapasServicio";
+import {useUbicacionDandoCoords, useUbicacionDandoDireccion} from "../service/ServicioDeMapas";
 
 
 const useStyles = makeStyles(() => ({
@@ -28,9 +28,12 @@ const useStyles = makeStyles(() => ({
 
 const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => {
     const clases = useStyles();
-    const [cargando, setCargando] = useState(false);
     const [ubicaciones, setUbicaciones] = useState([]);
-    const {obtenerUbicacionConCoords, obtenerUbicacionConDireccion} = useMapasServicio({setCargando});
+    const [ubicacionDandoCoords, cargandoUDC] = useUbicacionDandoCoords(
+        (ubicacion) => setUbicacion(ubicacion)
+    );
+    const [ubicacionDandoDireccion, cargandoUDD] = useUbicacionDandoDireccion(
+        (ubicaciones) => setUbicaciones(ubicaciones));
 
     const seleccionoUnaPosicion = () => {
         return ubicacion !== null &&
@@ -38,14 +41,11 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
             ubicacion.position.lng !== "";
     }
 
-    const autocompletarUbicacionConCoords = () => {
-        obtenerUbicacionConCoords(({items}) => {setUbicacion(items[0]);});
-    }
+    const estanCargando = () => cargandoUDC || cargandoUDD;
 
     const autocompletarUbicacionConDireccion = value => {
-        if (!cargando && !seleccionoUnaPosicion() && value.length > 10) {
-            obtenerUbicacionConDireccion(ubicacion.title,
-                ({items}) => {setUbicaciones(items);})
+        if (!estanCargando() && !seleccionoUnaPosicion() && value.length > 10) {
+            ubicacionDandoDireccion(ubicacion.title);
         }
     };
 
@@ -69,7 +69,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
     return <Grid container className={clases.root}>
         <Grid item xs="auto">
             <Button variant="contained" color="secondary" className={clases.classButton}
-                        onClick={() => autocompletarUbicacionConCoords()} disabled={cargando}>
+                        onClick={() => ubicacionDandoCoords()} disabled={estanCargando()}>
                 <AddLocationIcon fontSize="large"/>
             </Button>
         </Grid>
@@ -83,7 +83,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
                     onInputChange={manejarOnInputChange}
                     noOptionsText={"No se encontraron resultados, escriba una dirección con más de 10 dígitos"}
                     options={ubicaciones}
-                    loading={cargando}
+                    loading={cargandoUDD}
                     getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
                     renderInput={(params) => {
                         return <TextField
@@ -114,7 +114,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
                     color="secondary"
                     type="submit"
                     onClick={botonOpcional.onClick}
-                    disabled={cargando || !seleccionoUnaPosicion()}>
+                    disabled={estanCargando() || !seleccionoUnaPosicion()}>
                 <SearchIcon/>
             </Button>}
         </Grid>

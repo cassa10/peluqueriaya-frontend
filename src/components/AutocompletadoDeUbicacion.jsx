@@ -10,7 +10,8 @@ import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
-import {useUbicacionDandoCoords, useUbicacionDandoDireccion} from "../service/ServicioDeMapas";
+import useServicioDeMapas from "../service/useServicioDeMapas";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 const useStyles = makeStyles(() => ({
@@ -29,11 +30,7 @@ const useStyles = makeStyles(() => ({
 const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => {
     const clases = useStyles();
     const [ubicaciones, setUbicaciones] = useState([]);
-    const [ubicacionDandoCoords, cargandoUDC] = useUbicacionDandoCoords(
-        (ubicacion) => setUbicacion(ubicacion)
-    );
-    const [ubicacionDandoDireccion, cargandoUDD] = useUbicacionDandoDireccion(
-        (ubicaciones) => setUbicaciones(ubicaciones));
+    const [{ubicacionDandoCoords, cargandoUDC}, {ubicacionDandoDireccion, cargandoUDD}] = useServicioDeMapas();
 
     const seleccionoUnaPosicion = () => {
         return ubicacion !== null &&
@@ -45,7 +42,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
 
     const autocompletarUbicacionConDireccion = value => {
         if (!estanCargando() && !seleccionoUnaPosicion() && value.length > 10) {
-            ubicacionDandoDireccion(ubicacion.title);
+            ubicacionDandoDireccion(ubicacion.title, (ubicaciones) => setUbicaciones(ubicaciones));
         }
     };
 
@@ -69,11 +66,12 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
     return <Grid container className={clases.root}>
         <Grid item xs="auto">
             <Button variant="contained" color="secondary" className={clases.classButton}
-                        onClick={() => ubicacionDandoCoords()} disabled={estanCargando()}>
+                    onClick={() => ubicacionDandoCoords((ubicacion) => setUbicacion(ubicacion))}
+                    disabled={estanCargando()}>
                 <AddLocationIcon fontSize="large"/>
             </Button>
         </Grid>
-        <Grid item xs="auto" sm={8} md={9} lg={10} >
+        <Grid item xs="auto" sm={8} md={9} lg={10}>
             <Paper>
                 <Autocomplete
                     disablePortal
@@ -95,9 +93,10 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
                                 ...params.InputProps,
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        {seleccionoUnaPosicion() ?
-                                            <DoneIcon color="secondary"/> :
-                                            <ErrorIcon color="secondary"/>}
+                                        {!seleccionoUnaPosicion() && !estanCargando() && <ErrorIcon color="secondary"/>}
+                                        {seleccionoUnaPosicion() && !estanCargando() && <DoneIcon color="secondary"/>}
+                                        {!seleccionoUnaPosicion() && estanCargando() &&
+                                        <CircularProgress color="secondary" size={30}/>}
                                     </InputAdornment>
                                 )
                             }}

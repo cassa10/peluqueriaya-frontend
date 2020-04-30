@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PaginaError = ({titulo, mensaje}) => {
     const clases = useStyles();
-    let {goBack, push} = useHistory();
+    let {push} = useHistory();
 
     return <Container maxWidth="sm" className={clases.root}>
         <Grid container justify={"center"} direction={"column"} spacing={3}>
@@ -46,7 +46,6 @@ const PaginaError = ({titulo, mensaje}) => {
             </Grid>
             <Grid item className={clases.gridItem}>
                 <ButtonGroup variant="contained" color="secondary">
-                    {/*<Button onClick={() => goBack()}>Regresar</Button>*/}
                     <Button onClick={() => push("/")}>Home</Button>
                 </ButtonGroup>
             </Grid>

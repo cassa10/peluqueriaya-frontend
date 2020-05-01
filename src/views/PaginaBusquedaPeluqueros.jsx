@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid"
 import ListaPeluqueros from '../components/ListaPeluqueros';
 import Button from "@material-ui/core/Button";
-import {makeStyles} from "@material-ui/core/styles";
 import useServicioDePeluquero from "../service/useServicioDePeluquero";
 import {useHistory} from "react-router";
+import TabDeFiltradoPorServicio from "../components/TabDeFiltradoPorServicio";
 
-const useStyles = makeStyles(() => ({
-    img: {
-        margin: 'auto',
-        display: 'block',
-        maxWidth: '100%',
-        maxHeight: '100%',
-        cursor: 'pointer',
-    },
-}));
 
 const PaginaBusquedaPeluqueros = () => {
-    const clases = useStyles();
     const [resultados, setResultados] = useState([]);
-    const [{buscarPeluquero}] = useServicioDePeluquero();
+    const [{buscarPeluquero},{buscarPeluquerosPorTipoDeServicio}] = useServicioDePeluquero();
     const {push} = useHistory();
 
     useEffect(() => {
@@ -30,19 +19,15 @@ const PaginaBusquedaPeluqueros = () => {
 
     const irPaginaPrincipal = () => push("/");
 
+    const buscarPorTipoDeServicio = (tipoDeServicio) => {
+        buscarPeluquerosPorTipoDeServicio(tipoDeServicio, (resultados) => setResultados(resultados));
+    }
+
     return (
         <div>
             <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
-                <Grid container justify="center">
-                    <img
-                        className={clases.img}
-                        src={'peluqueriaya-logo.png'}
-                        alt="logo"
-                        onClick={irPaginaPrincipal}
-                    />
-                </Grid>
+                <TabDeFiltradoPorServicio buscar={buscarPorTipoDeServicio}/>
             </Box>
-            
             <ListaPeluqueros
                 resultados={resultados}
                 botonIrPaginaPrincipal={

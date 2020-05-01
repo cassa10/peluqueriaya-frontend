@@ -6,10 +6,10 @@ import Typography from "@material-ui/core/Typography";
 import PaginaError, {PaginaError404} from "../views/PaginaError";
 import {useHistory} from "react-router";
 
-const ManejadorDeAPIErroresContext = React.createContext();
-export const useManejadorDeAPIErrores = () => React.useContext(ManejadorDeAPIErroresContext);
+const ManejadorDeErroresContext = React.createContext();
+export const useManejadorDeErrores = () => React.useContext(ManejadorDeErroresContext);
 
-const ManejadorDeAPIErrores = ({children}) => {
+const ManejadorDeErrores = ({children}) => {
     const [error, setError] = useState();
     const history = useHistory();
 
@@ -58,6 +58,7 @@ const ManejadorDeAPIErrores = ({children}) => {
                 titulo: "Error :(",
                 mensaje: "Ha ocurrido un error inesperado. Por favor intente nuevamente."
             });
+            console.log(error);
             if (error.response) {
                 const {status, data} = error.response;
                 // eslint-disable-next-line
@@ -86,10 +87,10 @@ const ManejadorDeAPIErrores = ({children}) => {
     }
 
     return (
-        <ManejadorDeAPIErroresContext.Provider value={contextPayload}>
+        <ManejadorDeErroresContext.Provider value={contextPayload}>
             {mostrarContenido()}
-        </ManejadorDeAPIErroresContext.Provider>
+        </ManejadorDeErroresContext.Provider>
     )
 }
 
-export default ManejadorDeAPIErrores;
+export default ManejadorDeErrores;

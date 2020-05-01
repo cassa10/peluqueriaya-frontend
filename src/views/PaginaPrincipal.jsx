@@ -32,7 +32,7 @@ const PaginaPrincipal = () => {
         <Grid container justify="center">
             <img
                 className={clases.img}
-                src={'peluqueriaya-logo.png'}
+                src={require('../assets/images/peluqueriaya-logo.png')}
                 alt="logo"
             />
         </Grid>

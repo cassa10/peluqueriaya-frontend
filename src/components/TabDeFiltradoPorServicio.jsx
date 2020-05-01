@@ -49,7 +49,7 @@ const TabDeFiltradoPorServicio = ({buscar}) => {
                     {tiposDeServicio.map((tipo) =>
                         <Tab label={tipo.nombre}
                              icon={<img className={classes.img}
-                                        src={tipo.logoURL}
+                                        src={require(`../assets/images/${tipo.id}.jpg`)}
                                         alt="logo"/>}
                              key={tipo.id}
                              value={tipo.id}/>)}

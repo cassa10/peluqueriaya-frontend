@@ -5,8 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {responsiveFontSizes} from "@material-ui/core";
-
-import MolotWoff2 from './fonts/Molot.woff2';
+import MolotWoff2 from './assets/fonts/Molot.woff2';
 
 const molot = {
     fontFamily: 'Molot',

@@ -1,12 +1,12 @@
 import {useState} from 'react';
 import axios from 'axios';
-import {useManejadorDeAPIErrores} from "./ManejadorDeAPIErrores";
+import {useManejadorDeErrores} from "./ManejadorDeErrores";
 
 const server = process.env.REACT_APP_APIBACKEND || 'http://localhost:8080';
 
 const useAPI = () => {
     const [cargando, setCargando] = useState(false);
-    const {setError} = useManejadorDeAPIErrores();
+    const {setError} = useManejadorDeErrores();
 
     const request = (request) => async (path, body, then) => {
         setCargando(true);

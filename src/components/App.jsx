@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import Barra from "./Barra";
 import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
-import ManejadorDeAPIErrores from "../service/ManejadorDeAPIErrores";
+import ManejadorDeErrores from "../service/ManejadorDeErrores";
 import {PaginaError404} from "../views/PaginaError";
 
 
@@ -13,13 +13,13 @@ const App = () => (
     <BrowserRouter>
         <Barra/>
         <Container maxWidth="lg">
-            <ManejadorDeAPIErrores>
+            <ManejadorDeErrores>
             <Switch>
                 <Route exact path="/" component={PaginaPrincipal}/>
                 <Route path="/search" component={PaginaBusquedaPeluqueros}/>
                 <Route path="*" component={PaginaError404}/>
             </Switch>
-            </ManejadorDeAPIErrores>
+            </ManejadorDeErrores>
         </Container>
     </BrowserRouter>
 );

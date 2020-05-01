@@ -13,15 +13,18 @@ const useServicioDePeluquero = () => {
             latitude: sessionStorage.getItem('userLocationLatitude'),
             longitude: sessionStorage.getItem('userLocationLongitude')
         }
-        if (ubicacionLocal) {
+        if (!(ubicacionLocal.latitude === null || ubicacionLocal.longitude === null)) {
             setUbicacion(ubicacionLocal);
+
             getPeluquerosCercanos('/peluquero/search', ubicacionLocal, then);
+        } else {
+            push("/");
         }
-        else push("/");
     }
 
     const buscarPeluquerosPorTipoDeServicio = (tipoDeServicio, then) => {
-        getPeluquerosCercanosPorTipoDeServicio("/peluquero/search/servicio/tipo", {...ubicacion, tipoDeServicio}, then)
+        getPeluquerosCercanosPorTipoDeServicio("/peluquero/search/servicio/tipo",
+            {...ubicacion, tipoDeServicio}, then)
     }
 
     return [{buscarPeluquero, cargandoBP}, {buscarPeluquerosPorTipoDeServicio, cargandoBPPS}];

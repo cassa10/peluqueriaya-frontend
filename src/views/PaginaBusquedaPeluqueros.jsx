@@ -23,6 +23,7 @@ const PaginaBusquedaPeluqueros = () => {
     const [resultados, setResultados] = useState([]);
     const [{buscarPeluquero},{buscarPeluquerosPorTipoDeServicio}, {buscarPeluquerosPorNombreOTipo}] = useServicioDePeluquero();
     const [nombreOTipo,setNombreOTipo] = useState('');
+    const [tipoDeServicio, setTipoDeServicio] = useState(false);
     const {push} = useHistory();
 
     useEffect(() => {
@@ -46,13 +47,14 @@ const PaginaBusquedaPeluqueros = () => {
     
     const reiniciarFiltros = () => {
         setNombreOTipo('')
+        setTipoDeServicio('')
         buscarPorNombreOTipo(' ')
     }
 
     return (
         <div>
             <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
-                <TabDeFiltradoPorServicio buscar={buscarPorTipoDeServicio}/>
+                <TabDeFiltradoPorServicio buscar={buscarPorTipoDeServicio} tipoDeServicio={tipoDeServicio} setTipoDeServicio={setTipoDeServicio}/>
             </Box>
             <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
                 <TextField className={classes.textfield1} color="secondary" label="Filtrar por nombre o tipo" value={nombreOTipo} variant="filled" onChange={handleNombreTipoInput}/>

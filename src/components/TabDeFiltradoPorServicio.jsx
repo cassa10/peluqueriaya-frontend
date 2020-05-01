@@ -18,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const TabDeFiltradoPorServicio = ({buscar}) => {
+const TabDeFiltradoPorServicio = ({buscar, tipoDeServicio, setTipoDeServicio}) => {
     const classes = useStyles();
-    const [tipoDeServicio, setTipoDeServicio] = useState(false);
     const [tiposDeServicio, setTiposDeServicio] = useState([]);
     const [{obtenerTiposDeServicio, cargandoTDS}] = useServicioDeServicio();
 

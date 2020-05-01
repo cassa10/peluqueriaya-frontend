@@ -47,7 +47,7 @@ const PaginaBusquedaPeluqueros = () => {
     
     const reiniciarFiltros = () => {
         setNombreOTipo('')
-        setTipoDeServicio('')
+        setTipoDeServicio(false)
         buscarPorNombreOTipo(' ')
     }
 

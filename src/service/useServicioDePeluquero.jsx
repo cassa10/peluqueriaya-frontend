@@ -5,6 +5,7 @@ import {useState} from "react";
 const useServicioDePeluquero = () => {
     const [{get: getPeluquerosCercanos}, {cargando: cargandoBP}] = useAPI();
     const [{get: getPeluquerosCercanosPorTipoDeServicio}, {cargando: cargandoBPPS}] = useAPI();
+    const [{get: getPeluqueroCercanosPorNombreOTipo},{cargando: cargandoBPPNT}] = useAPI();
     const [ubicacion, setUbicacion] = useState();
     let {push} = useHistory();
 
@@ -27,7 +28,12 @@ const useServicioDePeluquero = () => {
             {...ubicacion, tipoDeServicio}, then)
     }
 
-    return [{buscarPeluquero, cargandoBP}, {buscarPeluquerosPorTipoDeServicio, cargandoBPPS}];
+    const buscarPeluquerosPorNombreOTipo = (nombreOTipo, then) => {
+        getPeluqueroCercanosPorNombreOTipo("/peluquero/search/nombre-tipo",
+        {...ubicacion, nombreOTipo}, then)
+    }
+
+    return [{buscarPeluquero, cargandoBP}, {buscarPeluquerosPorTipoDeServicio, cargandoBPPS}, {buscarPeluquerosPorNombreOTipo, cargandoBPPNT}];
 };
 
 export default useServicioDePeluquero;

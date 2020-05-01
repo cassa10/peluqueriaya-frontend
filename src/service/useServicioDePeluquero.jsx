@@ -1,20 +1,30 @@
 import useAPI from "./useAPI";
 import {useHistory} from "react-router";
+import {useState} from "react";
 
 const useServicioDePeluquero = () => {
-    const [{get}, {cargando}] = useAPI();
+    const [{get: getPeluquerosCercanos}, {cargando: cargandoBP}] = useAPI();
+    const [{get: getPeluquerosCercanosPorTipoDeServicio}, {cargando: cargandoBPPS}] = useAPI();
+    const [ubicacion, setUbicacion] = useState();
     let {push} = useHistory();
 
     const buscarPeluquero = (then) => {
-        const ubicacion = {
+        const ubicacionLocal = {
             latitude: sessionStorage.getItem('userLocationLatitude'),
             longitude: sessionStorage.getItem('userLocationLongitude')
         }
-        if (ubicacion) get('/peluquero/search', ubicacion, then);
+        if (ubicacionLocal) {
+            setUbicacion(ubicacionLocal);
+            getPeluquerosCercanos('/peluquero/search', ubicacionLocal, then);
+        }
         else push("/");
     }
 
-    return [{buscarPeluquero, cargando}];
+    const buscarPeluquerosPorTipoDeServicio = (tipoDeServicio, then) => {
+        getPeluquerosCercanosPorTipoDeServicio("/peluquero/search/servicio/tipo", {...ubicacion, tipoDeServicio}, then)
+    }
+
+    return [{buscarPeluquero, cargandoBP}, {buscarPeluquerosPorTipoDeServicio, cargandoBPPS}];
 };
 
 export default useServicioDePeluquero;

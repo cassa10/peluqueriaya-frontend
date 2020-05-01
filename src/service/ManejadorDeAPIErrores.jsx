@@ -58,6 +58,7 @@ const ManejadorDeAPIErrores = ({children}) => {
                 titulo: "Error :(",
                 mensaje: "Ha ocurrido un error inesperado. Por favor intente nuevamente."
             });
+            console.log(error);
             if (error.response) {
                 const {status, data} = error.response;
                 // eslint-disable-next-line

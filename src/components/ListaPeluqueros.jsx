@@ -2,11 +2,8 @@ import React from 'react';
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import {Card, Grid, CardActions, CardContent} from '@material-ui/core';
+import ModalServiciosPeluquero from './ModalServiciosPeluquero';
 
 const useStyles = makeStyles({
     root: {
@@ -82,7 +79,7 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button size="small">Servicios</Button>
+                        <ModalServiciosPeluquero peluquero={peluquero}/>
                     </CardActions>
                 </Card>
             </Box>

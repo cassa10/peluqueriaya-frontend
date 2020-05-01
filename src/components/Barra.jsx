@@ -1,10 +1,9 @@
 import React from 'react';
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import AppBar from "@material-ui/core/AppBar";
+import {useHistory} from "react-router";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,20 +12,33 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-    }
+    },
+    img: {
+        margin: 'auto',
+        display: 'block',
+        width: '350px',
+        minWidth: '150px',
+        cursor: 'pointer'
+    },
 }));
+
 
 const Barra = () => {
     const classes = useStyles();
+    const {push} = useHistory();
+
+    const irAPaginaPrincipal = () => push("/");
 
     return (
         <AppBar position="static">
             <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <MenuIcon/>
-                </IconButton>
+                 <img
+                    className={classes.img}
+                    src={require('../assets/images/peluqueriaya-logo.png')}
+                    alt="logo"
+                    onClick={irAPaginaPrincipal}
+                 />
                 <Typography variant="h6" className={classes.title}>
-                    News
                 </Typography>
                 <Button variant="contained" color="secondary">Login</Button>
             </Toolbar>

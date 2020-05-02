@@ -25,7 +25,16 @@ const TabDeFiltradoPorServicio = ({buscar}) => {
     const [{obtenerTiposDeServicio, cargandoTDS}] = useServicioDeServicio();
 
     useEffect(() => {
-        obtenerTiposDeServicio((tiposDeServicio) => setTiposDeServicio(tiposDeServicio))
+        let cancel = false;
+        const f = () => {
+            if (cancel) {
+                obtenerTiposDeServicio((tiposDeServicio) => setTiposDeServicio(tiposDeServicio));
+            }
+        }
+        f();
+        return () => {
+            cancel = true
+        };
         // eslint-disable-next-line
     }, []);
 

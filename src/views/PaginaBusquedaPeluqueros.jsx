@@ -56,7 +56,7 @@ const PaginaBusquedaPeluqueros = () => {
         //TODO
             //Ejecutar animacion de que se cargan los resultados o mostrar el resultado (no mostrar nada mientras alguno este en true?)
             //Puede ser que estas 3 variables se conviertan en uno al componer todos los resultados en uno.
-        if (cargandoBP || cargandoBPPS || cargandoBPPS){
+        if (cargandoBP || cargandoBPPS || cargandoBPNT){
             return(
                 <CirculoCargando />
             )

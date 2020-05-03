@@ -5,6 +5,7 @@ import ListaPeluqueros from '../components/ListaPeluqueros';
 import useServicioDePeluquero from "../service/useServicioDePeluquero";
 import {useHistory} from "react-router";
 import TabDeFiltradoPorServicio from "../components/TabDeFiltradoPorServicio";
+import CirculoCargando from "../components/CirculoCargando";
 
 const useStyles = makeStyles((theme) => ({
     textfield1: {
@@ -55,10 +56,11 @@ const PaginaBusquedaPeluqueros = () => {
         //TODO
             //Ejecutar animacion de que se cargan los resultados o mostrar el resultado (no mostrar nada mientras alguno este en true?)
             //Puede ser que estas 3 variables se conviertan en uno al componer todos los resultados en uno.
-            console.log(cargandoBP);
-            console.log(cargandoBPPS);
-            console.log(cargandoBPNT);
-        // ----------------------------------------------
+        if (cargandoBP || cargandoBPPS || cargandoBPPS){
+            return(
+                <CirculoCargando />
+            )
+        }
         return(
             <ListaPeluqueros
               resultados={resultados}
@@ -69,6 +71,7 @@ const PaginaBusquedaPeluqueros = () => {
               }
             />
         );
+        
     }
 
     return (

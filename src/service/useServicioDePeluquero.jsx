@@ -5,7 +5,7 @@ import {useState} from "react";
 const useServicioDePeluquero = () => {
     const [{get: getPeluquerosCercanos}, {cargando: cargandoBP}] = useAPI();
     const [{get: getPeluquerosCercanosPorTipoDeServicio}, {cargando: cargandoBPPS}] = useAPI();
-    const [{get: getPeluqueroCercanosPorNombreOTipo},{cargando: cargandoBPPNT}] = useAPI();
+    const [{get: getPeluqueroCercanosPorNombreOTipo},{cargando: cargandoBPNT}] = useAPI();
     const [ubicacion, setUbicacion] = useState();
     let {push} = useHistory();
 
@@ -33,7 +33,7 @@ const useServicioDePeluquero = () => {
         {...ubicacion, nombreOTipo}, then)
     }
 
-    return [{buscarPeluquero, cargandoBP}, {buscarPeluquerosPorTipoDeServicio, cargandoBPPS}, {buscarPeluquerosPorNombreOTipo, cargandoBPPNT}];
+    return [{buscarPeluquero, cargandoBP}, {buscarPeluquerosPorTipoDeServicio, cargandoBPPS}, {buscarPeluquerosPorNombreOTipo, cargandoBPNT}];
 };
 
 export default useServicioDePeluquero;

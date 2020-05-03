@@ -26,7 +26,7 @@ const TabDeFiltradoPorServicio = ({buscar, tipoDeServicio, setTipoDeServicio}) =
     useEffect(() => {
         let cancel = false;
         const f = () => {
-            if (cancel) {
+            if (! cancel) {
                 obtenerTiposDeServicio((tiposDeServicio) => setTiposDeServicio(tiposDeServicio));
             }
         }

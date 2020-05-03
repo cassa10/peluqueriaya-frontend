@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const PaginaBusquedaPeluqueros = () => {
     const classes = useStyles();
     const [resultados, setResultados] = useState([]);
-    const [{buscarPeluquero},{buscarPeluquerosPorTipoDeServicio}, {buscarPeluquerosPorNombreOTipo}] = useServicioDePeluquero();
+    const [{buscarPeluquero, cargandoBP},{buscarPeluquerosPorTipoDeServicio, cargandoBPPS}, {buscarPeluquerosPorNombreOTipo, cargandoBPNT}] = useServicioDePeluquero();
     const [nombreOTipo,setNombreOTipo] = useState('');
     const [tipoDeServicio, setTipoDeServicio] = useState(false);
     const {push} = useHistory();
@@ -48,7 +48,27 @@ const PaginaBusquedaPeluqueros = () => {
     const reiniciarFiltros = () => {
         setNombreOTipo('')
         setTipoDeServicio(false)
-        buscarPorNombreOTipo(' ')
+        buscarPorNombreOTipo('')
+    }
+
+    const mostrarPantallaDeCargaOResultados = () => {
+        //TODO
+            //Ejecutar animacion de que se cargan los resultados o mostrar el resultado (no mostrar nada mientras alguno este en true?)
+            //Puede ser que estas 3 variables se conviertan en uno al componer todos los resultados en uno.
+            console.log(cargandoBP);
+            console.log(cargandoBPPS);
+            console.log(cargandoBPNT);
+        // ----------------------------------------------
+        return(
+            <ListaPeluqueros
+              resultados={resultados}
+              botonIrPaginaPrincipal={
+                  <Button size="small" color="secondary" onClick={irPaginaPrincipal}>
+                      Volver e intentar con otra ubicación
+                  </Button>
+              }
+            />
+        );
     }
 
     return (
@@ -61,14 +81,9 @@ const PaginaBusquedaPeluqueros = () => {
                 <Button className={classes.buttonReset} onClick={reiniciarFiltros}>Reiniciar</Button>
                 <Button className={classes.buttonSearch} onClick={() => buscarPorNombreOTipo(nombreOTipo)}>Buscar</Button>
             </Box>
-            <ListaPeluqueros
-                resultados={resultados}
-                botonIrPaginaPrincipal={
-                    <Button size="small" color="secondary" onClick={irPaginaPrincipal}>
-                        Volver e intentar con otra ubicación
-                    </Button>
-                }
-            />
+            {
+                mostrarPantallaDeCargaOResultados()
+            }
         </div>
     );
 };

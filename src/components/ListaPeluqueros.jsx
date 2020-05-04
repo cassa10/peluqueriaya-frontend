@@ -2,15 +2,14 @@ import React from 'react';
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import {Card, Grid, CardActions, CardContent} from '@material-ui/core';
+import ModalServiciosPeluquero from './ModalServiciosPeluquero';
 
 const useStyles = makeStyles({
     root: {
         minWidth: 275,
+        background: "#ecf4f3",
+        margin: 12,
     },
     title: {
         fontSize: 14,
@@ -18,6 +17,12 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
+    logoImg: {
+        minWidth: 150,
+        maxWidth: 150,
+        minHeight: 150,
+        maxHeight: 150,
+    }
 });
 
 const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
@@ -64,36 +69,42 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
 
     const costruirCardPeluquero = (peluquero) => {
         return (
-            <Box key={peluquero.id} textAlign="center" m={2}>
-                <Card className={classes.root} variant="outlined">
-                    <CardContent>
-                        {construirEstadoPeluquero(peluquero.estado)}
-                        <img
-                            src={logoPredeterminado(peluquero.logo)}
-                            width="150"
-                            alt="logo"
-                        />
-                        <Typography variant="h5" component="h2">
-                            {peluquero.nombre}
-                        </Typography>
-                        <hr />
-                        <Typography variant="body2" component="p">
-                            Corte minimo | ${peluquero.corteMin}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small">Servicios</Button>
-                    </CardActions>
-                </Card>
-            </Box>
+            <Grid key={peluquero.id} item xs={12} sm={6} md={4}>
+                <Box textAlign="center">
+                    <Card className={classes.root} variant="outlined" xs={6} sm={4} md={2}>
+                        <CardContent>
+                            {construirEstadoPeluquero(peluquero.estado)}
+                            <img
+                                className={classes.logoImg}
+                                src={logoPredeterminado(peluquero.logo)}
+                                alt="logo"
+                            />
+                            <Typography variant="h5" component="h2">
+                                {peluquero.nombre}
+                            </Typography>
+                            <hr />
+                            <Typography variant="body2" component="p">
+                                Corte minimo | ${peluquero.corteMin}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <ModalServiciosPeluquero peluquero={peluquero}/>
+                        </CardActions>
+                    </Card>
+                </Box>
+            </Grid>
         );
     }
 
-    const construirResultados = () => {
+    const construirResultados = (results) => {
         return (
-            <div>
-                {resultados.map(h => costruirCardPeluquero(h))}
-            </div>
+            <Grid container
+                justify="space-around"
+                alignItems="flex-start"
+
+            >
+                {results.map(h => costruirCardPeluquero(h))}
+            </Grid>
         );
     }
 
@@ -101,19 +112,14 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
         if (results.length <= 0) {
             return (resultadoVacio());
         }else {
-            return (construirResultados());
+            return (construirResultados(results));
         }
     }
 
     return (
-        <Grid
-                container
-                direction="row"
-                justify="space-around"
-                alignItems="center"
-            >
-            {resultadosDeBusqueda(resultados)}
-        </Grid>
+        
+        resultadosDeBusqueda(resultados)
+       
     );
 };
 

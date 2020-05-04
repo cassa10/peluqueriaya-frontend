@@ -2,31 +2,36 @@ import React, { useEffect, useState } from 'react';
 import Box from "@material-ui/core/Box";
 import ListaPeluqueros from '../components/ListaPeluqueros';
 import Button from "@material-ui/core/Button";
-import useServicioDePeluquero from "../service/useServicioDePeluquero";
+import {useGetPeluquerosCercanos} from "../service/ServicioDePeluquero";
 import {useHistory} from "react-router";
 import TabDeFiltradoPorServicio from "../components/TabDeFiltradoPorServicio";
 
 
 const PaginaBusquedaPeluqueros = () => {
     const [resultados, setResultados] = useState([]);
-    const [{buscarPeluquero},{buscarPeluquerosPorTipoDeServicio}] = useServicioDePeluquero();
+    const [ubicacion, setUbicacion] = useState(null);
+    const [{setTipoDeServicio}] = useGetPeluquerosCercanos(ubicacion, setResultados);
     const {push} = useHistory();
 
     useEffect(() => {
-        buscarPeluquero((peluqueros) => setResultados(peluqueros));
+        const ubicacionLocal = {
+            latitude: sessionStorage.getItem('userLocationLatitude'),
+            longitude: sessionStorage.getItem('userLocationLongitude')
+        }
+        if (!(ubicacionLocal.latitude === null || ubicacionLocal.longitude === null)) {
+            setUbicacion(ubicacionLocal);
+        } else {
+            push("/");
+        }
         // eslint-disable-next-line
     },[]);
 
     const irPaginaPrincipal = () => push("/");
 
-    const buscarPorTipoDeServicio = (tipoDeServicio) => {
-        buscarPeluquerosPorTipoDeServicio(tipoDeServicio, (resultados) => setResultados(resultados));
-    }
-
     return (
         <div>
             <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
-                <TabDeFiltradoPorServicio buscar={buscarPorTipoDeServicio}/>
+                <TabDeFiltradoPorServicio buscar={setTipoDeServicio}/>
             </Box>
             <ListaPeluqueros
                 resultados={resultados}

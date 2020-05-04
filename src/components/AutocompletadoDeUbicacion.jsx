@@ -10,8 +10,8 @@ import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
-import useServicioDeMapas from "../service/useServicioDeMapas";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {useGetUbicacionConCoords, useGetUbicacionConDireccion} from "../service/ServicioDeMapas";
 
 
 const useStyles = makeStyles(() => ({
@@ -30,7 +30,8 @@ const useStyles = makeStyles(() => ({
 const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => {
     const clases = useStyles();
     const [ubicaciones, setUbicaciones] = useState([]);
-    const [{ubicacionDandoCoords, cargandoUDC}, {ubicacionDandoDireccion, cargandoUDD}] = useServicioDeMapas();
+    const {cargandoUDC, setCoordenadas} = useGetUbicacionConCoords(setUbicacion);
+    const {cargandoUDD, setDireccion} = useGetUbicacionConDireccion(setUbicaciones)
 
     const seleccionoUnaPosicion = () => {
         return ubicacion !== null &&
@@ -42,7 +43,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
 
     const autocompletarUbicacionConDireccion = value => {
         if (!estanCargando() && !seleccionoUnaPosicion() && value.trim().length > 10) {
-            ubicacionDandoDireccion(ubicacion.title, (ubicaciones) => setUbicaciones(ubicaciones));
+            setDireccion(value);
         }
     };
 
@@ -66,7 +67,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
     return <Grid container className={clases.root}>
         <Grid item xs="auto">
             <Button variant="contained" color="secondary" className={clases.classButton}
-                    onClick={() => ubicacionDandoCoords((ubicacion) => setUbicacion(ubicacion))}
+                    onClick={setCoordenadas}
                     disabled={estanCargando()}>
                 <AddLocationIcon fontSize="large"/>
             </Button>

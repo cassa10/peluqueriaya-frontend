@@ -12,6 +12,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import {makeStyles} from "@material-ui/core/styles";
 import CheckBoxsDeTiposDePeluquero from "../components/CheckBoxsDeTiposDePeluquero";
 import CampoDeBusqueda from "../components/CampoDeBusqueda";
+import SeleccionOrdenarPor from "../components/SeleccionOrdenarPor";
 
 const useStyles = makeStyles(theme => ({
     toolbar: {
@@ -22,29 +23,28 @@ const useStyles = makeStyles(theme => ({
 const PaginaBusquedaPeluqueros = () => {
     const clases = useStyles();
     const [peluqueros, setPeluqueros] = useState([]);
-    const {cargando, setFiltroDeBusqueda} = useGetPeluqueros(setPeluqueros);
+    const {cargando, setFiltro, limpiarFiltro} = useGetPeluqueros(setPeluqueros);
     const {push} = useHistory();
 
-    const limpiarFiltro = (filtro) => {
-        const limpiar = {};
-        limpiar[filtro] = null;
-        setFiltroDeBusqueda(limpiar)
-    }
 
     return <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
         <Grid container direction="column">
             <Grid item xs>
-                <TabDeFiltradoPorServicio setFiltro={setFiltroDeBusqueda} limpiarFiltro={limpiarFiltro}/>
+                <TabDeFiltradoPorServicio setFiltro={setFiltro} limpiarFiltro={limpiarFiltro}/>
             </Grid>
             <Grid item xs>
                 <AppBar position="static">
                     <Toolbar className={clases.toolbar} variant="dense">
                         <Grid container direction="row" justify="space-between" alignItems="center" spacing={1}>
                             <Grid item xs={6}>
-                                <CampoDeBusqueda onClick={setFiltroDeBusqueda} clear={limpiarFiltro}/>
+                                <CampoDeBusqueda onClick={setFiltro} clear={limpiarFiltro}/>
                             </Grid>
-                            <Grid item xs={6}>
-                                <CheckBoxsDeTiposDePeluquero setFiltro={setFiltroDeBusqueda}/>
+                            <Grid item xs={4}>
+                                <CheckBoxsDeTiposDePeluquero setFiltro={setFiltro}/>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <SeleccionOrdenarPor setFiltro={setFiltro}
+                                                     limpiarFiltro={limpiarFiltro}/>
                             </Grid>
                         </Grid>
                     </Toolbar>

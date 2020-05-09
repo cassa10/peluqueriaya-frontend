@@ -17,12 +17,15 @@ export const useGetPeluqueros = (fDatos) => {
         // eslint-disable-next-line
     }, [])
 
-    const setFiltroDeBusqueda = (filtro) => {
-        Object.entries(filtro).forEach(([tipo, valor]) => {
-            if (valor !== null || parametros[tipo] !== null) {
-                setParametros((prevState) => ({...prevState, ...filtro}))
-            }
-        });
+    const setFiltro = (filtro) => setParametros((prevState) => ({...prevState, ...filtro}));
+
+    const limpiarFiltro = (filtro) => {
+        if (filtro in parametros) {
+            // eslint-disable-next-line no-unused-vars
+            const {[filtro]: value, ...otrosFiltros} = parametros;
+            setParametros(otrosFiltros);
+        }
     }
-    return {cargando, setFiltroDeBusqueda}
+
+    return {cargando, setFiltro, limpiarFiltro}
 }

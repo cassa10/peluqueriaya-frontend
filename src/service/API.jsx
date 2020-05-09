@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {useManejadorDeErrores} from "./ManejadorDeErrores";
 import axios from 'axios';
 
+// eslint-disable-next-line no-undef
 const server = process.env.REACT_APP_APIBACKEND || 'http://localhost:8080';
 
 const usarAPI = (metodo) => (path, fDatos = () => {}, parametrosIniciales = null) => {
@@ -36,10 +37,18 @@ const usarAPI = (metodo) => (path, fDatos = () => {}, parametrosIniciales = null
         // eslint-disable-next-line
     }, [parametros])
 
-    return {cargando, setParametros}
+    return {cargando, parametros, setParametros}
 }
 
-export const useGet = usarAPI((path, parametros) => axios.get(path, {params: parametros}));
+export const useGet = usarAPI((path, parametros) => {
+    const params = new URLSearchParams();
+    Object.entries(parametros).forEach(([name, value]) => {
+        if (Array.isArray(value)) value.forEach((valueDeValue) => params.append(name, valueDeValue));
+        else params.append(name, value);
+    });
+    return axios.get(path, {params: params});
+});
+
 export const usePost = usarAPI(axios.post);
 export const usePut = usarAPI(axios.put);
 export const useDelete = usarAPI(axios.delete);

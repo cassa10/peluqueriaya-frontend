@@ -1,4 +1,6 @@
+/* eslint-disable no-undef */
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -18,15 +20,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const TabDeFiltradoPorServicio = ({buscar}) => {
+const TabDeFiltradoPorServicio = ({setFiltro, limpiarFiltro}) => {
     const classes = useStyles();
     const [tipoDeServicio, setTipoDeServicio] = useState(false);
     const [tiposDeServicio, setTiposDeServicio] = useState(null);
     useGetTiposDeServicios(setTiposDeServicio);
 
     const handleChange = (event, nuevoTipoDeServicio) => {
-        setTipoDeServicio(nuevoTipoDeServicio);
-        buscar(nuevoTipoDeServicio);
+        if (nuevoTipoDeServicio === "BORRAR") {
+            setTipoDeServicio(false);
+            limpiarFiltro("tipoDeServicio")
+        } else {
+            setFiltro({tipoDeServicio: nuevoTipoDeServicio})
+            setTipoDeServicio(nuevoTipoDeServicio)
+        }
     };
 
     return (
@@ -53,5 +60,10 @@ const TabDeFiltradoPorServicio = ({buscar}) => {
         </div>
     );
 };
+
+TabDeFiltradoPorServicio.propTypes = {
+    setFiltro: PropTypes.func,
+    limpiarFiltro: PropTypes.func
+}
 
 export default TabDeFiltradoPorServicio;

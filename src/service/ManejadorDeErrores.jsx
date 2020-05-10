@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import PropTypes from 'prop-types';
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
@@ -58,7 +59,6 @@ const ManejadorDeErrores = ({children}) => {
                 titulo: "Error :(",
                 mensaje: "Ha ocurrido un error inesperado. Por favor intente nuevamente."
             });
-            console.log(error);
             if (error.response) {
                 const {status, data} = error.response;
                 // eslint-disable-next-line
@@ -92,5 +92,9 @@ const ManejadorDeErrores = ({children}) => {
         </ManejadorDeErroresContext.Provider>
     )
 }
+
+ManejadorDeErrores.propTypes = {
+    children: PropTypes.element.isRequired
+};
 
 export default ManejadorDeErrores;

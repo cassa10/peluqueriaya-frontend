@@ -46,7 +46,6 @@ export const useGet = usarAPI((path, parametros) => {
         if (Array.isArray(value)) value.forEach((valueDeValue) => params.append(name, valueDeValue));
         else params.append(name, value);
     });
-    console.log(params.toString());
     return axios.get(path, {params: params});
 });
 

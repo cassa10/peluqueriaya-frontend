@@ -2,9 +2,16 @@ import {useGet} from "./API";
 import {useEffect} from "react";
 import {useHistory} from "react-router";
 
-export const useGetPeluqueros = (fDatos) => {
-    const {cargando, parametros, setParametros} = useGet("/peluquero/search",
-        ({content}) => fDatos(content));
+export const useGetPeluqueros = (tamanioPagina, fDatos) => {
+    const crearPaginacion = ({content, pageable,  totalPages}) => {
+        fDatos((prevState) => ({
+            ...prevState,
+            peluqueros: content,
+            actual: pageable.pageNumber+1,
+            total: totalPages,
+        }))
+    }
+    const {cargando, parametros, setParametros} = useGet("/peluquero/search",crearPaginacion);
     const {push} = useHistory();
 
     useEffect(() => {
@@ -13,7 +20,7 @@ export const useGetPeluqueros = (fDatos) => {
             longitude: sessionStorage.getItem('userLocationLongitude')
         }
         if (ubicacionLocal.latitude === null || ubicacionLocal.longitude === null) push("/");
-        else setParametros(ubicacionLocal);
+        else setParametros({...ubicacionLocal, size: tamanioPagina});
         // eslint-disable-next-line
     }, [])
 

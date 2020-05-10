@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {Clear as ClearIcon, Search as SearchIcon} from "@material-ui/icons";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const CampoDeBusqueda = ({onClick, clear}) => {
@@ -24,16 +25,22 @@ const CampoDeBusqueda = ({onClick, clear}) => {
     return (
         <Paper elevation={0}>
             <TextField multiline fullWidth autoFocus value={nombre} size="small" onChange={handleChange}
-                       variant="outlined" InputProps={{
+                       placeholder={"Buscá peluqueros por nombre"} variant="outlined" InputProps={{
                 endAdornment: (
                     <InputAdornment position="start">
-                        <IconButton onClick={() => onClick({nombre: nombre})}
-                                    disabled={tieneNombreMenosDeCuatroDigitos()}>
-                            <SearchIcon fontSize="inherit" color="primary"/>
-                        </IconButton>
-                        <IconButton onClick={handleClear}>
-                            <ClearIcon fontSize="inherit" color="primary"/>
-                        </IconButton>
+                        <Tooltip title="Buscar">
+                            <div>
+                                <IconButton onClick={() => onClick({nombre: nombre})}
+                                            disabled={tieneNombreMenosDeCuatroDigitos()}>
+                                    <SearchIcon fontSize="inherit" color="primary"/>
+                                </IconButton>
+                            </div>
+                        </Tooltip>
+                        <Tooltip title="Borrar búsqueda por nombre">
+                            <IconButton onClick={handleClear}>
+                                <ClearIcon fontSize="inherit" color="primary"/>
+                            </IconButton>
+                        </Tooltip>
                     </InputAdornment>)
             }}
             />

@@ -13,6 +13,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import CheckBoxsDeTiposDePeluquero from "../components/CheckBoxsDeTiposDePeluquero";
 import CampoDeBusqueda from "../components/CampoDeBusqueda";
 import SeleccionOrdenarPor from "../components/SeleccionOrdenarPor";
+import Pagination from "@material-ui/lab/Pagination";
 
 const useStyles = makeStyles(theme => ({
     toolbar: {
@@ -22,10 +23,16 @@ const useStyles = makeStyles(theme => ({
 
 const PaginaBusquedaPeluqueros = () => {
     const clases = useStyles();
-    const [peluqueros, setPeluqueros] = useState([]);
-    const {cargando, setFiltro, limpiarFiltro} = useGetPeluqueros(setPeluqueros);
+    const [{peluqueros, actual, tamanio, total}, setPaginacion] = useState({
+        peluqueros: [],
+        actual: 1,
+        tamanio: 6,
+        total: 1
+    });
+    const {cargando, setFiltro, limpiarFiltro} = useGetPeluqueros(tamanio, setPaginacion);
     const {push} = useHistory();
 
+    const handleChange = (event, value) => setFiltro({page: value - 1});
 
     return <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
         <Grid container direction="column">
@@ -35,17 +42,21 @@ const PaginaBusquedaPeluqueros = () => {
             <Grid item xs>
                 <AppBar position="static">
                     <Toolbar className={clases.toolbar} variant="dense">
-                        <Grid container direction="row" justify="space-between" alignItems="center" spacing={1}>
-                            <Grid item xs={6}>
+                        <Grid container direction="row" justify="space-evenly" alignItems="center" spacing={1}>
+                            <Grid item xs={4}>
                                 <CampoDeBusqueda onClick={setFiltro} clear={limpiarFiltro}/>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={3}>
                                 <CheckBoxsDeTiposDePeluquero setFiltro={setFiltro}/>
                             </Grid>
-                            <Grid item xs={2}>
-                                <SeleccionOrdenarPor setFiltro={setFiltro}
-                                                     limpiarFiltro={limpiarFiltro}/>
+                            <Grid item xs={3}>
+                                <SeleccionOrdenarPor setFiltro={setFiltro} limpiarFiltro={limpiarFiltro}/>
                             </Grid>
+                            <Grid item xs={2}>
+                                {!(cargando || peluqueros.length === 0)?
+                                    < Pagination color="secondary" disabled={cargando} count={total} page={actual}
+                                    onChange={handleChange}/>: null}
+                                </Grid>
                         </Grid>
                     </Toolbar>
                 </AppBar>

@@ -35,8 +35,8 @@ let theme = createMuiTheme({
         },
     },
     palette: {
-        primary: { main: '#0eacd4', contrastText:'#ffffff' },
-        secondary: { main: '#0e49d4' },
+        primary: { main: '#0eacd4', contrastText: '#ffffff'},
+        secondary: { main: '#0e49d4', contrastText: '#ffffff'},
     }
 });
 

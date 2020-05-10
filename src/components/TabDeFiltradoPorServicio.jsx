@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     img: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
+        width: theme.spacing(6),
+        height: theme.spacing(6),
     },
 }));
 

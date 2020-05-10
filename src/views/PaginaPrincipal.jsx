@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, {useState} from 'react';
 import {Typography, Box, Grid} from "@material-ui/core";
 import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
@@ -10,9 +11,8 @@ const useStyles = makeStyles(() => ({
         display: 'block',
         maxWidth: '100%',
         maxHeight: '100%',
-    },
+    }
 }));
-
 
 const PaginaPrincipal = () => {
     const clases = useStyles();

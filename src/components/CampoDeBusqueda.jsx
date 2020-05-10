@@ -24,7 +24,7 @@ const CampoDeBusqueda = ({onClick, clear}) => {
 
     return (
         <Paper elevation={0}>
-            <TextField multiline fullWidth autoFocus value={nombre} size="small" onChange={handleChange}
+            <TextField fullWidth autoFocus value={nombre} size="small" onChange={handleChange}
                        placeholder={"Buscá peluqueros por nombre"} variant="outlined" InputProps={{
                 endAdornment: (
                     <InputAdornment position="start">

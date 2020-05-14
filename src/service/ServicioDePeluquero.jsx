@@ -1,5 +1,5 @@
 import {useGet} from "./API";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useHistory} from "react-router";
 
 export const useGetPeluqueros = (tamanioPagina, fDatos) => {
@@ -35,4 +35,20 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
     }
 
     return {cargando, setFiltro, limpiarFiltro}
+}
+
+export const useGetPeluquero = (setterDatos) => {
+
+    const [idPeluquero] = useState(sessionStorage.getItem('idPeluqueroAContratar'))
+    const {cargando, setParametros} = useGet(`/peluquero/${idPeluquero}`, (datos) => setterDatos(datos));
+    const {push} = useHistory();
+
+    //Si no aplico el setParametros no se me setean los datos
+    useEffect(() => {
+        const idPeluqueroStorage = sessionStorage.getItem('idPeluqueroAContratar')
+        idPeluqueroStorage === null ? push("/search"): setParametros({});
+        // eslint-disable-next-line
+    },[push])
+    
+    return {cargando}
 }

@@ -4,7 +4,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import Typography from "@material-ui/core/Typography";
-import PaginaError, {PaginaError404} from "../views/PaginaError";
+import PaginaError, {PaginaError404, PaginaErrorPeluqueroLimiteMaxTurnos} from "../views/PaginaError";
 import {useHistory} from "react-router";
 
 const ManejadorDeErroresContext = React.createContext();
@@ -74,6 +74,9 @@ const ManejadorDeErrores = ({children}) => {
                         break;
                     case 404:
                         contenido = <PaginaError404/>;
+                        break;
+                    case 406:
+                        contenido = <PaginaErrorPeluqueroLimiteMaxTurnos />
                         break;
                     case 500:
                         contenido = mostrarPaginaError({

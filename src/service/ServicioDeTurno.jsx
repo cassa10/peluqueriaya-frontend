@@ -1,7 +1,7 @@
 import {usePost} from "./API";
 
-export const usePostPedirTurno = (body, setterResponseData) => {
-    const {cargando} = usePost("/turno/pedir", setterResponseData, body);
+export const usePostPedirTurno = (setterResponseData) => {
+    const {cargando, setParametros} = usePost("/turno/pedir", setterResponseData);
 
-    return {cargandoPedirTurno: cargando};
+    return {cargandoPedirTurno: cargando, setParametros};
 };

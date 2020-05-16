@@ -7,6 +7,7 @@ import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
 import ManejadorDeErrores from "../service/ManejadorDeErrores";
 import {PaginaError404} from "../views/PaginaError";
+import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
 
 
 const App = () => (
@@ -17,6 +18,7 @@ const App = () => (
             <Switch>
                 <Route exact path="/" component={PaginaPrincipal}/>
                 <Route path="/search" component={PaginaBusquedaPeluqueros}/>
+                <Route path="/contratar" component={PaginaContratacionPeluquero}/>
                 <Route path="*" component={PaginaError404}/>
             </Switch>
             </ManejadorDeErrores>

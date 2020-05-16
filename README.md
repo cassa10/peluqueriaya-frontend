@@ -15,4 +15,20 @@
 
 :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber: :haircut: :house: :barber:
 
-## Instalación de Peluqueria Ya
+## Instalación Peluqueria Ya
+
+### Prerrequisitos
+  
+  - npm 6.9.0 o superior
+  - [Backend corriendo](https://github.com/lisar01/peluqueriaya-backend)
+  
+  
+### Instalación
+
+1. Clonar el repositorio en el directorio deseado.
+
+2. Ingresar a la carpeta clonada "/peluqueriaya-frontend".
+
+3. Ejecutar el comando "npm install" dentro del directorio "/peluqueriaya-frontend".
+
+4. Ejecutar el comando "npm start" dentro del directorio "/peluqueriaya-frontend".

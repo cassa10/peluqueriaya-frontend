@@ -21,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
     },
     gridItem: {
       margin: "auto"
+    },
+    fontErrorP: {
+        color: "#d1eecc",
+        textAlign: "center",
+    },
+    personalizedItem: {
+        marginTop: "16px"
     }
 }));
 
@@ -53,10 +60,49 @@ const PaginaError = ({titulo, mensaje}) => {
     </Container>
 }
 
+const PaginaErrorPersonalizable = ({titulo, mensaje, pathRedirect, nombreBotonRedirect, pathReintentar, nombreBotonReintentar}) => {
+    const clases = useStyles();
+    let {push} = useHistory();
+
+    return <Container maxWidth="sm" className={clases.root}>
+        <Grid container justify={"center"} direction={"column"} spacing={3}>
+            <Grid item>
+                    <Typography variant={"h1"} className={clases.fontErrorP}>
+                        {titulo}
+                    </Typography>
+            </Grid>
+            <Grid item className={clases.gridItem}>
+                    <Typography className={clases.fontErrorP} variant={"h6"}>
+                        {mensaje}
+                    </Typography>
+            </Grid>
+        </Grid>
+        <Grid container className={clases.personalizedItem} direction="row" justify="space-around" alignItems="center">      
+            <ButtonGroup variant="contained" color="secondary">
+                <Button onClick={() => push(pathRedirect)}>{nombreBotonRedirect}</Button>
+            </ButtonGroup>  
+            <ButtonGroup variant="contained" color="secondary">
+                <Button onClick={() => push(pathReintentar)}>{nombreBotonReintentar}</Button>
+            </ButtonGroup>
+        </Grid>
+    </Container>
+}
+
 export const PaginaError404 = () => (
     <PaginaError
         titulo={"404"}
         mensaje={"Error 404 Not Found: La pagina solicitada no existe en nuestro servidor."}
+    />
+);
+
+export const PaginaErrorPeluqueroLimiteMaxTurnos = () => (
+    <PaginaErrorPersonalizable
+        titulo={"Lo sentimos..."}
+        mensaje={"El peluquero no posee turnos disponibles, por ahora. Intente de nuevo mas tarde!"}
+        pathRedirect={"/search"}
+        nombreBotonRedirect={"Volver a la busqueda"}
+        pathReintentar={"/contratar"}
+        nombreBotonReintentar={"Intentar de nuevo!"}
     />
 );
 

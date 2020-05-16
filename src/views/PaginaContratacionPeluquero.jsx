@@ -7,6 +7,7 @@ import { Button, Grid, Typography } from "@material-ui/core";
 import CirculitoCargando from "../components/CirculoCargando";
 import SelectorDeServicios from "../components/SelectorDeServicios";
 import { makeStyles } from '@material-ui/core/styles';
+import {sumBy} from "lodash";
 import Swal from 'sweetalert2';
 
 const useStyles = makeStyles({
@@ -83,18 +84,7 @@ const PaginaContratacionPeluquero = () => {
 
 
     const precioTotal = () => {
-        if(serviciosSeleccionados.length === 0)
-            return peluquero.corteMin;
-        else
-            return sumPrice(serviciosSeleccionados)
-    }
-
-    const sumPrice = (servicios) => {
-        let acc = peluquero.corteMin;
-        for (const s of servicios) {
-            acc = acc + s.precio;
-        }
-        return acc;
+        return peluquero.corteMin + sumBy(serviciosSeleccionados, (servicio) => {return servicio.precio})
     }
 
     const handleCrearTurno = (value) => {
@@ -129,7 +119,7 @@ const PaginaContratacionPeluquero = () => {
 
     const handleDialogCrearTurno = () => {
         let crearTextoDentroDialogPedirTurno = 
-        `Se solicitara un turno al peluquero "${peluquero.nombre}" inmediatamente. <hr />
+        `Se solicitará un turno al peluquero "${peluquero.nombre}" inmediatamente. <hr />
         ${showDialogServicios(serviciosSeleccionados)}
          <br /> <hr /> El precio final es $${precioTotal()}
         `;

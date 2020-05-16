@@ -27,7 +27,6 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
   const [checked, setChecked] = useState([]);
 
   const handleToggle = (servicio) => () => {
-    console.log(servicio)
     const currentIndex = checked.indexOf(servicio);
     const newChecked = [...checked];
 

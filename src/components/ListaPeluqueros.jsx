@@ -139,7 +139,6 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
             <Grid container
                 justify="space-around"
                 alignItems="flex-start"
-
             >
                 {results.map(h => costruirCardPeluquero(h))}
             </Grid>

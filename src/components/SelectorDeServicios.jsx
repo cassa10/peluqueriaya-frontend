@@ -1,13 +1,17 @@
 import React from 'react';
 import {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {List, ListItem, ListItemIcon, ListItemText, Checkbox } from '@material-ui/core';
+import { Grid, List, ListItem, ListItemIcon, ListItemText, Checkbox, Divider } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
     maxWidth: 400,
-    backgroundColor: "lightblue",
+  },
+  item: {
+    width: '100%',
+    maxWidth: 400,
+    backgroundColor: "#d1eecc",
   },
   labelNombre: {
     width: '100%',
@@ -18,7 +22,7 @@ const useStyles = makeStyles({
   }
 });
 
-const SelectorDeServicios = ({ servicios, handleChecked}) => {
+const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
   const classes = useStyles();
   const [checked, setChecked] = useState([]);
 
@@ -37,24 +41,60 @@ const SelectorDeServicios = ({ servicios, handleChecked}) => {
     handleChecked(newChecked);
   };
 
-  return (
-    <List className={classes.root}>
-      {servicios.map((servicio) => {
-        const labelId = `checkbox-list-label-${servicio.id}`;
-        return (
-          <ListItem key={servicio.id} role={undefined} dense button onClick={handleToggle(servicio)}>
+  const mostrarServicioMinimoNoElegible = () => {
+    return(
+      <div>
+        <Grid container>
+          <ListItem className={classes.item} role={undefined} dense button>
             <ListItemIcon>
               <Checkbox
                 edge="start"
-                checked={checked.includes(servicio)}
                 tabIndex={-1}
+                defaultChecked
+                disabled
+                indeterminate
                 disableRipple
-                inputProps={{ 'aria-labelledby': labelId }}
+                color="default"
               />
             </ListItemIcon>
-            <ListItemText id={labelId} primary={servicio.nombre} />
-            <ListItemText id={labelId} primary={`$${servicio.precio}`} />
+            <ListItemText primary={"Servicio básico"} />
+            <Grid>
+              <ListItemText primary={`$${corteMin}`}/>
+            </Grid>
           </ListItem>
+        </Grid>
+        <Divider/>
+    </div>
+    )
+  }
+
+  return (
+    <List className={classes.root}>
+      {mostrarServicioMinimoNoElegible()}
+      {servicios.map((servicio) => {
+        const labelId = `checkbox-list-label-${servicio.id}`;
+        return (
+          <div key={servicio.id}>
+            <Grid container>
+              <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)}>
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={checked.includes(servicio)}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': labelId }}
+                    color="default"
+                  />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={servicio.nombre} />
+                <Grid>
+                  <ListItemText id={labelId} primary={`$${servicio.precio}`}/>
+                </Grid>
+              </ListItem>
+            </Grid>
+            <Divider/>
+          </div>
         );
       })}
     </List>

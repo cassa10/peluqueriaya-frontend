@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable no-undef */
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import useServicioDeServicio from "../service/useServicioDeServicio";
+import {useGetTiposDeServicios} from "../service/ServicioDeServicio";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -13,39 +15,31 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     img: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
+        width: theme.spacing(6),
+        height: theme.spacing(6),
     },
 }));
 
-const TabDeFiltradoPorServicio = ({buscar, tipoDeServicio, setTipoDeServicio}) => {
+const TabDeFiltradoPorServicio = ({setFiltro, limpiarFiltro}) => {
     const classes = useStyles();
-    const [tiposDeServicio, setTiposDeServicio] = useState([]);
-    const [{obtenerTiposDeServicio, cargandoTDS}] = useServicioDeServicio();
-
-    useEffect(() => {
-        let cancel = false;
-        const f = () => {
-            if (cancel) {
-                obtenerTiposDeServicio((tiposDeServicio) => setTiposDeServicio(tiposDeServicio));
-            }
-        }
-        f();
-        return () => {
-            cancel = true
-        };
-        // eslint-disable-next-line
-    }, []);
+    const [tipoDeServicio, setTipoDeServicio] = useState(false);
+    const [tiposDeServicio, setTiposDeServicio] = useState(null);
+    useGetTiposDeServicios(setTiposDeServicio);
 
     const handleChange = (event, nuevoTipoDeServicio) => {
-        setTipoDeServicio(nuevoTipoDeServicio);
-        buscar(nuevoTipoDeServicio);
+        if (nuevoTipoDeServicio === "BORRAR") {
+            setTipoDeServicio(false);
+            limpiarFiltro("tipoDeServicio")
+        } else {
+            setFiltro({tipoDeServicio: nuevoTipoDeServicio})
+            setTipoDeServicio(nuevoTipoDeServicio)
+        }
     };
 
     return (
         <div className={classes.root}>
             <AppBar position="static" color="default">
-                {!cargandoTDS &&
+                {tiposDeServicio &&
                 <Tabs
                     value={tipoDeServicio}
                     onChange={handleChange}
@@ -66,5 +60,10 @@ const TabDeFiltradoPorServicio = ({buscar, tipoDeServicio, setTipoDeServicio}) =
         </div>
     );
 };
+
+TabDeFiltradoPorServicio.propTypes = {
+    setFiltro: PropTypes.func,
+    limpiarFiltro: PropTypes.func
+}
 
 export default TabDeFiltradoPorServicio;

@@ -1,9 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import PropTypes from 'prop-types';
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import Typography from "@material-ui/core/Typography";
-import PaginaError, {PaginaError404} from "../views/PaginaError";
+import PaginaError, {PaginaError404, PaginaErrorPeluqueroLimiteMaxTurnos} from "../views/PaginaError";
 import {useHistory} from "react-router";
 
 const ManejadorDeErroresContext = React.createContext();
@@ -58,7 +59,6 @@ const ManejadorDeErrores = ({children}) => {
                 titulo: "Error :(",
                 mensaje: "Ha ocurrido un error inesperado. Por favor intente nuevamente."
             });
-            console.log(error);
             if (error.response) {
                 const {status, data} = error.response;
                 // eslint-disable-next-line
@@ -74,6 +74,9 @@ const ManejadorDeErrores = ({children}) => {
                         break;
                     case 404:
                         contenido = <PaginaError404/>;
+                        break;
+                    case 406:
+                        contenido = <PaginaErrorPeluqueroLimiteMaxTurnos />
                         break;
                     case 500:
                         contenido = mostrarPaginaError({
@@ -92,5 +95,9 @@ const ManejadorDeErrores = ({children}) => {
         </ManejadorDeErroresContext.Provider>
     )
 }
+
+ManejadorDeErrores.propTypes = {
+    children: PropTypes.element.isRequired
+};
 
 export default ManejadorDeErrores;

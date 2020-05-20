@@ -5,9 +5,9 @@ import Container from "@material-ui/core/Container";
 import Barra from "./Barra";
 import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
-import ManejadorDeErrores from "../service/ManejadorDeErrores";
-import {PaginaError404} from "../views/PaginaError";
+import ManejadorDeErrores from "../service/errores/ManejadorDeErrores";
 import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
+import PaginaError404 from "../views/PaginaError404";
 
 
 const App = () => (

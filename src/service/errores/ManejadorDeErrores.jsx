@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash';
+import get from 'lodash/get';
 import PaginaError from "./PaginaError";
 import {useHistory} from "react-router";
 
@@ -23,12 +23,12 @@ const ManejadorDeErrores = ({children}) => {
 
     const mostrarContenido = () => {
         if (error) {
-            const errorPorDefecto = {
+            const errorInfoPorDefecto = {
                 status: "Error :(",
-                error: "",
+                error: "Unexpected",
                 message: "Ha ocurrido un error inesperado. Por favor intente nuevamente",
             };
-            const errorInfo = get(error, "error.response.data", errorPorDefecto);
+            const errorInfo = get(error, "response.data", errorInfoPorDefecto);
             return <PaginaError {...errorInfo}/>;
         }
         else {

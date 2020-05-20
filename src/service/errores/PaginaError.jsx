@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: "inherit"
+    },
+    gridItem: {
+    margin: "auto"
     }
 }));
 

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {Button, Modal, Backdrop, Fade, Typography} from '@material-ui/core';
+import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -66,7 +68,7 @@ const ModalServiciosPeluquero = ({peluquero}) => {
     return(
         <div key={servicio.id}>
           <p>
-            - {servicio.nombre} (${servicio.precio})
+            - {servicio.nombre} ({formatPrice(servicio.precio)})
           </p>
         </div>
     )
@@ -93,6 +95,10 @@ const ModalServiciosPeluquero = ({peluquero}) => {
         </Modal>
     </div>  
   );
+}
+
+ModalServiciosPeluquero.propTypes = {
+  peluquero: PropTypes.object,
 }
 
 export default ModalServiciosPeluquero;

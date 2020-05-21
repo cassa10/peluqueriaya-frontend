@@ -9,6 +9,7 @@ import SelectorDeServicios from "../components/SelectorDeServicios";
 import { makeStyles } from '@material-ui/core/styles';
 import {sumBy} from "lodash";
 import Swal from 'sweetalert2';
+import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles({
     gridInfoPeluquero: {
@@ -109,7 +110,7 @@ const PaginaContratacionPeluquero = () => {
     }
 
     const showDialogServicios = (serviciosSeleccionados) => {
-        let servicioBasicoItem = `- Servicio basico: $${peluquero.corteMin}`;
+        let servicioBasicoItem = `- Servicio basico: ${formatPrice(peluquero.corteMin)}`;
         if(serviciosSeleccionados.length > 0){
             return `${serviciosSeleccionados.map(s => showDialogServicio(s))} 
                     ${servicioBasicoItem}`;
@@ -121,7 +122,7 @@ const PaginaContratacionPeluquero = () => {
         let crearTextoDentroDialogPedirTurno = 
         `Se solicitará un turno al peluquero "${peluquero.nombre}" inmediatamente. <hr />
         ${showDialogServicios(serviciosSeleccionados)}
-         <br /> <hr /> El precio final es $${precioTotal()}
+         <br /> <hr /> El precio final es ${formatPrice(precioTotal())}
         `;
 
         Swal.fire({
@@ -182,7 +183,7 @@ const PaginaContratacionPeluquero = () => {
             <Grid item xs={6}>
                 {mostrarDatosPeluquero(peluquero)}
                 <Grid container className={classes.gridSelectorServices} direction="row" justify="center" alignItems="center" spacing={4}>
-                        <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={peluquero.corteMin} />
+                        <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={formatPrice(peluquero.corteMin)} />
                 </Grid>
                 <Grid container className={classes.botonesNav} direction="row" justify="center" alignItems="center" spacing={4}>
                     <Grid item>

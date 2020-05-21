@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, List, ListItem, ListItemIcon, ListItemText, Checkbox, Divider } from '@material-ui/core';
+import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles({
   root: {
@@ -21,6 +23,8 @@ const useStyles = makeStyles({
     width: '100%'
   }
 });
+
+//Observacion: corteMin formateado
 
 const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
   const classes = useStyles();
@@ -58,7 +62,7 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
             </ListItemIcon>
             <ListItemText primary={"Servicio básico"} />
             <Grid>
-              <ListItemText primary={`$${corteMin}`}/>
+              <ListItemText primary={corteMin}/>
             </Grid>
           </ListItem>
         </Grid>
@@ -88,7 +92,7 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
                 </ListItemIcon>
                 <ListItemText id={labelId} primary={servicio.nombre} />
                 <Grid>
-                  <ListItemText id={labelId} primary={`$${servicio.precio}`}/>
+                  <ListItemText id={labelId} primary={formatPrice(servicio.precio)}/>
                 </Grid>
               </ListItem>
             </Grid>
@@ -99,5 +103,12 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
     </List>
   );
 }
+
+SelectorDeServicios.propTypes = {
+    servicios: PropTypes.array,
+    handleChecked: PropTypes.func,
+    corteMin: PropTypes.number,
+}
+
 
 export default SelectorDeServicios;

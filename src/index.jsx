@@ -1,11 +1,15 @@
+/* eslint-disable */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {responsiveFontSizes} from "@material-ui/core";
 import MolotWoff2 from './assets/fonts/Molot.woff2';
+import {BrowserRouter as Router, withRouter} from 'react-router-dom';
+import App from "./components/App";
+import {Auth0Provider} from "./service/ProveedorAuth0";
+
 
 const molot = {
     fontFamily: 'Molot',
@@ -42,11 +46,20 @@ let theme = createMuiTheme({
 
 theme = responsiveFontSizes(theme);
 
+const Auth0ProviderWithRouter = withRouter(Auth0Provider);
+
+
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <App />
+        <Router>
+            <Auth0ProviderWithRouter domain={process.env.REACT_APP_DOMAIN}
+                                     client_id={process.env.REACT_APP_CLIENT_ID}
+                                     redirect_uri={window.location.origin}>
+                 <App/>
+             </Auth0ProviderWithRouter>
+        </Router>
     </ThemeProvider>,
     document.querySelector('#father'),
 );

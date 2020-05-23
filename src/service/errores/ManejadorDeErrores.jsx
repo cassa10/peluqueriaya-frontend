@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import PaginaError from "./PaginaError";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 
 const ManejadorDeErroresContext = React.createContext();
 export const useManejadorDeErrores = () => React.useContext(ManejadorDeErroresContext);

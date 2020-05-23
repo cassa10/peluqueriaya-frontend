@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 import {useGetPeluquero} from "../service/ServicioDePeluquero";
 import { usePostPedirTurno } from "../service/ServicioDeTurno";
 import { Button, Grid, Typography } from "@material-ui/core";

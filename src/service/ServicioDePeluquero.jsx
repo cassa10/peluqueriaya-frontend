@@ -1,6 +1,6 @@
 import {useGet} from "./API";
 import {useEffect, useState} from "react";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 
 export const useGetPeluqueros = (tamanioPagina, fDatos) => {
     const crearPaginacion = ({content, pageable,  totalPages}) => {

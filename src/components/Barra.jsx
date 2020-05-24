@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import AppBar from "@material-ui/core/AppBar";
 import {useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
-import {useAuth0} from "../service/ProveedorAuth0";
+import {useAuth0} from "../service/Auth0Provider";
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
@@ -27,13 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const Barra = () => {
     const classes = useStyles();
     const {push} = useHistory();
-    const { isAuthenticated, loginWithPopup, logout } = useAuth0();
-
-    const irAPaginaPrincipal = () => push("/");
-
-    const handleOnClickLogin = () => loginWithPopup();
-
-    const handleOnClickLogout = () => logout();
+    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
     return (
         <AppBar position="static">
@@ -42,14 +36,14 @@ const Barra = () => {
                     className={classes.img}
                     src={require('../assets/images/peluqueriaya-logo.png')}
                     alt="logo"
-                    onClick={irAPaginaPrincipal}
+                    onClick={() => push("/")}
                  />
                 <Typography variant="h6" className={classes.title}>
                 </Typography>
                 {!isAuthenticated &&
-                <Button onClick={handleOnClickLogin} variant="contained" color="secondary">Login</Button>}
+                <Button onClick={() => loginWithRedirect({redirect_uri: "http://localhost:3000/login"})} variant="contained" color="secondary">Login</Button>}
                 {isAuthenticated &&
-                <Button onClick={handleOnClickLogout} variant="contained" color="secondary">Logout</Button>}
+                <Button onClick={() => logout()} variant="contained" color="secondary">Logout</Button>}
 
             </Toolbar>
         </AppBar>

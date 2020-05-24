@@ -7,7 +7,7 @@ import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
 import ManejadorDeErrores from "../service/errores/ManejadorDeErrores";
 import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
 import PaginaError404 from "../views/PaginaError404";
-import {useAuth0} from "../service/ProveedorAuth0";
+import {useAuth0} from "../service/Auth0Provider";
 import Perfil from "./Perfil";
 
 

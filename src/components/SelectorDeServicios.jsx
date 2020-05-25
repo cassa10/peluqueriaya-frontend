@@ -107,7 +107,7 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
 SelectorDeServicios.propTypes = {
     servicios: PropTypes.array,
     handleChecked: PropTypes.func,
-    corteMin: PropTypes.number,
+    corteMin: PropTypes.string,
 }
 
 

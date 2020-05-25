@@ -65,22 +65,29 @@ const PaginaContratacionPeluquero = () => {
 
     const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
 
-    const [turnoPedido, setTurnoPedido] = useState({id: 0})
-
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
     const {cargando} = useGetPeluquero(setPeluquero)
 
-    const setTurnoPedidoAndShowDialog = (data) => {
-        setTurnoPedido(data)
-        Swal.fire(
-            'Turno solicitado!',
-            'En unos minutos, se recibirá un email cuando el peluquero confirme el turno.',
-            'success'
-        ).then(() => push("/search"));
+    const handleTurnoPedidoSuccess = (turno) => {
+
+        if(turno.estado === "PENDIENTE"){
+            Swal.fire(
+                'Turno solicitado!',
+                'En unos minutos, se recibirá un email cuando el peluquero confirme el turno.',
+                'success'
+            ).then(() => push("/search"));
+        }else{
+            Swal.fire(
+                'Turno en espera',
+                'Su turno fue agregado en la cola de espera del peluquero, puede demorar mucho. Igualmente puede cancelar el turno mientras este se encuentre en espera.',
+                'success'
+            ).then(() => push("/search"));
+        }
+
     }
     
-    const {setParametros} = usePostPedirTurno(setTurnoPedidoAndShowDialog)
+    const {setParametros} = usePostPedirTurno(handleTurnoPedidoSuccess)
 
 
 
@@ -88,16 +95,23 @@ const PaginaContratacionPeluquero = () => {
         return peluquero.corteMin + sumBy(serviciosSeleccionados, (servicio) => {return servicio.precio})
     }
 
+    const getUbicacion = () =>  {
+        const ubicacion = {
+            latitude: sessionStorage.getItem('userLocationLatitude'),
+            longitude: sessionStorage.getItem('userLocationLongitude')
+        }
+        return ubicacion;
+    }
+
     const handleCrearTurno = (value) => {
         if(value){
             const body = {
                 idPeluquero: peluquero.id,
                 idCliente: cliente.id,
+                ubicacion: getUbicacion(),
                 serviciosSolicitadosId: serviciosSeleccionados.map(s => s.id)
             }
             setParametros(body)
-
-            console.log(turnoPedido)
         }
     }
 
@@ -106,13 +120,14 @@ const PaginaContratacionPeluquero = () => {
     }
 
     const showDialogServicio = (servicio) => {
-        return `- ${servicio.nombre}: $${servicio.precio} <br />`
+        return `- ${servicio.nombre}: ${formatPrice(servicio.precio)} <br />`;
     }
 
     const showDialogServicios = (serviciosSeleccionados) => {
         let servicioBasicoItem = `- Servicio basico: ${formatPrice(peluquero.corteMin)}`;
         if(serviciosSeleccionados.length > 0){
-            return `${serviciosSeleccionados.map(s => showDialogServicio(s))} 
+            const servicesItems = serviciosSeleccionados.map(s => showDialogServicio(s))
+            return `${servicesItems.join(' ')}
                     ${servicioBasicoItem}`;
         }
         return servicioBasicoItem;

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useManejadorDeErrores} from "./errores/ManejadorDeErrores";
+import {useManejadorDeErrores} from "../contexts/errors/ManejadorDeErrores";
 import axios from 'axios';
 
 // eslint-disable-next-line no-undef

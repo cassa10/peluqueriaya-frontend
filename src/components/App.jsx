@@ -4,15 +4,16 @@ import Container from "@material-ui/core/Container";
 import Barra from "./Barra";
 import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
-import ManejadorDeErrores from "../service/errores/ManejadorDeErrores";
+import ManejadorDeErrores from "../contexts/errors/ManejadorDeErrores";
 import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
 import PaginaError404 from "../views/PaginaError404";
-import {useAuth0} from "../service/Auth0Provider";
+import {useUser} from "../contexts/UserProvider";
 import Perfil from "./Perfil";
+import PaginaRegistroCliente from "../views/PaginaRegistroCliente";
 
 
 const App = () => {
-    const {loading} = useAuth0();
+    const {loading} = useUser();
 
     if (loading) {
         return <div>Loading...</div>;
@@ -25,8 +26,8 @@ const App = () => {
                 <ManejadorDeErrores>
                     <Switch>
                         <Route exact path="/" component={PaginaPrincipal}/>
-                        <Route path="/peluquero/login" component={Perfil}/>
-                        <Route path="/login" component={Perfil}/>
+                        <Route path="/registro" component={PaginaRegistroCliente}/>
+                        <Route path="/perfil" component={Perfil}/>
                         <Route path="/search" component={PaginaBusquedaPeluqueros}/>
                         <Route path="/contratar" component={PaginaContratacionPeluquero}/>
                         <Route path="*" component={PaginaError404}/>

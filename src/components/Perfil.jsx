@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
-import {useAuth0} from "../service/Auth0Provider";
+import {useUser} from "../contexts/UserProvider";
 
 const Perfil = () => {
-    const { loading, user } = useAuth0();
+    const { loading, user } = useUser();
 
     if (loading || !user) {
         return <div>Loading...</div>;

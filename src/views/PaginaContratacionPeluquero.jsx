@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import {useHistory} from "react-router";
-import {useGetPeluquero} from "../service/ServicioDePeluquero";
+import {useGetPeluqueroAContratar} from "../service/ServicioDePeluquero";
 import { usePostPedirTurno } from "../service/ServicioDeTurno";
 import { Button, Grid, Typography } from "@material-ui/core";
 import CirculitoCargando from "../components/CirculoCargando";
@@ -67,7 +67,7 @@ const PaginaContratacionPeluquero = () => {
 
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
-    const {cargando} = useGetPeluquero(setPeluquero)
+    const {cargando} = useGetPeluqueroAContratar(setPeluquero)
 
     const handleTurnoPedidoSuccess = (turno) => {
 

@@ -1,5 +1,6 @@
 export const URI_LOGIN_CLIENTE = "http://localhost:3000/registro";
 export const URI_LOGIN_PELUQUERO = "http://localhost:3000/peluquero/registro";
+export const URI_CASA = "http://localhost:3000/";
 
 export const VISITANTE = "visitante";
 export const PENDIENTE_DE_REGISTRO = "pendienteDeRegistro";

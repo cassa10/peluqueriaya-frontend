@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext, createContext} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import PropTypes from "prop-types";
-import {VISITANTE} from "../constants";
+import {URI_CASA, URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO, VISITANTE} from "../constants";
 
 export const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
@@ -33,9 +33,8 @@ const UserProvider = ({history, children, ...initOptions}) => {
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
                 setUser(user);
-                //llamar back con cliente;
-                const rolDeBack = "";
-                setRol(rolDeBack);
+                //Pedir rol de back y setear ese
+                setRol(VISITANTE);
             }
             setLoading(false);
         };
@@ -43,12 +42,19 @@ const UserProvider = ({history, children, ...initOptions}) => {
         // eslint-disable-next-line
     }, []);
 
+    const loginComoCliente = () => auth0Client.loginWithRedirect({redirect_uri: URI_LOGIN_CLIENTE})
+
+    const loginComoPeluquero = () => auth0Client.loginWithRedirect({redirect_uri: URI_LOGIN_PELUQUERO})
+
+    const logout = () => {
+        setRol(VISITANTE);
+        auth0Client.logout({returnTo: URI_CASA})
+    }
+
     return (
         <UserContext.Provider
-            value={{ user, loading, rol,
-                loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-                getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-                logout: (...p) => auth0Client.logout(...p)
+            value={{ user, loading, rol, setRol, loginComoCliente, loginComoPeluquero, logout,
+                getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
             }}>
             {children}
         </UserContext.Provider>

@@ -7,8 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import {useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {useUser} from "../contexts/UserProvider";
-import Can from "../hocs/Can";
-import {URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO} from "../constants";
+import Can from "../wrappers/Can";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 const {Visitante, Registrado} = Can;
@@ -29,38 +28,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const botonProps = {
+    size: "small",
+    variant: "contained",
+    color: "secondary"
+};
 
 const Barra = () => {
     const classes = useStyles();
     const {push} = useHistory();
-    const {loginWithRedirect, logout} = useUser();
-
-    const BotonesDeSesion = () => {
-        const botonProps = {
-            size: "small",
-            variant:"contained",
-            color:"secondary"
-        }
-        return (
-            <Can>
-                <Visitante>
-                    <ButtonGroup {...botonProps}>
-                        <Button onClick={() => loginWithRedirect({redirect_uri: URI_LOGIN_CLIENTE})}>
-                            Iniciar Sesion
-                        </Button>
-                        <Button onClick={() => loginWithRedirect({redirect_uri: URI_LOGIN_PELUQUERO})}>
-                            Soy Peluquero
-                        </Button>
-                    </ButtonGroup>
-                </Visitante>
-                <Registrado>
-                    <Button onClick={() => logout()} {...botonProps}>
-                        Cerrar Sesion
-                    </Button>
-                </Registrado>
-            </Can>);
-    };
-
+    const {loginComoCliente, loginComoPeluquero, logout} = useUser();
 
     return (
         <AppBar position="static">
@@ -73,10 +50,19 @@ const Barra = () => {
                 />
                 <Typography variant="h6" className={classes.title}>
                 </Typography>
-                <BotonesDeSesion/>
+                <Can>
+                    <Visitante>
+                        <ButtonGroup {...botonProps}>
+                            <Button onClick={() => loginComoCliente()}> Iniciar Sesion </Button>
+                            <Button onClick={() => loginComoPeluquero()}> Soy Peluquero </Button>
+                        </ButtonGroup>
+                    </Visitante>
+                    <Registrado>
+                        <Button onClick={() => logout()} {...botonProps}>Cerrar Sesion</Button>
+                    </Registrado>
+                </Can>
             </Toolbar>
-        </AppBar>
-    );
+        </AppBar>);
 };
 
 export default Barra;

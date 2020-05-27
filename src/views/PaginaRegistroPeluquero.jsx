@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
-import {useUser} from "../contexts/UserProvider";
 import Can from "../wrappers/Can";
 import Perfil from "../components/Perfil";
+import {PELUQUERO, PENDIENTE_DE_REGISTRO} from "../constants";
 import Button from "@material-ui/core/Button";
-import {CLIENTE, PENDIENTE_DE_REGISTRO} from "../constants";
+import {useUser} from "../contexts/UserProvider";
 
-const {Cliente, PendienteDeRegistro} = Can;
+const {PendienteDeRegistro, Peluquero} = Can;
 
-const PaginaRegistroCliente = () => {
-    const {rol, setRol, logout} = useUser();
+const PaginaRegistroPeluquero = () => {
+    const {logout, rol, setRol} = useUser();
 
     useEffect(() => {
         setRol(PENDIENTE_DE_REGISTRO);
@@ -19,13 +19,13 @@ const PaginaRegistroCliente = () => {
 
     return (
         <Can>
-            <Cliente>
+            <Peluquero>
                 <Perfil/>
-            </Cliente>
+            </Peluquero>
             <PendienteDeRegistro>
                 <div>
-                    <Button onClick={() => setRol(CLIENTE)}>Setear rol cliente</Button>
-                    <div> Soy pagina de registro de cliente!</div>
+                    <Button onClick={() => setRol(PELUQUERO)}>Setear rol peluquero</Button>
+                    <div> Soy pagina de registro de peluquero!</div>
                 </div>
             </PendienteDeRegistro>
         </Can>
@@ -33,4 +33,5 @@ const PaginaRegistroCliente = () => {
 
 };
 
-export default PaginaRegistroCliente;
+
+export default PaginaRegistroPeluquero;

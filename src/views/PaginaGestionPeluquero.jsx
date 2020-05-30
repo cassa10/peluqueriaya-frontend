@@ -9,6 +9,8 @@ import {
 } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
+import ModalInfoClienteTurno from "../components/ModalInfoClienteTurno";
+import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
 import formatDate from '../formatters/formatDate';
 import formatTime from '../formatters/formatTime';
 
@@ -122,8 +124,12 @@ const PaginaGestionPeluquero = () => {
                     </StyledTableCell>
                     <StyledTableCell align="center">{`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}</StyledTableCell>
                     {handleShowDataIsTurnoSelected(`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`)}
-                    <StyledTableCell align="center"><Button>Servicios</Button></StyledTableCell>
-                    <StyledTableCell align="center"><Button>Cliente {turno.clienteId}</Button></StyledTableCell>
+                    <StyledTableCell align="center">
+                        <ModalServiciosInfoTurno corteMinInfo={turno.corteMinInfo} serviciosInfo={turno.serviciosSolicitadosInfo}/>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                        <ModalInfoClienteTurno fullname={turno.clienteFullName} email={turno.clienteEmail} ubicacion={turno.ubicacionDelTurno}/>
+                    </StyledTableCell>
                     {handleShowDataIsTurnoSelected(showPuntuacionData(turno.puntaje))}
                 </TableRow>
             ))}

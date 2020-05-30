@@ -9,10 +9,9 @@ import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
 import PaginaError404 from "../views/PaginaError404";
 import {useUser} from "../contexts/UserProvider";
 import PaginaRegistroCliente from "../views/PaginaRegistroCliente";
-import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
 import Perfil from "./Perfil";
-import ClientePrivateRoute from "../wrappers/ClientePrivateRoute";
-import PeluqueroPrivateRoute from "../wrappers/PeluqueroPrivateRoute";
+import {ClienteRoute, PeluqueroRoute} from "../wrappers/PrivateRoute";
+import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
 
 
 const App = () => {
@@ -30,9 +29,9 @@ const App = () => {
                     <Switch>
                         <Route exact path="/" component={PaginaPrincipal}/>
                         <Route path="/registro" component={PaginaRegistroCliente}/>
-                        <Route path="/peluquero/registro" component={PaginaRegistroPeluquero}/>
-                        <ClientePrivateRoute path="/perfil" component={Perfil}/>
-                        <PeluqueroPrivateRoute path="/peluquero/perfil" component={Perfil}/>
+                        <Route path="/pelquero/registro" component={PaginaRegistroPeluquero}/>
+                        <ClienteRoute path="/perfil" component={Perfil}/>
+                        <PeluqueroRoute path="/peluquero/perfil" component={Perfil}/>
                         <Route path="/search" component={PaginaBusquedaPeluqueros}/>
                         <Route path="/contratar" component={PaginaContratacionPeluquero}/>
                         <Route path="*" component={PaginaError404}/>

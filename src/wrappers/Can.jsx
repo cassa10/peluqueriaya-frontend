@@ -1,30 +1,28 @@
 import {Children, cloneElement, isValidElement} from "react";
-import {CLIENTE, DUAL, PELUQUERO, PENDIENTE_DE_REGISTRO, VISITANTE} from "../constants";
+import {CLIENTE, PELUQUERO, PENDIENTE, REGISTRADO, VISITANTE} from "../constants";
 import {useUser} from "../contexts/UserProvider";
 
-const roles = [VISITANTE, PENDIENTE_DE_REGISTRO, CLIENTE, PELUQUERO, DUAL].map(value => {
-    return ({ children, rol }) => rol === value && children;
-});
+export const Cliente = ({children, roles}) => roles[CLIENTE] === REGISTRADO && children;
+export const NoCliente = ({children, roles}) => roles[CLIENTE] === VISITANTE && children;
+export const Peluquero = ({children, roles}) => roles[PELUQUERO] === REGISTRADO && children;
+export const NoPeluquero = ({children, roles}) => roles[PELUQUERO]  === VISITANTE && children;
+export const Registrado = ({children, roles}) =>
+    (roles[CLIENTE] === REGISTRADO || roles[PELUQUERO] === REGISTRADO) && children;
+export const Pendiente = ({children, roles}) =>
+    (roles[CLIENTE] === PENDIENTE || roles[PELUQUERO] === PENDIENTE) && children;
+export const ClienteYPeluquero = ({children, roles}) =>
+    roles[CLIENTE] === REGISTRADO && roles[PELUQUERO] === REGISTRADO && children;
 
-roles.push(({ children, rol }) => (rol === CLIENTE || rol === PELUQUERO || rol === DUAL) && children)
-
-const Can = ({ children }) => {
-    const {rol} = useUser();
+const Can = ({children}) => {
+    const {roles} = useUser();
 
     return Children.map(children, child => {
         if (isValidElement(child)) {
-            return cloneElement(child, {rol});
+            return cloneElement(child, {roles});
         }
         return child;
     });
 
 };
-
-Can.Visitante = roles[0];
-Can.PendienteDeRegistro = roles[1];
-Can.Cliente = roles[2];
-Can.Peluquero = roles[3];
-Can.Dual = roles[4];
-Can.Registrado = roles[5];
 
 export default Can;

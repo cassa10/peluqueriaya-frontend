@@ -7,10 +7,9 @@ import AppBar from "@material-ui/core/AppBar";
 import {useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {useUser} from "../contexts/UserProvider";
-import Can from "../wrappers/Can";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Can, {NoCliente, NoPeluquero, Registrado} from "../wrappers/Can";
+import {CLIENTE, PELUQUERO} from "../constants";
 
-const {Visitante, Registrado} = Can;
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
@@ -37,7 +36,7 @@ const botonProps = {
 const Barra = () => {
     const classes = useStyles();
     const {push} = useHistory();
-    const {loginComoCliente, loginComoPeluquero, logout} = useUser();
+    const {login, logout} = useUser();
 
     return (
         <AppBar position="static">
@@ -51,12 +50,12 @@ const Barra = () => {
                 <Typography variant="h6" className={classes.title}>
                 </Typography>
                 <Can>
-                    <Visitante>
-                        <ButtonGroup {...botonProps}>
-                            <Button onClick={() => loginComoCliente()}> Iniciar Sesion </Button>
-                            <Button onClick={() => loginComoPeluquero()}> Soy Peluquero </Button>
-                        </ButtonGroup>
-                    </Visitante>
+                    <NoCliente>
+                        <Button {...botonProps} onClick={() => login(CLIENTE)}> Soy Cliente </Button>
+                    </NoCliente>
+                    <NoPeluquero>
+                        <Button {...botonProps} onClick={() => login(PELUQUERO)}> Soy Peluquero </Button>
+                    </NoPeluquero>
                     <Registrado>
                         <Button onClick={() => logout()} {...botonProps}>Cerrar Sesion</Button>
                     </Registrado>

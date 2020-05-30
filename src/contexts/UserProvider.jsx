@@ -1,16 +1,30 @@
 import React, {useState, useEffect, useContext, createContext} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import PropTypes from "prop-types";
-import {URI_CASA, URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO, VISITANTE} from "../constants";
+import {
+    CLIENTE,
+    PELUQUERO,
+    VISITANTE,
+    REGISTRADO,
+    URI_CASA,
+    URI_LOGIN_CLIENTE,
+    URI_LOGIN_PELUQUERO, PENDIENTE
+} from "../constants";
+import axios from 'axios';
 
 export const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
+
+const rolesIniciales = {
+    [CLIENTE]: VISITANTE,
+    [PELUQUERO]: VISITANTE
+};
 
 const UserProvider = ({history, children, ...initOptions}) => {
     const [user, setUser] = useState();
     const [auth0Client, setAuth0] = useState();
     const [loading, setLoading] = useState(true);
-    const [rol, setRol] = useState(VISITANTE);
+    const [roles, setRoles] = useState(rolesIniciales);
 
     const onRedirectCallback = appState => {
         history.push(
@@ -33,8 +47,13 @@ const UserProvider = ({history, children, ...initOptions}) => {
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
                 setUser(user);
-                //Pedir rol de back y setear ese
-                setRol(VISITANTE);
+                const token = await auth0FromHook.getTokenSilently()
+                const {data} = await axios.get('http://localhost:8080/roles', {
+                    headers: {Authorization: `Bearer ${token}`}
+                })
+                setRoles(data);
+                console.log(token);
+                console.log(data);
             }
             setLoading(false);
         };
@@ -42,18 +61,44 @@ const UserProvider = ({history, children, ...initOptions}) => {
         // eslint-disable-next-line
     }, []);
 
-    const loginComoCliente = () => auth0Client.loginWithRedirect({redirect_uri: URI_LOGIN_CLIENTE})
+    const rolesHandler = {
+      [CLIENTE]: {
+          uri_login: URI_LOGIN_CLIENTE,
+          noEstaRegistradoEnOtroRol: () => roles[PELUQUERO] !== REGISTRADO
+      },
+      [PELUQUERO]: {
+          uri_login: URI_LOGIN_PELUQUERO,
+          noEstaRegistradoEnOtroRol: () => roles[CLIENTE] !== REGISTRADO
+      },
+    };
 
-    const loginComoPeluquero = () => auth0Client.loginWithRedirect({redirect_uri: URI_LOGIN_PELUQUERO})
+    const login = (rol) => {
+        if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) {
+            auth0Client.loginWithRedirect({ appState: { targetUrl: rolesHandler[rol].uri_login } })
+        }
+        else {
+            history.push(rolesHandler[rol].uri_login)
+        }
+    }
 
     const logout = () => {
-        setRol(VISITANTE);
         auth0Client.logout({returnTo: URI_CASA})
+    }
+
+    const empezarRegistro = (rol) => {
+        if (roles[rol] === VISITANTE) {
+            setRoles(prevState => ({...prevState, [rol]: PENDIENTE}))
+        }
+    }
+
+    const abandonarRegistro = (rol) => {
+        setRoles(prevState => ({...prevState, [rol]: VISITANTE}));
+        if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) logout();
     }
 
     return (
         <UserContext.Provider
-            value={{ user, loading, rol, setRol, loginComoCliente, loginComoPeluquero, logout,
+            value={{ user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
                 getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
             }}>
             {children}

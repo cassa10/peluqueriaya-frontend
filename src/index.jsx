@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
@@ -15,9 +16,10 @@ ReactDOM.render(
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline/>
         <Router>
-            {/* eslint-disable-next-line no-undef */}
-            <UserProviderWithRouter domain={process.env.REACT_APP_DOMAIN} client_id={process.env.REACT_APP_CLIENT_ID}
-                                     redirect_uri={window.location.origin}>
+            <UserProviderWithRouter domain={process.env.REACT_APP_DOMAIN}
+                                    client_id={process.env.REACT_APP_CLIENT_ID}
+                                    audience={process.env.REACT_APP_AUDIENCE}
+                                    redirect_uri={window.location.origin}>
                 <App/>
             </UserProviderWithRouter>
         </Router>

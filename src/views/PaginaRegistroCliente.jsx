@@ -1,33 +1,31 @@
 import React, {useEffect} from 'react';
 import {useUser} from "../contexts/UserProvider";
-import Can from "../wrappers/Can";
+import Can, {Cliente, Pendiente} from "../wrappers/Can";
 import Perfil from "../components/Perfil";
-import Button from "@material-ui/core/Button";
-import {CLIENTE, PENDIENTE_DE_REGISTRO} from "../constants";
+import {CLIENTE} from "../constants";
 
-const {Cliente, PendienteDeRegistro} = Can;
 
 const PaginaRegistroCliente = () => {
-    const {rol, setRol, logout} = useUser();
+    const { empezarRegistro, abandonarRegistro} = useUser();
 
     useEffect(() => {
-        setRol(PENDIENTE_DE_REGISTRO);
+        empezarRegistro(CLIENTE)
         return async () => {
-            if (rol === PENDIENTE_DE_REGISTRO) await logout();
-        }
-    },[setRol, rol, logout])
+            await abandonarRegistro(CLIENTE);
+        }// eslint-disable-next-line
+    },[])
+
 
     return (
         <Can>
             <Cliente>
                 <Perfil/>
             </Cliente>
-            <PendienteDeRegistro>
+            <Pendiente>
                 <div>
-                    <Button onClick={() => setRol(CLIENTE)}>Setear rol cliente</Button>
                     <div> Soy pagina de registro de cliente!</div>
                 </div>
-            </PendienteDeRegistro>
+            </Pendiente>
         </Can>
     );
 

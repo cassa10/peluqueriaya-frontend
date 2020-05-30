@@ -25,7 +25,7 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
 
     useEffect(() => {
         const idPeluqueroStorage = localStorage.getItem('idPeluqueroLogeado');
-        idPeluqueroStorage === null ? push("/"): setParametros({size: tamanioPagina});
+        idPeluqueroStorage === null ? push("/"): setParametros({size: tamanioPagina, sort: 'fechaInicio,asc'});
         // eslint-disable-next-line
     }, [])
 
@@ -39,5 +39,5 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
         }
     }
     
-    return {cargando, setFiltro, limpiarFiltro}
+    return {cargandoTurnos: cargando, setFiltro, limpiarFiltro}
 }

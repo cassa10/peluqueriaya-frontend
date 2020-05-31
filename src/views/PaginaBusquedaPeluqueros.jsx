@@ -5,7 +5,7 @@ import TabDeFiltradoPorServicio from "../components/TabDeFiltradoPorServicio";
 import {useGetPeluqueros} from "../service/ServicioDePeluquero";
 import ListaPeluqueros from "../components/ListaPeluqueros";
 import Button from "@material-ui/core/Button";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 import CirculitoCargando from "../components/CirculoCargando";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";

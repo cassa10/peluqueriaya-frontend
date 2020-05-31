@@ -1,9 +1,10 @@
-import {usePost, useGet} from "./API";
+import {useGet} from "./API";
 import {useEffect} from "react";
 import {useHistory} from "react-router";
+import {usePostConAuth} from "./API";
 
 export const usePostPedirTurno = (setterResponseData) => {
-    const {cargando, setParametros} = usePost("/turno/pedir", setterResponseData);
+    const {cargando, setParametros} = usePostConAuth("/turno/pedir", setterResponseData);
 
     return {cargandoPedirTurno: cargando, setParametros};
 };

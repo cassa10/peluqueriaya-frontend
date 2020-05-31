@@ -1,5 +1,5 @@
 import React from "react";
-import PaginaError from "../service/errores/PaginaError";
+import PaginaError from "../contexts/errors/PaginaError";
 
 const PaginaError404 = () => {
     const error = {

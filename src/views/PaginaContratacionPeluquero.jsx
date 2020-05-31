@@ -1,14 +1,16 @@
-import React from 'react';
-import {useState} from 'react';
-import {useHistory} from "react-router";
-import {useGetPeluqueroAContratar} from "../service/ServicioDePeluquero";
-import { usePostPedirTurno } from "../service/ServicioDeTurno";
-import { Button, Grid, Typography } from "@material-ui/core";
+import React, {useState} from 'react';
+import {useHistory} from "react-router-dom";
+import {useGetPeluquero} from "../service/ServicioDePeluquero";
+import {usePostPedirTurno} from "../service/ServicioDeTurno";
+import {Button, Grid, Typography} from "@material-ui/core";
 import CirculitoCargando from "../components/CirculoCargando";
 import SelectorDeServicios from "../components/SelectorDeServicios";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import {sumBy} from "lodash";
 import Swal from 'sweetalert2';
+import Can, {Cliente, NoCliente} from "../wrappers/Can";
+import {CLIENTE} from "../constants";
+import {useUser} from "../contexts/UserProvider";
 import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles({
@@ -61,17 +63,16 @@ const PaginaContratacionPeluquero = () => {
 
     const {push} = useHistory();
 
-    const [cliente] = useState({id: 1});
-
     const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
 
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
-    const {cargando} = useGetPeluqueroAContratar(setPeluquero)
-
+    const {cargando} = useGetPeluquero(setPeluquero)
+    
+    const {login} = useUser();
+    
     const handleTurnoPedidoSuccess = (turno) => {
-
-        if(turno.estado === "PENDIENTE"){
+      if(turno.estado === "PENDIENTE"){
             Swal.fire(
                 'Turno solicitado!',
                 'En unos minutos, se recibirá un email cuando el peluquero confirme el turno.',
@@ -84,11 +85,9 @@ const PaginaContratacionPeluquero = () => {
                 'success'
             ).then(() => push("/search"));
         }
-
     }
     
     const {setParametros} = usePostPedirTurno(handleTurnoPedidoSuccess)
-
 
 
     const precioTotal = () => {
@@ -96,19 +95,17 @@ const PaginaContratacionPeluquero = () => {
     }
 
     const getUbicacion = () =>  {
-        const ubicacion = {
+        return {
             latitude: sessionStorage.getItem('userLocationLatitude'),
             longitude: sessionStorage.getItem('userLocationLongitude')
-        }
-        return ubicacion;
+        };
     }
 
     const handleCrearTurno = (value) => {
         if(value){
             const body = {
-                idPeluquero: peluquero.id,
-                idCliente: cliente.id,
                 ubicacion: getUbicacion(),
+                idPeluquero: peluquero.id,
                 serviciosSolicitadosId: serviciosSeleccionados.map(s => s.id)
             }
             setParametros(body)
@@ -205,7 +202,14 @@ const PaginaContratacionPeluquero = () => {
                         <Button color="default" onClick={handleIrAlSearch}>Volver atrás</Button>
                     </Grid>
                     <Grid item>
-                        <Button color="default" onClick={handleDialogCrearTurno}>Pedir turno</Button>
+                        <Can>
+                            <Cliente>
+                                <Button color="default" onClick={handleDialogCrearTurno}>Pedir turno</Button>
+                            </Cliente>
+                            <NoCliente>
+                                <Button color="default" onClick={async() => await login(CLIENTE)}>Registrate y pedí turno!</Button>
+                            </NoCliente>
+                        </Can>
                     </Grid>
                 </Grid>
             </Grid>

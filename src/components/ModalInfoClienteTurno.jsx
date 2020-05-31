@@ -21,7 +21,10 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       textDecoration: 'underline',
-    }
+    },
+    button: {
+      color: 'black',
+    },
   }));
 
 const ModalInfoClienteTurno = ({fullname, email, ubicacion}) => {
@@ -55,7 +58,7 @@ const ModalInfoClienteTurno = ({fullname, email, ubicacion}) => {
 
   return (
     <div>
-        <IconButton onClick={handleOpen}><AssignmentIndIcon style={{ fontSize: 30 }}/></IconButton>
+        <IconButton className={classes.button} onClick={handleOpen}><AssignmentIndIcon style={{ fontSize: 30 }}/></IconButton>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"

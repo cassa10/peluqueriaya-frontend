@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     precioTotalText: {
         marginTop: '7px',
     },
+    button: {
+      color: 'black',
+    }
   }));
 
 const ModalServiciosInfoTurno = ({turno}) => {
@@ -98,7 +101,7 @@ const ModalServiciosInfoTurno = ({turno}) => {
 
   return (
     <div>
-        <IconButton onClick={handleOpen}><ShoppingCartIcon style={{ fontSize: 30 }}/></IconButton>
+        <IconButton className={classes.button} onClick={handleOpen}><ShoppingCartIcon style={{ fontSize: 30 }}/></IconButton>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"

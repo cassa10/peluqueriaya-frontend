@@ -9,6 +9,9 @@ import SelectorDeServicios from "../components/SelectorDeServicios";
 import { makeStyles } from '@material-ui/core/styles';
 import {sumBy} from "lodash";
 import Swal from 'sweetalert2';
+import Can, {Cliente, NoCliente} from "../wrappers/Can";
+import {CLIENTE} from "../constants";
+import {useUser} from "../contexts/UserProvider";
 
 const useStyles = makeStyles({
     gridInfoPeluquero: {
@@ -60,8 +63,6 @@ const PaginaContratacionPeluquero = () => {
 
     const {push} = useHistory();
 
-    const [cliente] = useState({id: 1});
-
     const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
 
     const [turnoPedido, setTurnoPedido] = useState({id: 0})
@@ -69,6 +70,8 @@ const PaginaContratacionPeluquero = () => {
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
     const {cargando} = useGetPeluquero(setPeluquero)
+
+    const {login} = useUser();
 
     const setTurnoPedidoAndShowDialog = (data) => {
         setTurnoPedido(data)
@@ -82,7 +85,6 @@ const PaginaContratacionPeluquero = () => {
     const {setParametros} = usePostPedirTurno(setTurnoPedidoAndShowDialog)
 
 
-
     const precioTotal = () => {
         return peluquero.corteMin + sumBy(serviciosSeleccionados, (servicio) => {return servicio.precio})
     }
@@ -90,13 +92,11 @@ const PaginaContratacionPeluquero = () => {
     const handleCrearTurno = (value) => {
         if(value){
             const body = {
+                ubicacion: {latitude: "-34.706416", longitude: "-58.278559"},
                 idPeluquero: peluquero.id,
-                idCliente: cliente.id,
                 serviciosSolicitadosId: serviciosSeleccionados.map(s => s.id)
             }
             setParametros(body)
-
-            console.log(turnoPedido)
         }
     }
 
@@ -189,7 +189,14 @@ const PaginaContratacionPeluquero = () => {
                         <Button color="default" onClick={handleIrAlSearch}>Volver atrás</Button>
                     </Grid>
                     <Grid item>
-                        <Button color="default" onClick={handleDialogCrearTurno}>Pedir turno</Button>
+                        <Can>
+                            <Cliente>
+                                <Button color="default" onClick={handleDialogCrearTurno}>Pedir turno</Button>
+                            </Cliente>
+                            <NoCliente>
+                                <Button color="default" onClick={async() => await login(CLIENTE)}>Registrate y pedí turno!</Button>
+                            </NoCliente>
+                        </Can>
                     </Grid>
                 </Grid>
             </Grid>

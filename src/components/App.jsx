@@ -12,13 +12,14 @@ import PaginaRegistroCliente from "../views/PaginaRegistroCliente";
 import Perfil from "./Perfil";
 import {ClienteRoute, PeluqueroRoute} from "../wrappers/PrivateRoute";
 import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 
 const App = () => {
     const {loading} = useUser();
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <LinearProgress color="secondary" />;
     }
 
     return (

@@ -1,7 +1,5 @@
-import {useGet} from "./API";
+import {useGetConAuth, usePostConAuth} from "./API";
 import {useEffect} from "react";
-import {useHistory} from "react-router";
-import {usePostConAuth} from "./API";
 
 export const usePostPedirTurno = (setterResponseData) => {
     const {cargando, setParametros} = usePostConAuth("/turno/pedir", setterResponseData);
@@ -11,7 +9,6 @@ export const usePostPedirTurno = (setterResponseData) => {
 
 export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
     
-    const {push} = useHistory();
 
     const crearPaginacion = ({content, pageable,  totalPages}) => {
         setterResponseData((prevState) => ({
@@ -22,11 +19,10 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
         }))
     }
 
-    const {cargando, parametros, setParametros} = useGet(`/turno/peluquero/${localStorage.getItem('idPeluqueroLogeado')}`,crearPaginacion);
+    const {cargando, parametros, setParametros} = useGetConAuth(`/turno/peluquero`,crearPaginacion);
 
     useEffect(() => {
-        const idPeluqueroStorage = localStorage.getItem('idPeluqueroLogeado');
-        idPeluqueroStorage === null ? push("/"): setParametros({size: tamanioPagina, sort: 'fechaInicio,asc'});
+        setParametros({size: tamanioPagina, sort: 'fechaInicio,asc'});
         // eslint-disable-next-line
     }, [])
 

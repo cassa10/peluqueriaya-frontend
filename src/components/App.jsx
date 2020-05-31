@@ -29,20 +29,14 @@ const App = () => {
             <Container maxWidth="lg">
                 <ManejadorDeErrores>
                     <Switch>
-                        {
-                        //TODO BORRAR EL HARDCODEO DEL PELUQUERO LOGEADO
-                        localStorage.setItem('idPeluqueroLogeado',10)
-                        }
                         <Route exact path="/" component={PaginaPrincipal}/>
                         <Route path="/registro" component={PaginaRegistroCliente}/>
-                        <Route path="/pelquero/registro" component={PaginaRegistroPeluquero}/>
+                        <Route path="/peluquero/registro" component={PaginaRegistroPeluquero}/>
                         <ClienteRoute path="/perfil" component={Perfil}/>
+                        <PeluqueroRoute path="/peluquero/perfil" component={PaginaGestionPeluquero} />
                         {
-                        //TODO 
-                        // hacer privado el /peluquero 
+                            //<PeluqueroRoute path="/peluquero/perfil" component={Perfil}/>
                         }
-                        <Route path="/peluquero" component={PaginaGestionPeluquero} />
-                        <PeluqueroRoute path="/peluquero/perfil" component={Perfil}/>
                         <Route path="/search" component={PaginaBusquedaPeluqueros}/>
                         <Route path="/contratar" component={PaginaContratacionPeluquero}/>
                         <Route path="*" component={PaginaError404}/>

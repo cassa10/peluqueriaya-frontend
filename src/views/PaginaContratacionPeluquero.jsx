@@ -65,7 +65,7 @@ const PaginaContratacionPeluquero = () => {
 
     const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
 
-    const [turnoPedido, setTurnoPedido] = useState({id: 0})
+    const [setTurnoPedido] = useState({id: 0})
 
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 

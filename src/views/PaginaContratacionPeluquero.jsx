@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import Can, {Cliente, NoCliente} from "../wrappers/Can";
 import {CLIENTE} from "../constants";
 import {useUser} from "../contexts/UserProvider";
+import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles({
     gridInfoPeluquero: {
@@ -70,30 +71,45 @@ const PaginaContratacionPeluquero = () => {
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
     const {cargando} = useGetPeluquero(setPeluquero)
-
+    
     const {login} = useUser();
-
-    const setTurnoPedidoAndShowDialog = (data) => {
-        setTurnoPedido(data)
-        Swal.fire(
-            'Turno solicitado!',
-            'En unos minutos, se recibirá un email cuando el peluquero confirme el turno.',
-            'success'
-        ).then(() => push("/search"));
+    
+    const handleTurnoPedidoSuccess = (turno) => {
+      if(turno.estado === "PENDIENTE"){
+            Swal.fire(
+                'Turno solicitado!',
+                'En unos minutos, se recibirá un email cuando el peluquero confirme el turno.',
+                'success'
+            ).then(() => push("/search"));
+        }else{
+            Swal.fire(
+                'Turno en espera',
+                'Su turno fue agregado en la cola de espera del peluquero, puede demorar mucho. Igualmente puede cancelar el turno mientras este se encuentre en espera.',
+                'success'
+            ).then(() => push("/search"));
+        }
     }
     
-    const {setParametros} = usePostPedirTurno(setTurnoPedidoAndShowDialog)
+    const {setParametros} = usePostPedirTurno(handleTurnoPedidoSuccess)
 
 
     const precioTotal = () => {
         return peluquero.corteMin + sumBy(serviciosSeleccionados, (servicio) => {return servicio.precio})
     }
 
+    const getUbicacion = () =>  {
+        const ubicacion = {
+            latitude: sessionStorage.getItem('userLocationLatitude'),
+            longitude: sessionStorage.getItem('userLocationLongitude')
+        }
+        return ubicacion;
+    }
+
     const handleCrearTurno = (value) => {
         if(value){
             const body = {
-                ubicacion: {latitude: "-34.706416", longitude: "-58.278559"},
-                idPeluquero: peluquero.id,
+                idCliente: cliente.id,
+                ubicacion: getUbicacion(),
                 serviciosSolicitadosId: serviciosSeleccionados.map(s => s.id)
             }
             setParametros(body)
@@ -105,13 +121,14 @@ const PaginaContratacionPeluquero = () => {
     }
 
     const showDialogServicio = (servicio) => {
-        return `- ${servicio.nombre}: $${servicio.precio} <br />`
+        return `- ${servicio.nombre}: ${formatPrice(servicio.precio)} <br />`;
     }
 
     const showDialogServicios = (serviciosSeleccionados) => {
-        let servicioBasicoItem = `- Servicio basico: $${peluquero.corteMin}`;
+        let servicioBasicoItem = `- Servicio basico: ${formatPrice(peluquero.corteMin)}`;
         if(serviciosSeleccionados.length > 0){
-            return `${serviciosSeleccionados.map(s => showDialogServicio(s))} 
+            const servicesItems = serviciosSeleccionados.map(s => showDialogServicio(s))
+            return `${servicesItems.join(' ')}
                     ${servicioBasicoItem}`;
         }
         return servicioBasicoItem;
@@ -121,7 +138,7 @@ const PaginaContratacionPeluquero = () => {
         let crearTextoDentroDialogPedirTurno = 
         `Se solicitará un turno al peluquero "${peluquero.nombre}" inmediatamente. <hr />
         ${showDialogServicios(serviciosSeleccionados)}
-         <br /> <hr /> El precio final es $${precioTotal()}
+         <br /> <hr /> El precio final es ${formatPrice(precioTotal())}
         `;
 
         Swal.fire({
@@ -182,7 +199,7 @@ const PaginaContratacionPeluquero = () => {
             <Grid item xs={6}>
                 {mostrarDatosPeluquero(peluquero)}
                 <Grid container className={classes.gridSelectorServices} direction="row" justify="center" alignItems="center" spacing={4}>
-                        <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={peluquero.corteMin} />
+                        <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={formatPrice(peluquero.corteMin)} />
                 </Grid>
                 <Grid container className={classes.botonesNav} direction="row" justify="center" alignItems="center" spacing={4}>
                     <Grid item>

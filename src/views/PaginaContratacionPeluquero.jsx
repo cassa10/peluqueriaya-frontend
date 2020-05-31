@@ -1,12 +1,11 @@
-import React from 'react';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {useGetPeluquero} from "../service/ServicioDePeluquero";
-import { usePostPedirTurno } from "../service/ServicioDeTurno";
-import { Button, Grid, Typography } from "@material-ui/core";
+import {usePostPedirTurno} from "../service/ServicioDeTurno";
+import {Button, Grid, Typography} from "@material-ui/core";
 import CirculitoCargando from "../components/CirculoCargando";
 import SelectorDeServicios from "../components/SelectorDeServicios";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import {sumBy} from "lodash";
 import Swal from 'sweetalert2';
 import Can, {Cliente, NoCliente} from "../wrappers/Can";
@@ -66,8 +65,6 @@ const PaginaContratacionPeluquero = () => {
 
     const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
 
-    const [setTurnoPedido] = useState({id: 0})
-
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
     const {cargando} = useGetPeluquero(setPeluquero)
@@ -98,18 +95,17 @@ const PaginaContratacionPeluquero = () => {
     }
 
     const getUbicacion = () =>  {
-        const ubicacion = {
+        return {
             latitude: sessionStorage.getItem('userLocationLatitude'),
             longitude: sessionStorage.getItem('userLocationLongitude')
-        }
-        return ubicacion;
+        };
     }
 
     const handleCrearTurno = (value) => {
         if(value){
             const body = {
-                idCliente: cliente.id,
                 ubicacion: getUbicacion(),
+                idPeluquero: peluquero.id,
                 serviciosSolicitadosId: serviciosSeleccionados.map(s => s.id)
             }
             setParametros(body)

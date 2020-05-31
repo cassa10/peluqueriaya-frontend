@@ -97,8 +97,7 @@ const UserProvider = ({history, children, ...initOptions}) => {
 
         return (
             <UserContext.Provider
-                value={{
-                    user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
+                value={{user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
                     getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
                 }}>
                 {children}

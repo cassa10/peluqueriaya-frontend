@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {Typography, Box, Grid} from "@material-ui/core";
 import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
 import {makeStyles} from "@material-ui/core/styles";
-import {useHistory} from "react-router";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
     img: {

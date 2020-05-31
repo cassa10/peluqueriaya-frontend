@@ -5,7 +5,7 @@ import CirculitoCargando from "../components/CirculoCargando";
 import {
     Button, Table, TableBody,
     TableCell, TableContainer, TableHead,
-    TableRow, Paper, LinearProgress, ButtonGroup, Grid
+    TableRow, Paper, LinearProgress, ButtonGroup, Grid, Typography
 } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
@@ -25,6 +25,31 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const useStyles = makeStyles({
+    panelPeluquero: {
+        marginTop: "45px",
+        marginBottom: "20px",
+        backgroundColor: "#0eacd4",
+        borderLeft: "10px solid #017787",
+        borderRight: "10px solid #017787",
+    },
+    peluqueroNombre:{
+        color: "#ffffff",
+    },
+    gridLogoItem: {
+        marginTop: "10px",
+        marginBottom: "5px",
+    },
+    logoImg: {
+        minWidth: 150,
+        maxWidth: 150,
+        minHeight: 150,
+        maxHeight: 150,
+        border: "solid",
+        borderColor: "#017787",
+    },
+    tableContainer: {
+        marginBottom: "30px",
+    },
     table: {
         minWidth: 700,
     },
@@ -72,9 +97,38 @@ const PaginaGestionPeluquero = () => {
 
     const createPanelPeluquero = () => {
         return (
-            <div>
-                Peluquero {peluquero.id} {peluquero.nombre}
-            </div>
+            <Grid container className={classes.panelPeluquero} spacing={1}>
+                <Grid item  xs={6}>
+                    {mostrarDatosPeluquero(peluquero)}
+                </Grid>
+            </Grid>
+        );
+    }
+
+    const logoPredeterminado = (logoSrc) => {
+        if (logoSrc.length > 0){
+            return logoSrc
+        }
+        return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png"
+    }
+
+    const mostrarDatosPeluquero = (peluquero) => {
+        return(
+            <Grid container item className={classes.gridInfoPeluquero} direction="row" justify="center" alignItems="center" spacing={4}>
+                    <Grid item className={classes.gridLogoItem}>
+                        <img
+                            className={classes.logoImg}
+                            src={logoPredeterminado(peluquero.logo)}
+                            alt="logo"
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Typography className={classes.peluqueroNombre} textalign="center" variant="h5" component="h2">
+                            {peluquero.nombre}
+                        </Typography>
+                    </Grid>
+
+            </Grid>
         );
     }
 
@@ -125,7 +179,7 @@ const PaginaGestionPeluquero = () => {
                     <StyledTableCell align="center">{`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}</StyledTableCell>
                     {handleShowDataIsTurnoSelected(`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`)}
                     <StyledTableCell align="center">
-                        <ModalServiciosInfoTurno corteMinInfo={turno.corteMinInfo} serviciosInfo={turno.serviciosSolicitadosInfo}/>
+                        <ModalServiciosInfoTurno turno={turno} />
                     </StyledTableCell>
                     <StyledTableCell align="center">
                         <ModalInfoClienteTurno fullname={turno.clienteFullName} email={turno.clienteEmail} ubicacion={turno.ubicacionDelTurno}/>
@@ -223,7 +277,7 @@ const PaginaGestionPeluquero = () => {
 
     const createTableDataTurnos = () => {
         return (
-            <TableContainer component={Paper}>
+            <TableContainer className={classes.tableContainer} component={Paper}>
                     {handleShowTableDataLoading()}
                     {showFilterButtons()}
                 <Table className={classes.table} aria-label="customized table">

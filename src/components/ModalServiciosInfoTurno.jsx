@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const ModalServiciosInfoTurno = ({corteMinInfo, serviciosInfo}) => {
+const ModalServiciosInfoTurno = ({turno}) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -39,19 +39,26 @@ const ModalServiciosInfoTurno = ({corteMinInfo, serviciosInfo}) => {
     return(
       <div className={classes.paper}>
           <Typography variant="h4" align="center" gutterBottom>Servicios Pedidos</Typography>
-          {mostrarCorteMinYServicios(corteMinInfo, serviciosInfo)}
-          {mostrarTotalContratado(corteMinInfo, serviciosInfo)}
+          {mostrarCorteMinYServicios(turno.corteMinInfo, turno.serviciosSolicitadosInfo)}
+          {mostrarTotalContratado(turno.estaFinalizado,turno.corteMinInfo, turno.serviciosSolicitadosInfo)}
       </div>
     );
   }
 
-  const mostrarTotalContratado = (corteMin, servicios) => {
+  const mostrarTotalContratado = (estaFinalizado, corteMin, servicios) => {
       return(
         <div>
             <Divider></Divider>
-            <Typography className={classes.precioTotalText} gutterBottom>La ganancia total que se espera es de {formatPrice(calcularPrecioTotal(corteMin,servicios))} </Typography>
+            {mostrarMensajeTotal(estaFinalizado, corteMin, servicios)}
         </div>
       );
+  }
+
+  const mostrarMensajeTotal = (estaFinalizado, corteMin, servicios) => {
+    return(
+      estaFinalizado? <Typography className={classes.precioTotalText} gutterBottom>La ganancia total fue de {formatPrice(calcularPrecioTotal(corteMin,servicios))} </Typography>:
+      <Typography className={classes.precioTotalText} gutterBottom>La ganancia total que se espera es de {formatPrice(calcularPrecioTotal(corteMin,servicios))} </Typography>
+    )
   }
 
   const calcularPrecioTotal = (corteMin,servicios) => {
@@ -113,8 +120,7 @@ const ModalServiciosInfoTurno = ({corteMinInfo, serviciosInfo}) => {
 }
 
 ModalServiciosInfoTurno.propTypes = {
-  corteMinInfo: PropTypes.number,
-  serviciosInfo: PropTypes.array,
+  turno: PropTypes.object,
 }
 
 export default ModalServiciosInfoTurno;

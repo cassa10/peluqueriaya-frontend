@@ -89,8 +89,10 @@ const UserProvider = ({history, children, ...initOptions}) => {
         };
 
         const abandonarRegistro = (rol) => {
-            setRoles(prevState => ({...prevState, [rol]: VISITANTE}));
-            if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) logout();
+            if (roles[rol] === PENDIENTE) {
+                setRoles(prevState => ({...prevState, [rol]: VISITANTE}));
+                if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) logout();
+            }
         };
 
         return (

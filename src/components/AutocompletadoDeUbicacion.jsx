@@ -1,32 +1,33 @@
 import React, {useState} from "react";
 import PropTypes from 'prop-types';
-import {makeStyles} from "@material-ui/core/styles";
-import {Paper, CircularProgress, TextField, Grid, InputAdornment, Button} from "@material-ui/core";
-import ErrorIcon from "@material-ui/icons/Error";
-import DoneIcon from "@material-ui/icons/Done";
+import {TextField, InputAdornment} from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import SearchIcon from "@material-ui/icons/Search";
 import {useGetUbicacionConCoords, useGetUbicacionConDireccion} from "../service/ServicioDeMapas";
 import AddLocationIcon from '@material-ui/icons/AddLocation';
+import IconButton from "@material-ui/core/IconButton";
+import EstadoIcon from "./EstadoIcon";
+import {makeStyles} from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import SearchIcon from "@material-ui/icons/Search";
+import Paper from "@material-ui/core/Paper";
+
 
 const useStyles = makeStyles(() => ({
-    root: {
-        display: 'flex',
-        alignItems: 'stretch',
-        justify: "center",
-        width: "80%",
+    iconButton: {
+        padding: 0
     },
-    classButton: {
-        width: "100%",
+    submitButton: {
         height: "100%"
-    },
+    }
 }));
 
-const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => {
-    const clases = useStyles();
+const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, submitUbicacion, ...props}) => {
+    const classes = useStyles();
     const [ubicaciones, setUbicaciones] = useState([]);
     const {cargandoUDC, setCoordenadas} = useGetUbicacionConCoords(setUbicacion);
-    const {cargandoUDD, setDireccion} = useGetUbicacionConDireccion(setUbicaciones)
+    const {cargandoUDD, setDireccion} = useGetUbicacionConDireccion(setUbicaciones);
 
     const seleccionoUnaPosicion = () => ubicacion !== null && ubicacion.position.lat !== "" &&
         ubicacion.position.lng !== "";
@@ -39,9 +40,7 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
         }
     };
 
-    const manejarOnChange = (e, value) => {
-        setUbicacion(value);
-    }
+    const manejarOnChange = (e, value) => setUbicacion(value);
 
     const manejarOnInputChange = (e, value, reason) => {
         if (reason !== "reset") {
@@ -56,60 +55,60 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
         autocompletarUbicacionConDireccion(value);
     };
 
-    return <Grid container className={clases.root}>
-        <Grid item xs="auto">
-            <Button variant="contained" color="secondary" className={clases.classButton}
-                    onClick={setCoordenadas}
-                    disabled={estanCargando()}>
-                <AddLocationIcon fontSize="large"/>
-            </Button>
-        </Grid>
-        <Grid item xs="auto" sm={8} md={9} lg={10}>
-            <Paper>
-                <Autocomplete disablePortal freeSolo value={ubicacion} onChange={manejarOnChange}
-                              onInputChange={manejarOnInputChange}
-                    noOptionsText={"No se encontraron resultados, escriba una dirección con más de 10 dígitos"}
-                    options={ubicaciones}
-                    loading={cargandoUDD}
-                    getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
-                    renderInput={(params) => {
-                        return <TextField {...params} color={"secondary"} variant={"outlined"}
-                                          placeholder="Ingrese su direccion, ej: Mitre 123 Quilmes"
-                            InputProps={{
-                                ...params.InputProps,
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        {!seleccionoUnaPosicion() && !estanCargando() && <ErrorIcon color="secondary"/>}
-                                        {seleccionoUnaPosicion() && !estanCargando() && <DoneIcon color="secondary"/>}
-                                        {!seleccionoUnaPosicion() && estanCargando() &&
-                                        <CircularProgress color="secondary" size={30}/>}
-                                    </InputAdornment>
-                                )
-                            }}
-                        />;
-                    }}
-                />
-            </Paper>
-        </Grid>
-        {botonOpcional &&
-        <Grid item xs={1}>
-            <Button variant="contained"
-                    className={clases.classButton}
-                    size="large"
-                    color="secondary"
-                    type="submit"
-                    onClick={botonOpcional.onClick}
-                    disabled={estanCargando() || !seleccionoUnaPosicion()}>
-                <SearchIcon/>
-            </Button>
-        </Grid>}
-    </Grid>
-}
+    const renderInput = (params) =>
+        <TextField {...params} color="secondary" variant="outlined" {...props}
+                   placeholder="Ingrese su dirección con localidad" InputProps={{
+            ...params.InputProps,
+            startAdornment: (
+                <InputAdornment position="start">
+                    <Tooltip title="Usar mi ubicación">
+                        <IconButton color="secondary" component="span" onClick={setCoordenadas}
+                                    disabled={estanCargando()} className={classes.iconButton}>
+                            <AddLocationIcon fontSize="large"/>
+                        </IconButton>
+                    </Tooltip>
+                    <EstadoIcon cargando={estanCargando()} condicion={seleccionoUnaPosicion()}/>
+                </InputAdornment>)
+        }}
+        />;
+
+    const renderComponente = () => (
+        <Autocomplete fullWidth
+                      freeSolo
+                      value={ubicacion}
+                      onChange={manejarOnChange}
+                      onInputChange={manejarOnInputChange}
+                      options={ubicaciones}
+                      loading={cargandoUDD}
+                      getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
+                      renderInput={renderInput}
+        />
+    );
+
+    if (submitUbicacion) {
+        return <Grid container spacing={1}>
+            <Grid item xs={11}>
+                <Paper>
+                    {renderComponente()}
+                </Paper>
+            </Grid>
+            <Grid item xs={1}>
+                <Button variant="contained" size="large" color="secondary" type="submit"
+                         className={classes.submitButton} onClick={() => submitUbicacion()}
+                        disabled={estanCargando() || !seleccionoUnaPosicion()}>
+                    <SearchIcon/>
+                </Button>
+            </Grid>
+        </Grid>;
+    }
+
+    return renderComponente();
+};
 
 AutocompletadoDeUbicacion.propTypes = {
-    ubicacion: PropTypes.object, 
-    setUbicacion: PropTypes.func, 
-    botonOpcional: PropTypes.object,
-}
+    ubicacion: PropTypes.object,
+    setUbicacion: PropTypes.func,
+    submitUbicacion: PropTypes.func
+};
 
 export default AutocompletadoDeUbicacion;

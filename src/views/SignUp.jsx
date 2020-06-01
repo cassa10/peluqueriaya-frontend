@@ -25,8 +25,7 @@ const SignUp = () => {
             </Grid>
             <Grid container item xs={12} sm={6} spacing={2}>
                 <Campo name="imgPerfil" label="Enlace de imagen de perfil" autoComplete="photo"/>
-                <Campo name="password" label="Password" type="password" autoComplete="current-password"/>
-                <Grid container item display="flex">
+                <Grid item xs={12}>
                     <AutocompletadoDeUbicacion ubicacion={ubicacion} setUbicacion={setUbicacion}/>
                 </Grid>
                 <BotonSubmit/>

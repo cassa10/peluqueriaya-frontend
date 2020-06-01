@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 
 
 const BotonSubmit = ({...props}) => {
-    return <Grid item container xs={12} justify="center">
+    return <Grid container item xs={12} justify="center">
         <Button type="submit" variant="contained" color="primary" size="large" {...props}>
             Registrar
         </Button>

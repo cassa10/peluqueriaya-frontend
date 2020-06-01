@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 const Campo = ({sm, name, ...props}) => (
     <Grid item xs={12} sm={sm}>
-        <TextField variant="outlined" required fullWidth id={name} name={name} {...props}/>
+        <TextField variant="outlined" color="secondary" required fullWidth id={name} name={name} {...props}/>
     </Grid>
 );
 

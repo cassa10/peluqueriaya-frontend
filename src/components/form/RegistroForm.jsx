@@ -50,7 +50,7 @@ const RegistroForm = ({nombre, children}) => {
 
 RegistroForm.propTypes = {
     nombre: PropTypes.string.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.array.isRequired,
 };
 
 export default RegistroForm;

@@ -5,6 +5,7 @@ import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
 import {makeStyles} from "@material-ui/core/styles";
 import {useHistory} from "react-router-dom";
 
+
 const useStyles = makeStyles(() => ({
     img: {
         margin: 'auto',
@@ -40,11 +41,9 @@ const PaginaPrincipal = () => {
         <Typography variant="h6" gutterBottom>
             Busque su peluquero mas cercano.
         </Typography>
-        <Box display={"flex"} justifyContent={"center"} p={4}>
-            <AutocompletadoDeUbicacion
-                ubicacion={ubicacion}
-                setUbicacion={setUbicacion}
-                botonOpcional={{onClick: buscarPeluqueros}}/>
+        <Box display={"flex"} justifyContent="center" p={4} m={3}>
+            <AutocompletadoDeUbicacion ubicacion={ubicacion} setUbicacion={setUbicacion}
+                                       submitUbicacion={() => buscarPeluqueros()}/>
         </Box>
     </Box>
 

@@ -13,6 +13,7 @@ import Perfil from "./Perfil";
 import {ClienteRoute, PeluqueroRoute} from "../wrappers/PrivateRoute";
 import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import SignUp from "../views/SignUp";
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
                         <Route exact path="/" component={PaginaPrincipal}/>
                         <Route path="/registro" component={PaginaRegistroCliente}/>
                         <Route path="/pelquero/registro" component={PaginaRegistroPeluquero}/>
+                        <Route path="/reg" component={SignUp}/>
                         <ClienteRoute path="/perfil" component={Perfil}/>
                         <PeluqueroRoute path="/peluquero/perfil" component={Perfil}/>
                         <Route path="/search" component={PaginaBusquedaPeluqueros}/>

@@ -28,11 +28,8 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
     const {cargandoUDC, setCoordenadas} = useGetUbicacionConCoords(setUbicacion);
     const {cargandoUDD, setDireccion} = useGetUbicacionConDireccion(setUbicaciones)
 
-    const seleccionoUnaPosicion = () => {
-        return ubicacion !== null &&
-            ubicacion.position.lat !== "" &&
-            ubicacion.position.lng !== "";
-    }
+    const seleccionoUnaPosicion = () => ubicacion !== null && ubicacion.position.lat !== "" &&
+        ubicacion.position.lng !== "";
 
     const estanCargando = () => cargandoUDC || cargandoUDD;
 
@@ -69,22 +66,15 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
         </Grid>
         <Grid item xs="auto" sm={8} md={9} lg={10}>
             <Paper>
-                <Autocomplete
-                    disablePortal
-                    freeSolo
-                    value={ubicacion}
-                    onChange={manejarOnChange}
-                    onInputChange={manejarOnInputChange}
+                <Autocomplete disablePortal freeSolo value={ubicacion} onChange={manejarOnChange}
+                              onInputChange={manejarOnInputChange}
                     noOptionsText={"No se encontraron resultados, escriba una dirección con más de 10 dígitos"}
                     options={ubicaciones}
                     loading={cargandoUDD}
                     getOptionLabel={(option) => (typeof option === 'string' ? option : option.title)}
                     renderInput={(params) => {
-                        return <TextField
-                            {...params}
-                            color={"secondary"}
-                            variant={"outlined"}
-                            placeholder="Ingrese su direccion, ej: Mitre 123 Quilmes"
+                        return <TextField {...params} color={"secondary"} variant={"outlined"}
+                                          placeholder="Ingrese su direccion, ej: Mitre 123 Quilmes"
                             InputProps={{
                                 ...params.InputProps,
                                 startAdornment: (
@@ -101,8 +91,8 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
                 />
             </Paper>
         </Grid>
+        {botonOpcional &&
         <Grid item xs={1}>
-            {botonOpcional &&
             <Button variant="contained"
                     className={clases.classButton}
                     size="large"
@@ -111,8 +101,8 @@ const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, botonOpcional}) => 
                     onClick={botonOpcional.onClick}
                     disabled={estanCargando() || !seleccionoUnaPosicion()}>
                 <SearchIcon/>
-            </Button>}
-        </Grid>
+            </Button>
+        </Grid>}
     </Grid>
 }
 

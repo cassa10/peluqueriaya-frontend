@@ -20,7 +20,7 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
             longitude: sessionStorage.getItem('userLocationLongitude')
         }
         if (ubicacionLocal.latitude === null || ubicacionLocal.longitude === null) push("/");
-        else setParametros({...ubicacionLocal, size: tamanioPagina});
+        else setParametros({...ubicacionLocal, size: tamanioPagina, sort: 'nombre,desc'});
         // eslint-disable-next-line
     }, [])
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGetPeluqueroLogeado } from "../service/ServicioDePeluquero";
-import { useGetTurnosPeluquero } from "../service/ServicioDeTurno";
+import { useGetTurnosPeluquero, usePostConfirmarTurno, usePostFinalizarTurno } from "../service/ServicioDeTurno";
 import CirculitoCargando from "../components/CirculoCargando";
 import {
     Button, Table, TableBody,
@@ -15,6 +15,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IconSvg from "../components/IconSvg";
 import formatDate from '../formatters/formatDate';
 import formatTime from '../formatters/formatTime';
+import Swal from 'sweetalert2';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -97,6 +98,12 @@ const PaginaGestionPeluquero = () => {
 
     const [isOrdRecientes, setIsOrdRecientes] = useState(false);
 
+    const refreshTurnos = () => setFiltro();
+
+    const {setIdTurnoInParamConfirmarTurno} = usePostConfirmarTurno(refreshTurnos)
+
+    const {setIdTurnoInParamFinalizarTurno} = usePostFinalizarTurno(refreshTurnos)
+
     const createPanelPeluquero = () => {
         return (
             <Grid container className={classes.panelPeluquero} spacing={1}>
@@ -170,20 +177,41 @@ const PaginaGestionPeluquero = () => {
         );
     }
     
-    const handleActionConfirmar = () => {
-        console.log('Confirma3');
+    const showDialogAction = (mensaje, idTurno, fAction) => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            html: mensaje,
+            showCancelButton: true,
+            cancelButtonColor: 'Red',
+            confirmButtonColor: 'Green',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'De acuerdo',
+            reverseButtons: true,
+        }).then((result) => handleFAction(result.value, idTurno, fAction))
     }
 
-    const handleActionFinalizar = () => {
-        console.log('Finaliza3');
+    const handleFAction = (isAcepted, idTurno, fAction) => {
+        if(isAcepted){
+            fAction(idTurno);
+        }
+    }
+    
+    const handleActionConfirmar = (idTurno) => {
+        const dialogMessage = 'Esto quiere decir que el cliente va a ser atendido.' +
+        '<br /> Además, una vez que confirmes el turno, no podrás desconectarte hasta que este finalice.';
+        showDialogAction(dialogMessage,idTurno,setIdTurnoInParamConfirmarTurno);
+    }
+
+    const handleActionFinalizar = (idTurno) => {
+        const dialogMessage = '¡Esto quiere decir que el usuario ya fue atendido!';
+        showDialogAction(dialogMessage,idTurno,setIdTurnoInParamFinalizarTurno);
     }
     
     const showAppropiateActionButton = (turno) => {
-        console.log(turno);
         return(
             turno.estaPendiente?
-                <Button onClick={handleActionConfirmar}>Confirmar <CheckCircleIcon /></Button>:
-                <Button onClick={handleActionFinalizar}>Finalizar
+                <Button onClick={() => handleActionConfirmar(turno.id)}>Confirmar <CheckCircleIcon /></Button>:
+                <Button onClick={() => handleActionFinalizar(turno.id)}>Finalizar
                     <IconSvg idSvg="handshake" width="42px" height="36px" style={{marginTop: "6px"}}/>
                 </Button>
         );
@@ -262,7 +290,7 @@ const PaginaGestionPeluquero = () => {
     }
 
     const handleActualizarTurnos = () => {
-        setFiltro()
+        refreshTurnos()
     }
 
     const showFilterButtons = () => {

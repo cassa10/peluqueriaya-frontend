@@ -38,3 +38,19 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
     
     return {cargandoTurnos: cargando, setFiltro, limpiarFiltro}
 }
+
+export const usePostConfirmarTurno = (setterResponseData) => {
+    const {cargando, setParametros} = usePostConAuth("/turno/confirmar", setterResponseData);
+
+    const setIdTurnoInParamConfirmarTurno = (id) => setParametros({idTurno: id});
+
+    return {cargandoConfirmarTurno: cargando, setIdTurnoInParamConfirmarTurno};
+}
+
+export const usePostFinalizarTurno = (setterResponseData) => {
+    const {cargando, setParametros} = usePostConAuth("/turno/finalizar", setterResponseData);
+
+    const setIdTurnoInParamFinalizarTurno = (id) => setParametros({idTurno: id});
+
+    return {cargandoFinalizarTurno: cargando, setIdTurnoInParamFinalizarTurno};
+}

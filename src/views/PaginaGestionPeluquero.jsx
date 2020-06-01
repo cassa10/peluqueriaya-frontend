@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useGetPeluqueroLogeado } from "../service/ServicioDePeluquero";
-import { useGetTurnosPeluquero } from "../service/ServicioDeTurno";
+import { useGetTurnosPeluquero, usePostConfirmarTurno, usePostFinalizarTurno } from "../service/ServicioDeTurno";
 import CirculitoCargando from "../components/CirculoCargando";
 import {
     Button, Table, TableBody,
@@ -11,8 +11,11 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
 import ModalInfoClienteTurno from "../components/ModalInfoClienteTurno";
 import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import IconSvg from "../components/IconSvg";
 import formatDate from '../formatters/formatDate';
 import formatTime from '../formatters/formatTime';
+import Swal from 'sweetalert2';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -95,6 +98,12 @@ const PaginaGestionPeluquero = () => {
 
     const [isOrdRecientes, setIsOrdRecientes] = useState(false);
 
+    const refreshTurnos = () => setFiltro();
+
+    const {setIdTurnoInParamConfirmarTurno} = usePostConfirmarTurno(refreshTurnos)
+
+    const {setIdTurnoInParamFinalizarTurno} = usePostFinalizarTurno(refreshTurnos)
+
     const createPanelPeluquero = () => {
         return (
             <Grid container className={classes.panelPeluquero} spacing={1}>
@@ -162,9 +171,49 @@ const PaginaGestionPeluquero = () => {
         );
     }
 
-    const handleShowDataIsTurnoSelected = (data) => {
+    const handleShowDataInRow = (isShow, data) => {
         return(
-            !isTurnosSelected?<StyledTableCell align="center">{data}</StyledTableCell>:null
+            isShow?<StyledTableCell align="center">{data}</StyledTableCell>:null
+        );
+    }
+    
+    const showDialogAction = (mensaje, idTurno, fAction) => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            html: mensaje,
+            showCancelButton: true,
+            cancelButtonColor: 'Red',
+            confirmButtonColor: 'Green',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'De acuerdo',
+            reverseButtons: true,
+        }).then((result) => handleFAction(result.value, idTurno, fAction))
+    }
+
+    const handleFAction = (isAcepted, idTurno, fAction) => {
+        if(isAcepted){
+            fAction(idTurno);
+        }
+    }
+    
+    const handleActionConfirmar = (idTurno) => {
+        const dialogMessage = 'Esto quiere decir que el cliente va a ser atendido.' +
+        '<br /> Además, una vez que confirmes el turno, no podrás desconectarte hasta que este finalice.';
+        showDialogAction(dialogMessage,idTurno,setIdTurnoInParamConfirmarTurno);
+    }
+
+    const handleActionFinalizar = (idTurno) => {
+        const dialogMessage = '¡Esto quiere decir que el usuario ya fue atendido!';
+        showDialogAction(dialogMessage,idTurno,setIdTurnoInParamFinalizarTurno);
+    }
+    
+    const showAppropiateActionButton = (turno) => {
+        return(
+            turno.estaPendiente?
+                <Button onClick={() => handleActionConfirmar(turno.id)}>Confirmar <CheckCircleIcon /></Button>:
+                <Button onClick={() => handleActionFinalizar(turno.id)}>Finalizar
+                    <IconSvg idSvg="handshake" width="42px" height="36px" style={{marginTop: "6px"}}/>
+                </Button>
         );
     }
 
@@ -177,14 +226,15 @@ const PaginaGestionPeluquero = () => {
                         {turno.estado}
                     </StyledTableCell>
                     <StyledTableCell align="center">{`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}</StyledTableCell>
-                    {handleShowDataIsTurnoSelected(`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`)}
+                    {handleShowDataInRow(!isTurnosSelected,`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`)}
                     <StyledTableCell align="center">
                         <ModalServiciosInfoTurno turno={turno} />
                     </StyledTableCell>
                     <StyledTableCell align="center">
                         <ModalInfoClienteTurno fullname={turno.clienteFullName} email={turno.clienteEmail} ubicacion={turno.ubicacionDelTurno}/>
                     </StyledTableCell>
-                    {handleShowDataIsTurnoSelected(showPuntuacionData(turno.puntaje))}
+                    {handleShowDataInRow(isTurnosSelected,showAppropiateActionButton(turno))}
+                    {handleShowDataInRow(!isTurnosSelected, showPuntuacionData(turno.puntaje))}
                 </TableRow>
             ))}
             </TableBody>
@@ -240,7 +290,7 @@ const PaginaGestionPeluquero = () => {
     }
 
     const handleActualizarTurnos = () => {
-        setFiltro()
+        refreshTurnos()
     }
 
     const showFilterButtons = () => {
@@ -269,9 +319,9 @@ const PaginaGestionPeluquero = () => {
         );
     }
 
-    const handleShowIsTurnosSelected = (columnName) => {
+    const handleShowColumn = (isShow, columnName) => {
         return(
-            !isTurnosSelected?<StyledTableCell align="center">{columnName}</StyledTableCell>:null
+            isShow?<StyledTableCell align="center">{columnName}</StyledTableCell>:null
         );
     }
 
@@ -285,10 +335,11 @@ const PaginaGestionPeluquero = () => {
                         <TableRow>
                             <StyledTableCell align="center">Estado</StyledTableCell>
                             <StyledTableCell align="center">Fecha Inicio</StyledTableCell>
-                            {handleShowIsTurnosSelected('Fecha Fin')}
+                            {handleShowColumn(!isTurnosSelected,'Fecha Fin')}
                             <StyledTableCell align="center">Servicios Pedidos</StyledTableCell>
                             <StyledTableCell align="center">Información del Cliente</StyledTableCell>
-                            {handleShowIsTurnosSelected('Puntuación')}
+                            {handleShowColumn(isTurnosSelected,'Acción')}
+                            {handleShowColumn(!isTurnosSelected,'Puntuación')}
                         </TableRow>
                     </TableHead>
                     {handleShowTurnos()}

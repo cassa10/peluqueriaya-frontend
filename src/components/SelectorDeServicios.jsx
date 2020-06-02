@@ -49,6 +49,7 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
           <ListItem className={classes.item} role={undefined} dense button id="list_item_corteMin">
             <ListItemIcon>
               <Checkbox
+                id="checkbox-list-label-corteMin"
                 edge="start"
                 tabIndex={-1}
                 defaultChecked
@@ -73,9 +74,10 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
     return (
       <div key={servicio.id} id={`list_item_${servicio.id}`}>
         <Grid container>
-          <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)}>
+          <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)} id={`list-item-${servicio.id}`}>
             <ListItemIcon>
               <Checkbox
+                id={`${labelId}`}
                 edge="start"
                 checked={checked.includes(servicio)}
                 tabIndex={-1}

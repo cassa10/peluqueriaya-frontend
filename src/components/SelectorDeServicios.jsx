@@ -24,8 +24,6 @@ const useStyles = makeStyles({
   }
 });
 
-//Observacion: corteMin formateado
-
 const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
   const classes = useStyles();
   const [checked, setChecked] = useState([]);
@@ -48,7 +46,7 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
     return(
       <div>
         <Grid container>
-          <ListItem className={classes.item} role={undefined} dense button>
+          <ListItem className={classes.item} role={undefined} dense button id="list_item_corteMin">
             <ListItemIcon>
               <Checkbox
                 edge="start"
@@ -60,9 +58,9 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
                 color="default"
               />
             </ListItemIcon>
-            <ListItemText primary={"Servicio básico"} />
+            <ListItemText primary={"Servicio básico"} id={'checkbox-list-label-corteMin-text'}/>
             <Grid>
-              <ListItemText primary={corteMin}/>
+              <ListItemText primary={formatPrice(corteMin)} id={'checkbox-list-label-corteMin-text-price'}/>
             </Grid>
           </ListItem>
         </Grid>
@@ -71,34 +69,39 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
     )
   }
 
+  const createServicioItem = (servicio, labelId) => {
+    return (
+      <div key={servicio.id} id={`list_item_${servicio.id}`}>
+        <Grid container>
+          <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)}>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={checked.includes(servicio)}
+                tabIndex={-1}
+                disableRipple
+                inputProps={{ 'aria-labelledby': labelId}}
+                color="default"
+              />
+            </ListItemIcon>
+            <ListItemText id={`${labelId}-text`} primary={servicio.nombre}/>
+            <Grid>
+              <ListItemText id={`${labelId}-text-price`} primary={formatPrice(servicio.precio)}/>
+            </Grid>
+          </ListItem>
+        </Grid>
+        <Divider/>
+      </div>
+    );
+  }
+  
+
   return (
     <List className={classes.root}>
       {mostrarServicioMinimoNoElegible()}
       {servicios.map((servicio) => {
         const labelId = `checkbox-list-label-${servicio.id}`;
-        return (
-          <div key={servicio.id}>
-            <Grid container>
-              <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)}>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={checked.includes(servicio)}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                    color="default"
-                  />
-                </ListItemIcon>
-                <ListItemText id={labelId} primary={servicio.nombre} />
-                <Grid>
-                  <ListItemText id={labelId} primary={formatPrice(servicio.precio)}/>
-                </Grid>
-              </ListItem>
-            </Grid>
-            <Divider/>
-          </div>
-        );
+        return(createServicioItem(servicio,labelId));
       })}
     </List>
   );
@@ -107,8 +110,7 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
 SelectorDeServicios.propTypes = {
     servicios: PropTypes.array,
     handleChecked: PropTypes.func,
-    corteMin: PropTypes.string,
+    corteMin: PropTypes.number,
 }
-
 
 export default SelectorDeServicios;

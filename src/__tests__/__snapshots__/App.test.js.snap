@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`App App levanta en loading 1`] = `
+<WithStyles(ForwardRef(LinearProgress))
+  color="secondary"
+/>
+`;
+
 exports[`App App levanta sin problemas 1`] = `
 <div>
   <Barra />

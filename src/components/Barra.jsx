@@ -8,7 +8,7 @@ import {useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {useUser} from "../contexts/UserProvider";
 import Can, {NoCliente, NoPeluquero, Registrado} from "../wrappers/Can";
-import {CLIENTE, PELUQUERO} from "../constants";
+import {CLIENTE, PELUQUERO} from "../assets/constants";
 
 
 const useStyles = makeStyles((theme) => ({

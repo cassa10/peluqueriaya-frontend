@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useUser} from "../contexts/UserProvider";
 import Can, {Cliente, Pendiente} from "../wrappers/Can";
 import Perfil from "../components/Perfil";
-import {CLIENTE} from "../constants";
+import {CLIENTE} from "../assets/constants";
 
 
 const PaginaRegistroCliente = () => {

@@ -1,5 +1,5 @@
 import {Children, cloneElement, isValidElement} from "react";
-import {CLIENTE, PELUQUERO, PENDIENTE, REGISTRADO, VISITANTE} from "../constants";
+import {CLIENTE, PELUQUERO, PENDIENTE, REGISTRADO, VISITANTE} from "../assets/constants";
 import {useUser} from "../contexts/UserProvider";
 
 export const Cliente = ({children, roles}) => roles[CLIENTE] === REGISTRADO && children;

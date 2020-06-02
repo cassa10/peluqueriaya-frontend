@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import Can, {Peluquero, Pendiente} from "../wrappers/Can";
 import Perfil from "../components/Perfil";
-import {PELUQUERO} from "../constants";
+import {PELUQUERO} from "../assets/constants";
 import {useUser} from "../contexts/UserProvider";
 
 

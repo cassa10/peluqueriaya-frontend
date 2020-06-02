@@ -10,7 +10,7 @@ import {
     URI_CASA,
     URI_LOGIN_CLIENTE,
     URI_LOGIN_PELUQUERO, PENDIENTE
-} from "../constants";
+} from "../assets/constants";
 
 export const UserContext = createContext();
 export const useUser = () => useContext(UserContext);

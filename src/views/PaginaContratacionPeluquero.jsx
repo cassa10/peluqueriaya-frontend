@@ -195,7 +195,7 @@ const PaginaContratacionPeluquero = () => {
             <Grid item xs={6}>
                 {mostrarDatosPeluquero(peluquero)}
                 <Grid container className={classes.gridSelectorServices} direction="row" justify="center" alignItems="center" spacing={4}>
-                        <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={formatPrice(peluquero.corteMin)} />
+                    <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={peluquero.corteMin} />
                 </Grid>
                 <Grid container className={classes.botonesNav} direction="row" justify="center" alignItems="center" spacing={4}>
                     <Grid item>

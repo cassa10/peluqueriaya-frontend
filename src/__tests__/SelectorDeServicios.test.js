@@ -26,7 +26,7 @@ describe('SelectordeServiciosComponent', () => {
             const component = shallow(<SelectorDeServicios servicios={servicios} handleChecked={handleCheckedFn} corteMin={corteMin} />);
             expect(existeListItem(component, 'corteMin')).toBeTruthy();
             expect(textoDescripcionListItem(component,'corteMin')).toEqual('Servicio básico');
-            expect(textoPrecioListItem(component,'corteMin')).toEqual('$100.55');
+            expect(textoPrecioListItem(component,'corteMin')).toEqual(formatPrice(100.55));
         });
         
         it('con los tres servicios y corteMin 200, se muestra el servicio básico con precio $200 con el texto $200.00 y los servicios con sus nombres y precios', () => {
@@ -35,7 +35,7 @@ describe('SelectordeServiciosComponent', () => {
             const component = shallow(<SelectorDeServicios servicios={servicios} handleChecked={handleCheckedFn} corteMin={corteMin} />);
             expect(existeListItem(component, 'corteMin')).toBeTruthy();
             expect(textoDescripcionListItem(component,'corteMin')).toEqual('Servicio básico');
-            expect(textoPrecioListItem(component,'corteMin')).toEqual('$200.00');
+            expect(textoPrecioListItem(component,'corteMin')).toEqual(formatPrice(200));
             assertExistenTodosLosListItemsYSusRespectivasDescripcionesYPrecios(component, servicios);
         });
 

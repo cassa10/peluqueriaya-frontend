@@ -1,30 +1,60 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useUser} from "../contexts/UserProvider";
 import Can, {Cliente, Pendiente} from "../wrappers/Can";
-import Perfil from "../components/Perfil";
 import {CLIENTE} from "../assets/constants";
+import {Redirect} from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
+import Campo from "../components/form/Campo";
+import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
+import BotonSubmit from "../components/form/BotonSubmit";
+import RegistroForm from "../components/form/RegistroForm";
+import {useForm} from "react-hook-form";
+import clienteSchema from "../assets/validations/clienteSchema";
 
 
 const PaginaRegistroCliente = () => {
-    const { empezarRegistro, abandonarRegistro} = useUser();
+    const {empezarRegistro, abandonarRegistro} = useUser();
+    const [ubicacion, setUbicacion] = useState(null);
+    const [valido, setValido] = useState(false);
+    const {register, handleSubmit, watch, errors} = useForm({
+        reValidateMode: "onChange",
+        validationSchema: clienteSchema
+    });
 
     useEffect(() => {
-        empezarRegistro(CLIENTE)
+        empezarRegistro(CLIENTE);
         return async () => {
             await abandonarRegistro(CLIENTE);
-        }// eslint-disable-next-line
-    },[])
+        };// eslint-disable-next-line
+    }, []);
 
+    const onSubmit = data => console.log(data);
+
+    const formProps = () => ({errors, inputRef: register});
 
     return (
         <Can>
             <Cliente>
-                <Perfil/>
+                <Redirect to="/perfil"/>
             </Cliente>
             <Pendiente>
-                <div>
-                    <div> Soy pagina de registro de cliente!</div>
-                </div>
+                <RegistroForm nombre="Registro" onSubmit={handleSubmit(onSubmit)} avatarSrc={watch("imgPerfil")}>
+                    <Grid container item xs={12} sm={6} spacing={2}>
+                        <Campo sm={6} name="nombre" label="Nombre" autoComplete="given-name"
+                               autoFocus {...formProps()}/>
+                        <Campo sm={6} name="apellido" label="Apellido" autoComplete="family-name" {...formProps()}/>
+                        <Campo name="emailOpcional" label="Correo Electronico" autoComplete="email" {...formProps()}/>
+                        <Campo name="nroTelefono" label="Numero de Telefono" autoComplete="tel" {...formProps()}/>
+                    </Grid>
+                    <Grid container item xs={12} sm={6} spacing={2}>
+                        <Campo name="imgPerfil" label="Enlace de imagen de perfil"
+                               autoComplete="photo" {...formProps()}/>
+                        <Grid item xs={12}>
+                            <AutocompletadoDeUbicacion {...{ubicacion, setUbicacion, valido, setValido}}/>
+                        </Grid>
+                        <BotonSubmit disabled={!valido}/>
+                    </Grid>
+                </RegistroForm>
             </Pendiente>
         </Can>
     );

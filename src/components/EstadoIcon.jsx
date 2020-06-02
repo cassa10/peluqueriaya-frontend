@@ -6,9 +6,9 @@ import {CircularProgress} from "@material-ui/core";
 
 
 const EstadoIcon = ({condicion, cargando}) => {
-    if (!condicion && !cargando) return <ErrorIcon color="secondary"/>;
     if (condicion && !cargando) return <DoneIcon color="secondary"/>;
-    if (!condicion && cargando) return <CircularProgress color="secondary" size={30}/>;
+    if (cargando) return <CircularProgress color="secondary" size={30}/>;
+    return <ErrorIcon color="secondary"/>;
 };
 
 EstadoIcon.propTypes = {

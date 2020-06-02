@@ -22,24 +22,24 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
-        width: theme.spacing(7),
-        height: theme.spacing(7)
+        width: theme.spacing(8),
+        height: theme.spacing(8)
     }
 }));
 
-const RegistroForm = ({nombre, children}) => {
+const RegistroForm = ({nombre, onSubmit, avatarSrc, children}) => {
     const clases = useStyles();
 
     return (
         <Container component="main" maxWidth="md">
             <div className={clases.paper}>
-                <Avatar className={clases.avatar}>
+                <Avatar className={clases.avatar} src={avatarSrc}>
                     <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     {nombre}
                 </Typography>
-                <form className={clases.form}>
+                <form className={clases.form} onSubmit={onSubmit}>
                     <Grid container spacing={2}>
                         {children}
                     </Grid>
@@ -50,6 +50,8 @@ const RegistroForm = ({nombre, children}) => {
 
 RegistroForm.propTypes = {
     nombre: PropTypes.string.isRequired,
+    avatarSrc: PropTypes.string,
+    onSubmit: PropTypes.func.isRequired,
     children: PropTypes.array.isRequired,
 };
 

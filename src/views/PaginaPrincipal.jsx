@@ -62,7 +62,7 @@ const PaginaPrincipal = () => {
                         <SearchIcon/>
                     </Button>
                 </Grid>
-            </Grid>;
+            </Grid>
         </Box>
     </Box>;
 

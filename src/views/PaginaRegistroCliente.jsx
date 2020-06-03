@@ -10,15 +10,22 @@ import BotonSubmit from "../components/form/BotonSubmit";
 import RegistroForm from "../components/form/RegistroForm";
 import {useForm} from "react-hook-form";
 import clienteSchema from "../assets/validations/clienteSchema";
+import {usePostCliente} from "../service/ServicioDeCliente";
+import {useNotificacion} from "../contexts/NotificacionProvider";
 
 
 const PaginaRegistroCliente = () => {
-    const {empezarRegistro, abandonarRegistro} = useUser();
+    const {empezarRegistro, abandonarRegistro, registrar} = useUser();
     const [ubicacion, setUbicacion] = useState(null);
     const [valido, setValido] = useState(false);
     const {register, handleSubmit, watch, errors} = useForm({
         reValidateMode: "onChange",
         validationSchema: clienteSchema
+    });
+    const {setNotificacion} = useNotificacion();
+    const {cargando, setCliente} = usePostCliente(({message: mensaje}) => {
+        registrar(CLIENTE);
+        setNotificacion({mensaje, severidad: "success"});
     });
 
     useEffect(() => {
@@ -28,7 +35,7 @@ const PaginaRegistroCliente = () => {
         };// eslint-disable-next-line
     }, []);
 
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => setCliente({ubicacion, ...data});
 
     const formProps = () => ({errors, inputRef: register});
 
@@ -43,8 +50,8 @@ const PaginaRegistroCliente = () => {
                         <Campo sm={6} name="nombre" label="Nombre" autoComplete="given-name"
                                autoFocus {...formProps()}/>
                         <Campo sm={6} name="apellido" label="Apellido" autoComplete="family-name" {...formProps()}/>
-                        <Campo name="emailOpcional" label="Correo Electronico" autoComplete="email" {...formProps()}/>
-                        <Campo name="nroTelefono" label="Numero de Telefono" autoComplete="tel" {...formProps()}/>
+                        <Campo name="emailOpcional" label="Correo Electrónico" autoComplete="email" {...formProps()}/>
+                        <Campo name="nroTelefono" label="Numero de Teléfono" autoComplete="tel" {...formProps()}/>
                     </Grid>
                     <Grid container item xs={12} sm={6} spacing={2}>
                         <Campo name="imgPerfil" label="Enlace de imagen de perfil"
@@ -52,7 +59,7 @@ const PaginaRegistroCliente = () => {
                         <Grid item xs={12}>
                             <AutocompletadoDeUbicacion {...{ubicacion, setUbicacion, valido, setValido}}/>
                         </Grid>
-                        <BotonSubmit disabled={!valido}/>
+                        <BotonSubmit disabled={!valido || cargando}/>
                     </Grid>
                 </RegistroForm>
             </Pendiente>

@@ -95,10 +95,11 @@ const UserProvider = ({history, children, ...initOptions}) => {
             }
         };
 
-        return (
-            <UserContext.Provider
+        const registrar = (rol) => setRoles(prevState => ({...prevState, [rol]: REGISTRADO}));
+
+        return (<UserContext.Provider
                 value={{user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
-                    getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
+                    registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
                 }}>
                 {children}
             </UserContext.Provider>

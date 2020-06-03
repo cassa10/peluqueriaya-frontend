@@ -15,6 +15,7 @@ import {ClienteRoute, PeluqueroRoute} from "../wrappers/PrivateRoute";
 import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import NotificacionProvider from "../contexts/NotificacionProvider";
+import SignUp from "../views/SignUp";
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
                         <Switch>
                             <Route exact path="/" component={PaginaPrincipal}/>
                             <Route path="/registro" component={PaginaRegistroCliente}/>
+                            <Route path="/reg" component={SignUp}/>
                             <Route path="/peluquero/registro" component={PaginaRegistroPeluquero}/>
                             <ClienteRoute path="/perfil" component={Perfil}/>
                             <PeluqueroRoute path="/peluquero/perfil" component={PaginaGestionPeluquero} />

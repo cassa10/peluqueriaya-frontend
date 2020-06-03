@@ -1,5 +1,5 @@
 import {useGet} from "./API";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useHistory} from "react-router-dom";
 
 export const useGetPeluqueros = (tamanioPagina, fDatos) => {
@@ -20,7 +20,7 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
             longitude: sessionStorage.getItem('userLocationLongitude')
         }
         if (ubicacionLocal.latitude === null || ubicacionLocal.longitude === null) push("/");
-        else setParametros({...ubicacionLocal, size: tamanioPagina});
+        else setParametros({...ubicacionLocal, size: tamanioPagina, sort: 'nombre,desc'});
         // eslint-disable-next-line
     }, [])
 
@@ -37,16 +37,30 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
     return {cargando, setFiltro, limpiarFiltro}
 }
 
-export const useGetPeluquero = (setterDatos) => {
+export const useGetPeluqueroAContratar = (setterDatos) => {
 
-    const [idPeluquero] = useState(sessionStorage.getItem('idPeluqueroAContratar'))
-    const {cargando, setParametros} = useGet(`/peluquero/${idPeluquero}`, (datos) => setterDatos(datos));
+    const {cargando, setParametros} = useGet(`/peluquero/${sessionStorage.getItem('idPeluqueroAContratar')}`, (datos) => setterDatos(datos));
     const {push} = useHistory();
 
     //Si no aplico el setParametros no se me setean los datos
     useEffect(() => {
         const idPeluqueroStorage = sessionStorage.getItem('idPeluqueroAContratar')
         idPeluqueroStorage === null ? push("/search"): setParametros({});
+        // eslint-disable-next-line
+    },[push])
+    
+    return {cargando}
+}
+
+export const useGetPeluqueroLogeado = (setterDatos) => {
+
+    const {cargando, setParametros} = useGet(`/peluquero/${localStorage.getItem('idPeluqueroLogeado')}`, (datos) => setterDatos(datos));
+    const {push} = useHistory();
+
+    //Si no aplico el setParametros no se me setean los datos
+    useEffect(() => {
+        const idPeluqueroStorage = localStorage.getItem('idPeluqueroLogeado')
+        idPeluqueroStorage === null ? push("/"): setParametros({});
         // eslint-disable-next-line
     },[push])
     

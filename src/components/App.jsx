@@ -6,6 +6,7 @@ import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
 import ManejadorDeErrores from "../contexts/errors/ManejadorDeErrores";
 import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
+import PaginaGestionPeluquero from "../views/PaginaGestionPeluquero";
 import PaginaError404 from "../views/PaginaError404";
 import {useUser} from "../contexts/UserProvider";
 import PaginaRegistroCliente from "../views/PaginaRegistroCliente";
@@ -34,7 +35,7 @@ const App = () => {
                             <Route path="/registro" component={PaginaRegistroCliente}/>
                             <Route path="/peluquero/registro" component={PaginaRegistroPeluquero}/>
                             <ClienteRoute path="/perfil" component={Perfil}/>
-                            <PeluqueroRoute path="/peluquero/perfil" component={Perfil}/>
+                            <PeluqueroRoute path="/peluquero/perfil" component={PaginaGestionPeluquero} />
                             <Route path="/search" component={PaginaBusquedaPeluqueros}/>
                             <Route path="/contratar" component={PaginaContratacionPeluquero}/>
                             <Route path="*" component={PaginaError404}/>

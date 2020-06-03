@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useHistory} from "react-router-dom";
-import {useGetPeluquero} from "../service/ServicioDePeluquero";
+import {useGetPeluqueroAContratar} from "../service/ServicioDePeluquero";
 import {usePostPedirTurno} from "../service/ServicioDeTurno";
 import {Button, Grid, Typography} from "@material-ui/core";
 import CirculitoCargando from "../components/CirculoCargando";
@@ -67,7 +67,7 @@ const PaginaContratacionPeluquero = () => {
 
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
-    const {cargando} = useGetPeluquero(setPeluquero)
+    const {cargando} = useGetPeluqueroAContratar(setPeluquero)
     
     const {login} = useUser();
     
@@ -195,7 +195,7 @@ const PaginaContratacionPeluquero = () => {
             <Grid item xs={6}>
                 {mostrarDatosPeluquero(peluquero)}
                 <Grid container className={classes.gridSelectorServices} direction="row" justify="center" alignItems="center" spacing={4}>
-                        <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={formatPrice(peluquero.corteMin)} />
+                    <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={peluquero.corteMin} />
                 </Grid>
                 <Grid container className={classes.botonesNav} direction="row" justify="center" alignItems="center" spacing={4}>
                     <Grid item>

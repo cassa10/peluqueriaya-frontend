@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
-import {CLIENTE, PELUQUERO, REGISTRADO} from "../constants";
+import {CLIENTE, PELUQUERO, REGISTRADO} from "../assets/constants";
 import { useUser } from "../contexts/UserProvider";
 import Can, {Cliente, Peluquero} from "./Can";
 

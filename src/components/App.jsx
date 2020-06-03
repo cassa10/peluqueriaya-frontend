@@ -14,6 +14,7 @@ import Perfil from "./Perfil";
 import {ClienteRoute, PeluqueroRoute} from "../wrappers/PrivateRoute";
 import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import NotificacionProvider from "../contexts/NotificacionProvider";
 
 
 const App = () => {
@@ -27,21 +28,20 @@ const App = () => {
         <div>
             <Barra/>
             <Container maxWidth="lg">
-                <ManejadorDeErrores>
-                    <Switch>
-                        <Route exact path="/" component={PaginaPrincipal}/>
-                        <Route path="/registro" component={PaginaRegistroCliente}/>
-                        <Route path="/peluquero/registro" component={PaginaRegistroPeluquero}/>
-                        <ClienteRoute path="/perfil" component={Perfil}/>
-                        <PeluqueroRoute path="/peluquero/perfil" component={PaginaGestionPeluquero} />
-                        {
-                            //<PeluqueroRoute path="/peluquero/perfil" component={Perfil}/>
-                        }
-                        <Route path="/search" component={PaginaBusquedaPeluqueros}/>
-                        <Route path="/contratar" component={PaginaContratacionPeluquero}/>
-                        <Route path="*" component={PaginaError404}/>
-                    </Switch>
-                </ManejadorDeErrores>
+                <NotificacionProvider>
+                    <ManejadorDeErrores>
+                        <Switch>
+                            <Route exact path="/" component={PaginaPrincipal}/>
+                            <Route path="/registro" component={PaginaRegistroCliente}/>
+                            <Route path="/peluquero/registro" component={PaginaRegistroPeluquero}/>
+                            <ClienteRoute path="/perfil" component={Perfil}/>
+                            <PeluqueroRoute path="/peluquero/perfil" component={PaginaGestionPeluquero} />
+                            <Route path="/search" component={PaginaBusquedaPeluqueros}/>
+                            <Route path="/contratar" component={PaginaContratacionPeluquero}/>
+                            <Route path="*" component={PaginaError404}/>
+                        </Switch>
+                    </ManejadorDeErrores>
+                </NotificacionProvider>
             </Container>
         </div>);
 };

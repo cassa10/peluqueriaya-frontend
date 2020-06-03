@@ -9,7 +9,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {sumBy} from "lodash";
 import Swal from 'sweetalert2';
 import Can, {Cliente, NoCliente} from "../wrappers/Can";
-import {CLIENTE} from "../constants";
+import {CLIENTE} from "../assets/constants";
 import {useUser} from "../contexts/UserProvider";
 import formatPrice from '../formatters/formatPrice';
 

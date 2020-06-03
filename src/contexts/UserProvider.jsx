@@ -10,7 +10,7 @@ import {
     URI_CASA,
     URI_LOGIN_CLIENTE,
     URI_LOGIN_PELUQUERO, PENDIENTE
-} from "../constants";
+} from "../assets/constants";
 
 export const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
@@ -95,10 +95,11 @@ const UserProvider = ({history, children, ...initOptions}) => {
             }
         };
 
-        return (
-            <UserContext.Provider
+        const registrar = (rol) => setRoles(prevState => ({...prevState, [rol]: REGISTRADO}));
+
+        return (<UserContext.Provider
                 value={{user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
-                    getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
+                    registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
                 }}>
                 {children}
             </UserContext.Provider>

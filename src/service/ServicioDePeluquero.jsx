@@ -1,4 +1,4 @@
-import {useGet} from "./API";
+import {useGet, usePostConAuth} from "./API";
 import {useEffect} from "react";
 import {useHistory} from "react-router-dom";
 
@@ -65,4 +65,15 @@ export const useGetPeluqueroLogeado = (setterDatos) => {
     },[push])
     
     return {cargando}
+}
+
+export const usePostPeluquero = (fdatos) => {
+    const {setParametros, cargando} = usePostConAuth("/peluquero", fdatos);
+
+    const setPeluquero = ({ubicacion: {position}, ...resto}) => {
+        const {lat: latitude, lng: longitude} = position;
+        setParametros({ubicacion: {latitude, longitude}, ...resto});
+    }
+
+    return {cargando, setPeluquero}
 }

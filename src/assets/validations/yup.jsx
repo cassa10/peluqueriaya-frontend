@@ -10,6 +10,10 @@ yup.setLocale({
         max: 'Largo menor a ${max} digitos',
         email: 'Email no es valido',
         url: 'Enlace no es valido'
+    },
+    number: {
+        min: "Campo debe ser mayor o igual a ${min}",
+        max: "Campo debe ser menor o igual a ${max}",
     }
 });
 

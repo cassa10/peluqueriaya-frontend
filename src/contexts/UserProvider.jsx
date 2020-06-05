@@ -78,9 +78,7 @@ const UserProvider = ({history, children, ...initOptions}) => {
         }
     };
 
-    const logout = () => {
-        auth0Client.logout({returnTo: URI_CASA});
-    };
+    const logout = () => auth0Client.logout({returnTo: URI_CASA});
 
     const empezarRegistro = (rol) => {
         if (roles[rol] === VISITANTE) {
@@ -98,8 +96,7 @@ const UserProvider = ({history, children, ...initOptions}) => {
     const registrar = (rol) => setRoles(prevState => ({...prevState, [rol]: REGISTRADO}));
 
     return (<UserContext.Provider
-            value={{
-                user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
+            value={{user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
                 registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
             }}>
             {children}

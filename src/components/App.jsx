@@ -10,11 +10,11 @@ import PaginaGestionPeluquero from "../views/PaginaGestionPeluquero";
 import PaginaError404 from "../views/PaginaError404";
 import {useUser} from "../contexts/UserProvider";
 import PaginaRegistroCliente from "../views/PaginaRegistroCliente";
-import Perfil from "./Perfil";
 import {ClienteRoute, PeluqueroRoute} from "../wrappers/PrivateRoute";
 import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import NotificacionProvider from "../contexts/NotificacionProvider";
+import PaginaPerfil from "../views/PaginaPerfil";
 
 
 const App = () => {
@@ -34,8 +34,8 @@ const App = () => {
                             <Route exact path="/" component={PaginaPrincipal}/>
                             <Route path="/registro" component={PaginaRegistroCliente}/>
                             <Route path="/peluquero/registro" component={PaginaRegistroPeluquero}/>
-                            <ClienteRoute path="/perfil" component={Perfil}/>
-                            <PeluqueroRoute path="/peluquero/perfil" component={PaginaGestionPeluquero} />
+                            <ClienteRoute path="/perfil" component={PaginaPerfil}/>
+                            <PeluqueroRoute path="/peluquero/turnos" component={PaginaGestionPeluquero} />
                             <Route path="/search" component={PaginaBusquedaPeluqueros}/>
                             <Route path="/contratar" component={PaginaContratacionPeluquero}/>
                             <Route path="*" component={PaginaError404}/>

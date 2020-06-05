@@ -37,14 +37,14 @@ const PaginaRegistroPeluquero = () => {
         }// eslint-disable-next-line
     },[])
 
-    const onSubmit = data => setPeluquero({ubicacion, data});
+    const onSubmit = data => setPeluquero({ubicacion, ...data});
 
     const formProps = () => ({errors, inputRef: register});
 
     return (
         <Can>
             <Peluquero>
-                <Redirect to="/peluquero/perfil"/>
+                <Redirect to="/peluquero/turnos"/>
             </Peluquero>
             <Pendiente>
                 <RegistroForm onSubmit={handleSubmit(onSubmit)} nombre="Registro Peluquero" avatarSrc={watch("logo")}>

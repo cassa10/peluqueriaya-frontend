@@ -34,7 +34,7 @@ exports[`App App levanta sin problemas 1`] = `
           />
           <Component
             component={[Function]}
-            path="/peluquero/perfil"
+            path="/peluquero/turnos"
           />
           <Route
             component={[Function]}

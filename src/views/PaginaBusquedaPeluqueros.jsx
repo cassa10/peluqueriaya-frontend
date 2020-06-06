@@ -32,7 +32,11 @@ const PaginaBusquedaPeluqueros = () => {
     const {cargando, setFiltro, limpiarFiltro} = useGetPeluqueros(tamanio, setPaginacion);
     const {push} = useHistory();
 
-    const handleChange = (event, value) => setFiltro({page: value - 1});
+    const handleChange = (event, value) => {
+        if(actual !== value){
+            setFiltro({page: value - 1});
+        }
+    }
 
     return <Box bgcolor="primary.main" color="primary.contrastText" textAlign="center" m={2}>
         <Grid container direction="column">
@@ -50,7 +54,7 @@ const PaginaBusquedaPeluqueros = () => {
                                 <CheckBoxsDeTiposDePeluquero setFiltro={setFiltro}/>
                             </Grid>
                             <Grid item xs={3}>
-                                <SeleccionOrdenarPor setFiltro={setFiltro} limpiarFiltro={limpiarFiltro}/>
+                                <SeleccionOrdenarPor setFiltro={setFiltro}/>
                             </Grid>
                             <Grid item xs={2}>
                                 {!(cargando || peluqueros.length === 0)?

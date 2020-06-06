@@ -5,14 +5,14 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
 
-const SeleccionOrdenarPor = ({setFiltro, limpiarFiltro}) => {
+const SeleccionOrdenarPor = ({setFiltro}) => {
     const [ordenarPor, setOrdenarPor] = useState("");
 
     const handleChange = event => {
         const nuevoOrdenarPor = event.target.value
         setOrdenarPor(nuevoOrdenarPor);
         if (nuevoOrdenarPor !== "Ninguno") setFiltro({sort: nuevoOrdenarPor});
-        else limpiarFiltro("sort");
+        else setFiltro({sort: 'nombre,asc'});
     };
 
     return <FormControl>
@@ -26,8 +26,7 @@ const SeleccionOrdenarPor = ({setFiltro, limpiarFiltro}) => {
 };
 
 SeleccionOrdenarPor.propTypes = {
-    setFiltro: PropTypes.func,
-    limpiarFiltro: PropTypes.func
+    setFiltro: PropTypes.func
 }
 
 

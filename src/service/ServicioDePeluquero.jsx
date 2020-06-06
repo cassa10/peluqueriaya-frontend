@@ -1,4 +1,4 @@
-import {useGet, usePostConAuth} from "./API";
+import {useGet, useGetConAuth, usePostConAuth} from "./API";
 import {useEffect} from "react";
 import {useHistory} from "react-router-dom";
 
@@ -20,7 +20,7 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
             longitude: sessionStorage.getItem('userLocationLongitude')
         }
         if (ubicacionLocal.latitude === null || ubicacionLocal.longitude === null) push("/");
-        else setParametros({...ubicacionLocal, size: tamanioPagina, sort: 'nombre,desc'});
+        else setParametros({...ubicacionLocal, size: tamanioPagina, sort: 'nombre,asc'});
         // eslint-disable-next-line
     }, [])
 
@@ -54,15 +54,13 @@ export const useGetPeluqueroAContratar = (setterDatos) => {
 
 export const useGetPeluqueroLogeado = (setterDatos) => {
 
-    const {cargando, setParametros} = useGet(`/peluquero/${localStorage.getItem('idPeluqueroLogeado')}`, (datos) => setterDatos(datos));
-    const {push} = useHistory();
+    const {cargando, setParametros} = useGetConAuth('/peluquero', (datos) => setterDatos(datos));
 
     //Si no aplico el setParametros no se me setean los datos
     useEffect(() => {
-        const idPeluqueroStorage = localStorage.getItem('idPeluqueroLogeado')
-        idPeluqueroStorage === null ? push("/"): setParametros({});
+        setParametros({});
         // eslint-disable-next-line
-    },[push])
+    },[])
     
     return {cargando}
 }

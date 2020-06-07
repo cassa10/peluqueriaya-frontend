@@ -88,11 +88,13 @@ describe('SelectordeServiciosComponent', () => {
     });
 });
 
-const existeListItem = (component, id) => component.find(`#list_item_${id}`).exists();
-const textoDescripcionListItem = (component, id) => component.find(`#checkbox-list-label-${id}-text`).prop('primary');
-const textoPrecioListItem = (component, id) => component.find(`#checkbox-list-label-${id}-text-price`).prop('primary');
-const listItemCheckbox = (component, id) => component.find(`#checkbox-list-label-${id}`);
-const listItemToBeClicked = (component, id) => component.find(`#list-item-${id}`);
+const obtainDataTestIdInFindString = (keyDataTestId) => `[data-testid="${keyDataTestId}"]`
+
+const existeListItem = (component, id) => component.find(obtainDataTestIdInFindString(`list_item_${id}`)).exists();
+const textoDescripcionListItem = (component, id) => component.find(obtainDataTestIdInFindString(`checkbox-list-label-${id}-text`)).prop('primary');
+const textoPrecioListItem = (component, id) => component.find(obtainDataTestIdInFindString(`checkbox-list-label-${id}-text-price`)).prop('primary');
+const listItemCheckbox = (component, id) => component.find(obtainDataTestIdInFindString(`checkbox-list-label-${id}`));
+const listItemToBeClicked = (component, id) => component.find(obtainDataTestIdInFindString(`list-item-${id}`));
 const firstArgumentOfFirstCallOfAFunction = (func) => func.mock.calls[0][0];
 const firstArgumentOfNCallOfAFunction = (func, n) => func.mock.calls[n][0];
 

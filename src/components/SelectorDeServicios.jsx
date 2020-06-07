@@ -46,10 +46,11 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
     return(
       <div>
         <Grid container>
-          <ListItem className={classes.item} role={undefined} dense button id="list_item_corteMin">
+          <ListItem className={classes.item} role={undefined} dense button id="list_item_corteMin" data-testid="list_item_corteMin">
             <ListItemIcon>
               <Checkbox
                 id="checkbox-list-label-corteMin"
+                data-testid="checkbox-list-label-corteMin"
                 edge="start"
                 tabIndex={-1}
                 defaultChecked
@@ -59,9 +60,9 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
                 color="default"
               />
             </ListItemIcon>
-            <ListItemText primary={"Servicio básico"} id={'checkbox-list-label-corteMin-text'}/>
+            <ListItemText primary={"Servicio básico"} id={'checkbox-list-label-corteMin-text'} data-testid={'checkbox-list-label-corteMin-text'}/>
             <Grid>
-              <ListItemText primary={formatPrice(corteMin)} id={'checkbox-list-label-corteMin-text-price'}/>
+              <ListItemText primary={formatPrice(corteMin)} id={'checkbox-list-label-corteMin-text-price'} data-testid={'checkbox-list-label-corteMin-text-price'}/>
             </Grid>
           </ListItem>
         </Grid>
@@ -72,12 +73,13 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
 
   const createServicioItem = (servicio, labelId) => {
     return (
-      <div key={servicio.id} id={`list_item_${servicio.id}`}>
+      <div key={servicio.id} id={`list_item_${servicio.id}`} data-testid={`list_item_${servicio.id}`}>
         <Grid container>
-          <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)} id={`list-item-${servicio.id}`}>
+          <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)} id={`list-item-${servicio.id}`} data-testid={`list-item-${servicio.id}`}>
             <ListItemIcon>
               <Checkbox
                 id={`${labelId}`}
+                data-testid={`${labelId}`}
                 edge="start"
                 checked={checked.includes(servicio)}
                 tabIndex={-1}
@@ -86,9 +88,9 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
                 color="default"
               />
             </ListItemIcon>
-            <ListItemText id={`${labelId}-text`} primary={servicio.nombre}/>
+            <ListItemText id={`${labelId}-text`} primary={servicio.nombre} data-testid={`${labelId}-text`}/>
             <Grid>
-              <ListItemText id={`${labelId}-text-price`} primary={formatPrice(servicio.precio)}/>
+              <ListItemText id={`${labelId}-text-price`} primary={formatPrice(servicio.precio)} data-testid={`${labelId}-text-price`}/>
             </Grid>
           </ListItem>
         </Grid>

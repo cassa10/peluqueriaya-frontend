@@ -228,6 +228,9 @@ const PaginaGestionPeluquero = () => {
                     {turno.clienteEmail}
                 </StyledTableCell>
                 <StyledTableCell align="center">
+                    {turno.direccionDelTurno}
+                </StyledTableCell>
+                <StyledTableCell align="center">
                     {displayUbicacion(turno.ubicacionDelTurno)}
                 </StyledTableCell>    
             </>
@@ -378,6 +381,7 @@ const PaginaGestionPeluquero = () => {
             <>
                 <StyledTableCell align="center">Nombre</StyledTableCell>
                 <StyledTableCell align="center">Email</StyledTableCell>
+                <StyledTableCell align="center">Dirección</StyledTableCell> 
                 <StyledTableCell align="center">Ubicación</StyledTableCell>
             </>
         );

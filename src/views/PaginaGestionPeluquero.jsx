@@ -3,7 +3,7 @@ import { useGetPeluqueroLogeado } from "../service/ServicioDePeluquero";
 import { useGetTurnosPeluquero, usePostConfirmarTurno, usePostFinalizarTurno } from "../service/ServicioDeTurno";
 import CirculitoCargando from "../components/CirculoCargando";
 import {
-    Button, Table, TableBody,
+    Button, Table, TableBody, IconButton,
     TableCell, TableContainer, TableHead,
     TableRow, Paper, LinearProgress, ButtonGroup, Grid, Typography
 } from "@material-ui/core";
@@ -16,6 +16,7 @@ import IconSvg from "../components/IconSvg";
 import formatDate from '../formatters/formatDate';
 import formatTime from '../formatters/formatTime';
 import Swal from 'sweetalert2';
+import RoomIcon from '@material-ui/icons/Room';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -217,22 +218,72 @@ const PaginaGestionPeluquero = () => {
         );
     }
 
+    const mostrarRowsInfoCliente = (turno) => {
+        return(
+            <>
+                <StyledTableCell align="center">
+                    {turno.clienteFullName}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                    {turno.clienteEmail}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                    {formatDireccion(turno.direccionDelTurno)}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                    {displayUbicacion(turno.ubicacionDelTurno)}
+                </StyledTableCell>    
+            </>
+        );
+    }
+
+    const formatDireccion = (direccion) => {
+        const dir = direccion.split(",");
+        return `${dir[0]}, ${dir[1]}`
+    }
+    
+
+    const displayUbicacion = (ubicacion) => {
+        return(
+            <IconButton onClick={() => {handleClickUbicacion(ubicacion)}} style={{color: 'black'}}>
+                <RoomIcon style={{ fontSize: 30 }}/>
+            </IconButton>
+        );
+    }
+
+    const handleClickUbicacion = (ubicacion) => {
+        window.open(`https://maps.google.com/?q=${ubicacion.latitude},${ubicacion.longitude}`)
+    }
+
+    const mostrarRowModalInfoCliente = (turno) => {
+        return(
+            <StyledTableCell align="center">
+                <ModalInfoClienteTurno fullname={turno.clienteFullName} email={turno.clienteEmail} ubicacion={turno.ubicacionDelTurno}/>
+            </StyledTableCell>
+        );
+    }
+
+    const handleShowClientInfo = (sonTurnosActuales, turno) => {
+        return(
+            sonTurnosActuales?mostrarRowsInfoCliente(turno):mostrarRowModalInfoCliente(turno)
+        );
+    }
+
+
     const showTurnos = () => {
         return(
             <TableBody>
             {turnos.map((turno) => (
                 <TableRow key={turno.id} className={estadoTurnoBackgroundIndex(turno.estado)}>
+                    {handleShowClientInfo(isTurnosSelected, turno)}
+                    <StyledTableCell align="center">
+                        <ModalServiciosInfoTurno turno={turno} />
+                    </StyledTableCell>
                     <StyledTableCell align="center" component="th" scope="turno">
                         {turno.estado}
                     </StyledTableCell>
                     <StyledTableCell align="center">{`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}</StyledTableCell>
                     {handleShowDataInRow(!isTurnosSelected,`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`)}
-                    <StyledTableCell align="center">
-                        <ModalServiciosInfoTurno turno={turno} />
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                        <ModalInfoClienteTurno fullname={turno.clienteFullName} email={turno.clienteEmail} ubicacion={turno.ubicacionDelTurno}/>
-                    </StyledTableCell>
                     {handleShowDataInRow(isTurnosSelected,showAppropiateActionButton(turno))}
                     {handleShowDataInRow(!isTurnosSelected, showPuntuacionData(turno.puntaje))}
                 </TableRow>
@@ -325,6 +376,26 @@ const PaginaGestionPeluquero = () => {
         );
     }
 
+    const handleShowInfoClientColumns = (sonTurnosActuales) => {
+        return(
+            sonTurnosActuales?showTodasLasColumnasInfoCliente():showModalInfoCliente()
+        );
+    }
+
+    const showTodasLasColumnasInfoCliente = () => {
+        return(
+            <>
+                <StyledTableCell align="center">Nombre</StyledTableCell>
+                <StyledTableCell align="center">Email</StyledTableCell>
+                <StyledTableCell align="center">Dirección</StyledTableCell> 
+                <StyledTableCell align="center">Ubicación</StyledTableCell>
+            </>
+        );
+    }
+
+    const showModalInfoCliente = () => <StyledTableCell align="center">Información del Cliente</StyledTableCell>
+    
+
     const createTableDataTurnos = () => {
         return (
             <TableContainer className={classes.tableContainer} component={Paper}>
@@ -333,11 +404,11 @@ const PaginaGestionPeluquero = () => {
                 <Table className={classes.table} aria-label="customized table">
                     <TableHead>
                         <TableRow>
+                            {handleShowInfoClientColumns(isTurnosSelected)}
+                            <StyledTableCell align="center">Servicios Pedidos</StyledTableCell>
                             <StyledTableCell align="center">Estado</StyledTableCell>
                             <StyledTableCell align="center">Fecha Inicio</StyledTableCell>
                             {handleShowColumn(!isTurnosSelected,'Fecha Fin')}
-                            <StyledTableCell align="center">Servicios Pedidos</StyledTableCell>
-                            <StyledTableCell align="center">Información del Cliente</StyledTableCell>
                             {handleShowColumn(isTurnosSelected,'Acción')}
                             {handleShowColumn(!isTurnosSelected,'Puntuación')}
                         </TableRow>

@@ -228,7 +228,7 @@ const PaginaGestionPeluquero = () => {
                     {turno.clienteEmail}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                    {turno.direccionDelTurno}
+                    {formatDireccion(turno.direccionDelTurno)}
                 </StyledTableCell>
                 <StyledTableCell align="center">
                     {displayUbicacion(turno.ubicacionDelTurno)}
@@ -236,6 +236,12 @@ const PaginaGestionPeluquero = () => {
             </>
         );
     }
+
+    const formatDireccion = (direccion) => {
+        const dir = direccion.split(",");
+        return `${dir[0]}, ${dir[1]}`
+    }
+    
 
     const displayUbicacion = (ubicacion) => {
         return(

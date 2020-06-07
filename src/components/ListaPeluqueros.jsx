@@ -13,6 +13,9 @@ const useStyles = makeStyles({
         minWidth: 275,
         background: "#ecf4f3",
         margin: 12,
+        '&:hover': {
+            boxShadow: '0 -5px 0px 0px #2b71a6',
+        },
     },
     title: {
         fontSize: 14,

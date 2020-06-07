@@ -6,9 +6,16 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {Clear as ClearIcon, Search as SearchIcon} from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
+import {makeStyles} from "@material-ui/core/styles";
 
+const useStyles = makeStyles(() => ({
+    input: {
+        padding: 0
+    }
+}));
 
 const CampoDeBusqueda = ({onClick, clear}) => {
+    const clases = useStyles();
     const [nombre, setNombre] = useState("");
 
     const handleChange = (event) => {
@@ -20,14 +27,15 @@ const CampoDeBusqueda = ({onClick, clear}) => {
         clear("nombre");
     };
 
-    const tieneNombreMenosDeCuatroDigitos = () => nombre.trim().length < 4
+    const tieneNombreMenosDeCuatroDigitos = () => nombre.trim().length < 4;
 
     return (
         <Paper elevation={0}>
             <TextField fullWidth autoFocus value={nombre} size="small" onChange={handleChange}
                        placeholder={"Buscá peluqueros por nombre"} variant="outlined" InputProps={{
+                className: clases.input,
                 endAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position="end">
                         <Tooltip title="Buscar">
                             <div>
                                 <IconButton onClick={() => onClick({nombre: nombre})}
@@ -46,11 +54,11 @@ const CampoDeBusqueda = ({onClick, clear}) => {
             />
         </Paper>
     );
-}
+};
 
 CampoDeBusqueda.propTypes = {
     onClick: PropTypes.func.isRequired,
-    clear: PropTypes.func,
+    clear: PropTypes.func
 };
 
 export default CampoDeBusqueda;

@@ -1,13 +1,17 @@
-import React from 'react';
-import {useState} from 'react';
-import {useHistory} from "react-router";
-import {useGetPeluquero} from "../service/ServicioDePeluquero";
-import { usePostPedirTurno } from "../service/ServicioDeTurno";
-import { Button, Grid, Typography } from "@material-ui/core";
+import React, {useState} from 'react';
+import {useHistory} from "react-router-dom";
+import {useGetPeluqueroAContratar} from "../service/ServicioDePeluquero";
+import {usePostPedirTurno} from "../service/ServicioDeTurno";
+import {Button, Grid, Typography} from "@material-ui/core";
 import CirculitoCargando from "../components/CirculoCargando";
 import SelectorDeServicios from "../components/SelectorDeServicios";
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
+import {sumBy} from "lodash";
 import Swal from 'sweetalert2';
+import Can, {Cliente, NoCliente} from "../wrappers/Can";
+import {CLIENTE} from "../assets/constants";
+import {useUser} from "../contexts/UserProvider";
+import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles({
     gridInfoPeluquero: {
@@ -59,54 +63,52 @@ const PaginaContratacionPeluquero = () => {
 
     const {push} = useHistory();
 
-    const [cliente] = useState({id: 1});
-
     const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
-
-    const [turnoPedido, setTurnoPedido] = useState({id: 0})
 
     const [peluquero, setPeluquero] = useState({id: 0, nombre: ''});
 
-    const {cargando} = useGetPeluquero(setPeluquero)
-
-    const setTurnoPedidoAndShowDialog = (data) => {
-        setTurnoPedido(data)
-        Swal.fire(
-            'Turno solicitado!',
-            'En unos minutos, se recibirá un email cuando el peluquero confirme el turno.',
-            'success'
-        ).then(() => push("/search"));
+    const {cargando} = useGetPeluqueroAContratar(setPeluquero)
+    
+    const {login} = useUser();
+    
+    const handleTurnoPedidoSuccess = (turno) => {
+      if(turno.estado === "PENDIENTE"){
+            Swal.fire(
+                'Turno solicitado!',
+                'En unos minutos, se recibirá un email cuando el peluquero confirme el turno.',
+                'success'
+            ).then(() => push("/search"));
+        }else{
+            Swal.fire(
+                'Turno en espera',
+                'Su turno fue agregado en la cola de espera del peluquero, puede demorar mucho. Igualmente puede cancelar el turno mientras este se encuentre en espera.',
+                'success'
+            ).then(() => push("/search"));
+        }
     }
     
-    const {setParametros} = usePostPedirTurno(setTurnoPedidoAndShowDialog)
-
+    const {setParametros} = usePostPedirTurno(handleTurnoPedidoSuccess)
 
 
     const precioTotal = () => {
-        if(serviciosSeleccionados.length === 0)
-            return peluquero.corteMin;
-        else
-            return sumPrice(serviciosSeleccionados)
+        return peluquero.corteMin + sumBy(serviciosSeleccionados, (servicio) => {return servicio.precio})
     }
 
-    const sumPrice = (servicios) => {
-        let acc = peluquero.corteMin;
-        for (const s of servicios) {
-            acc = acc + s.precio;
-        }
-        return acc;
+    const getUbicacion = () =>  {
+        return {
+            latitude: sessionStorage.getItem('userLocationLatitude'),
+            longitude: sessionStorage.getItem('userLocationLongitude')
+        };
     }
 
     const handleCrearTurno = (value) => {
         if(value){
             const body = {
+                ubicacion: getUbicacion(),
                 idPeluquero: peluquero.id,
-                idCliente: cliente.id,
                 serviciosSolicitadosId: serviciosSeleccionados.map(s => s.id)
             }
             setParametros(body)
-
-            console.log(turnoPedido)
         }
     }
 
@@ -115,13 +117,14 @@ const PaginaContratacionPeluquero = () => {
     }
 
     const showDialogServicio = (servicio) => {
-        return `- ${servicio.nombre}: $${servicio.precio} <br />`
+        return `- ${servicio.nombre}: ${formatPrice(servicio.precio)} <br />`;
     }
 
     const showDialogServicios = (serviciosSeleccionados) => {
-        let servicioBasicoItem = `- Servicio basico: $${peluquero.corteMin}`;
+        let servicioBasicoItem = `- Servicio basico: ${formatPrice(peluquero.corteMin)}`;
         if(serviciosSeleccionados.length > 0){
-            return `${serviciosSeleccionados.map(s => showDialogServicio(s))} 
+            const servicesItems = serviciosSeleccionados.map(s => showDialogServicio(s))
+            return `${servicesItems.join(' ')}
                     ${servicioBasicoItem}`;
         }
         return servicioBasicoItem;
@@ -129,9 +132,9 @@ const PaginaContratacionPeluquero = () => {
 
     const handleDialogCrearTurno = () => {
         let crearTextoDentroDialogPedirTurno = 
-        `Se solicitara un turno al peluquero "${peluquero.nombre}" inmediatamente. <hr />
+        `Se solicitará un turno al peluquero "${peluquero.nombre}" inmediatamente. <hr />
         ${showDialogServicios(serviciosSeleccionados)}
-         <br /> <hr /> El precio final es $${precioTotal()}
+         <br /> <hr /> El precio final es ${formatPrice(precioTotal())}
         `;
 
         Swal.fire({
@@ -192,14 +195,21 @@ const PaginaContratacionPeluquero = () => {
             <Grid item xs={6}>
                 {mostrarDatosPeluquero(peluquero)}
                 <Grid container className={classes.gridSelectorServices} direction="row" justify="center" alignItems="center" spacing={4}>
-                        <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={peluquero.corteMin} />
+                    <SelectorDeServicios servicios={peluquero.servicios} handleChecked={setServiciosSeleccionados} corteMin={peluquero.corteMin} />
                 </Grid>
                 <Grid container className={classes.botonesNav} direction="row" justify="center" alignItems="center" spacing={4}>
                     <Grid item>
                         <Button color="default" onClick={handleIrAlSearch}>Volver atrás</Button>
                     </Grid>
                     <Grid item>
-                        <Button color="default" onClick={handleDialogCrearTurno}>Pedir turno</Button>
+                        <Can>
+                            <Cliente>
+                                <Button color="default" onClick={handleDialogCrearTurno}>Pedir turno</Button>
+                            </Cliente>
+                            <NoCliente>
+                                <Button color="default" onClick={async() => await login(CLIENTE)}>Registrate y pedí turno!</Button>
+                            </NoCliente>
+                        </Can>
                     </Grid>
                 </Grid>
             </Grid>

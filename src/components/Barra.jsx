@@ -1,17 +1,21 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import AppBar from "@material-ui/core/AppBar";
-import {useHistory} from "react-router";
+import {Button, AppBar} from "@material-ui/core";
+import {useHistory} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
+import {useUser} from "../contexts/UserProvider";
+import Can, {NoCliente, NoPeluquero, Registrado} from "../wrappers/Can";
+import {CLIENTE, PELUQUERO} from "../assets/constants";
+
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(2)
     },
     title: {
-        flexGrow: 1,
+        flexGrow: 1
     },
     img: {
         margin: 'auto',
@@ -19,31 +23,44 @@ const useStyles = makeStyles((theme) => ({
         width: '350px',
         minWidth: '150px',
         cursor: 'pointer'
-    },
+    }
 }));
 
+const botonProps = {
+    size: "small",
+    variant: "contained",
+    color: "secondary"
+};
 
 const Barra = () => {
     const classes = useStyles();
     const {push} = useHistory();
-
-    const irAPaginaPrincipal = () => push("/");
+    const {login, logout} = useUser();
 
     return (
         <AppBar position="static">
             <Toolbar>
-                 <img
+                <img
                     className={classes.img}
                     src={require('../assets/images/peluqueriaya-logo.png')}
                     alt="logo"
-                    onClick={irAPaginaPrincipal}
-                 />
+                    onClick={() => push("/")}
+                />
                 <Typography variant="h6" className={classes.title}>
                 </Typography>
-                <Button variant="contained" color="secondary">Login</Button>
+                <Can>
+                    <NoCliente>
+                        <Button {...botonProps} onClick={() => login(CLIENTE)}> Soy Cliente </Button>
+                    </NoCliente>
+                    <NoPeluquero>
+                        <Button {...botonProps} onClick={() => login(PELUQUERO)}> Soy Peluquero </Button>
+                    </NoPeluquero>
+                    <Registrado>
+                        <Button onClick={() => logout()} {...botonProps}>Cerrar Sesion</Button>
+                    </Registrado>
+                </Can>
             </Toolbar>
-        </AppBar>
-    );
+        </AppBar>);
 };
 
 export default Barra;

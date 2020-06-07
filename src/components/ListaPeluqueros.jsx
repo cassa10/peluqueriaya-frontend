@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Card, Grid, CardActions, CardContent, Button} from '@material-ui/core';
 import ModalServiciosPeluquero from './ModalServiciosPeluquero';
 import Swal from 'sweetalert2';
+import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles({
     root: {
@@ -118,7 +119,7 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
                             </Typography>
                             <hr />
                             <Typography variant="body2" component="p">
-                                Corte minimo | ${peluquero.corteMin}
+                                Corte minimo | {formatPrice(peluquero.corteMin)}
                             </Typography>
                         </CardContent>
                         <CardActions>

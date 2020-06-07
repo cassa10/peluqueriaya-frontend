@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, List, ListItem, ListItemIcon, ListItemText, Checkbox, Divider } from '@material-ui/core';
+import formatPrice from '../formatters/formatPrice';
 
 const useStyles = makeStyles({
   root: {
@@ -27,7 +29,6 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
   const [checked, setChecked] = useState([]);
 
   const handleToggle = (servicio) => () => {
-    console.log(servicio)
     const currentIndex = checked.indexOf(servicio);
     const newChecked = [...checked];
 
@@ -45,9 +46,10 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
     return(
       <div>
         <Grid container>
-          <ListItem className={classes.item} role={undefined} dense button>
+          <ListItem className={classes.item} role={undefined} dense button id="list_item_corteMin">
             <ListItemIcon>
               <Checkbox
+                id="checkbox-list-label-corteMin"
                 edge="start"
                 tabIndex={-1}
                 defaultChecked
@@ -57,9 +59,9 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
                 color="default"
               />
             </ListItemIcon>
-            <ListItemText primary={"Servicio básico"} />
+            <ListItemText primary={"Servicio básico"} id={'checkbox-list-label-corteMin-text'}/>
             <Grid>
-              <ListItemText primary={`$${corteMin}`}/>
+              <ListItemText primary={formatPrice(corteMin)} id={'checkbox-list-label-corteMin-text-price'}/>
             </Grid>
           </ListItem>
         </Grid>
@@ -68,37 +70,49 @@ const SelectorDeServicios = ({ servicios, handleChecked, corteMin}) => {
     )
   }
 
+  const createServicioItem = (servicio, labelId) => {
+    return (
+      <div key={servicio.id} id={`list_item_${servicio.id}`}>
+        <Grid container>
+          <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)} id={`list-item-${servicio.id}`}>
+            <ListItemIcon>
+              <Checkbox
+                id={`${labelId}`}
+                edge="start"
+                checked={checked.includes(servicio)}
+                tabIndex={-1}
+                disableRipple
+                inputProps={{ 'aria-labelledby': labelId}}
+                color="default"
+              />
+            </ListItemIcon>
+            <ListItemText id={`${labelId}-text`} primary={servicio.nombre}/>
+            <Grid>
+              <ListItemText id={`${labelId}-text-price`} primary={formatPrice(servicio.precio)}/>
+            </Grid>
+          </ListItem>
+        </Grid>
+        <Divider/>
+      </div>
+    );
+  }
+  
+
   return (
     <List className={classes.root}>
       {mostrarServicioMinimoNoElegible()}
       {servicios.map((servicio) => {
         const labelId = `checkbox-list-label-${servicio.id}`;
-        return (
-          <div key={servicio.id}>
-            <Grid container>
-              <ListItem className={classes.item} role={undefined} dense button onClick={handleToggle(servicio)}>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={checked.includes(servicio)}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                    color="default"
-                  />
-                </ListItemIcon>
-                <ListItemText id={labelId} primary={servicio.nombre} />
-                <Grid>
-                  <ListItemText id={labelId} primary={`$${servicio.precio}`}/>
-                </Grid>
-              </ListItem>
-            </Grid>
-            <Divider/>
-          </div>
-        );
+        return(createServicioItem(servicio,labelId));
       })}
     </List>
   );
+}
+
+SelectorDeServicios.propTypes = {
+    servicios: PropTypes.array,
+    handleChecked: PropTypes.func,
+    corteMin: PropTypes.number,
 }
 
 export default SelectorDeServicios;

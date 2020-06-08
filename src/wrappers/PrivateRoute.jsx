@@ -10,9 +10,9 @@ const privateRoute = (componenteCan, rol) =>
     const { loading, roles, login } = useUser();
 
     useEffect(() => {
-        const loginSiNoEstaRegistrado = async () => {
+        const loginSiNoEstaRegistrado = () => {
             if (!loading && roles[rol] !== REGISTRADO) {
-                await login(rol);
+                login(rol);
             }
         };
         loginSiNoEstaRegistrado();

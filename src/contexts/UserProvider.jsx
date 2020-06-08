@@ -70,9 +70,9 @@ const UserProvider = ({history, children, ...initOptions}) => {
         }
     };
 
-    const login = (rol) => {
+    const login = async (rol) => {
         if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) {
-            auth0Client.loginWithRedirect({appState: {targetUrl: rolesHandler[rol].uri_login}});
+            await auth0Client.loginWithRedirect({appState: {targetUrl: rolesHandler[rol].uri_login}});
         } else {
             history.push(rolesHandler[rol].uri_login);
         }

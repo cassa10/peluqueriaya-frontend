@@ -5,8 +5,11 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from '@material-ui/core/styles';
 import {Card, Grid, CardActions, CardContent, Button} from '@material-ui/core';
 import ModalServiciosPeluquero from './ModalServiciosPeluquero';
+import PuntajeStars from './PuntajeStars';
 import Swal from 'sweetalert2';
 import formatPrice from '../formatters/formatPrice';
+import StarIcon from '@material-ui/icons/Star';
+
 
 const useStyles = makeStyles({
     root: {
@@ -106,6 +109,23 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
             push('/contratar')
         }
 
+        const handleShowStars = (puntuacionPromedio) => {
+            return(
+                puntuacionPromedio > 0 ? showStars(puntuacionPromedio) : showSinPuntuacion()
+            );
+        }
+
+        const showSinPuntuacion = () => {
+            return(
+                <div>
+                     <StarIcon style={{ color: '#ecf4f3' }}/>
+                </div>
+            );
+        }
+        
+
+        const showStars = (puntuacionPromedio) => <PuntajeStars puntaje={puntuacionPromedio} puntajeMax={5}/>
+
         return (
             <Grid key={peluquero.id} item xs={12} sm={6} md={4}>
                 <Box textAlign="center">
@@ -117,6 +137,7 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
                                 src={logoPredeterminado(peluquero.logo)}
                                 alt="logo"
                             />
+                            {handleShowStars(peluquero.puntuacionPromedio)}
                             <Typography variant="h5" component="h2">
                                 {peluquero.nombre}
                             </Typography>
@@ -158,9 +179,7 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal }) => {
     }
 
     return (
-        
         resultadosDeBusqueda(resultados)
-       
     );
 };
 

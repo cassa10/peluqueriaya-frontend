@@ -17,6 +17,7 @@ import formatDate from '../formatters/formatDate';
 import formatTime from '../formatters/formatTime';
 import Swal from 'sweetalert2';
 import RoomIcon from '@material-ui/icons/Room';
+import StarIcon from '@material-ui/icons/Star';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -166,15 +167,21 @@ const PaginaGestionPeluquero = () => {
         }
     }
 
+    const displayPuntaje = (puntaje) => {
+        return(`${puntaje}/5`);
+    }
+
     const showPuntuacionData = (puntaje) => {
         return(
-            puntaje>0?puntaje:'Sin puntuar'
+            puntaje>0?
+            <><div><StarIcon /></div>{displayPuntaje(puntaje)}</>:
+            'Sin puntuar aún'    
         );
     }
 
     const handleShowDataInRow = (isShow, data) => {
         return(
-            isShow?<StyledTableCell align="center">{data}</StyledTableCell>:null
+            isShow&&<StyledTableCell align="center">{data}</StyledTableCell>
         );
     }
     

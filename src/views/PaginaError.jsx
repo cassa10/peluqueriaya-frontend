@@ -1,13 +1,13 @@
-import React from 'react';
-import {useHistory} from "react-router-dom";
-import PropTypes from 'prop-types';
-import Grid from "@material-ui/core/Grid";
+import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
+import {useHistory} from "react-router-dom";
 import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,36 +18,38 @@ const useStyles = makeStyles((theme) => ({
     },
     font: {
         color: theme.palette.secondary.main,
-        textAlign: "center",
+        textAlign: "center"
     },
     paper: {
         padding: "inherit"
     },
     gridItem: {
-    margin: "auto"
+        margin: "auto"
     }
 }));
 
-const PaginaError = ({message, error, status, subErrors = []}) => {
+
+const PaginaError = ({message = "Ha ocurrido un error inesperado. Por favor intente nuevamente",
+                         status = "Error :(",  subErrors = []}) => {
     const clases = useStyles();
     let {goBack} = useHistory();
 
     return <Container maxWidth="sm" className={clases.root}>
-        <Grid container justify={"center"} direction={"column"} spacing={3}>
+        <Grid container justify="center" direction="column" spacing={3}>
             <Grid item>
                 <Paper elevation={3}>
-                    <Typography variant={"h1"} className={clases.font}>
+                    <Typography variant="h1" className={clases.font}>
                         {status}
                     </Typography>
                 </Paper>
             </Grid>
             <Grid item className={clases.gridItem}>
                 <Paper className={clases.paper} elevation={3}>
-                    <Typography className={clases.font} variant={"h6"}>
-                        {`Error ${error}: ${message}`}
+                    <Typography className={clases.font} variant="h5">
+                        {message}
                     </Typography>
                     {subErrors.map((mensaje, index) =>
-                        <Typography className={clases.font} variant={"body1"} key={index}>
+                        <Typography className={clases.font} variant="body2" key={index}>
                             {` • ${mensaje}`}
                         </Typography>)}
                 </Paper>
@@ -58,14 +60,22 @@ const PaginaError = ({message, error, status, subErrors = []}) => {
                 </ButtonGroup>
             </Grid>
         </Grid>
-    </Container>
-}
+    </Container>;
+};
 
 PaginaError.propTypes = {
-    message: PropTypes.string.isRequired,
-    error: PropTypes.string.isRequired,
+    message: PropTypes.string,
     status: PropTypes.any,
-    subErrors: PropTypes.array,
-}
+    subErrors: PropTypes.array
+};
 
 export default PaginaError;
+
+export const PaginaError404 = () => {
+    const error = {
+        status: 404,
+        message: "La pagina solicitada no existe"
+    };
+
+    return <PaginaError {...error}/>;
+};

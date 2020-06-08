@@ -4,10 +4,9 @@ import Container from "@material-ui/core/Container";
 import Barra from "./Barra";
 import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
-import ManejadorDeErrores from "../contexts/errors/ManejadorDeErrores";
+import ErrorAPIProvider from "../contexts/errors/ErrorAPIProvider";
 import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
 import PaginaGestionPeluquero from "../views/PaginaGestionPeluquero";
-import PaginaError404 from "../views/PaginaError404";
 import {useUser} from "../contexts/UserProvider";
 import PaginaRegistroCliente from "../views/PaginaRegistroCliente";
 import {ClienteRoute, PeluqueroRoute} from "../wrappers/PrivateRoute";
@@ -15,6 +14,7 @@ import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import NotificacionProvider from "../contexts/NotificacionProvider";
 import PaginaPerfil from "../views/PaginaPerfil";
+import {PaginaError404} from "../views/PaginaError";
 
 
 const App = () => {
@@ -29,7 +29,7 @@ const App = () => {
             <Barra/>
             <Container maxWidth="lg">
                 <NotificacionProvider>
-                    <ManejadorDeErrores>
+                    <ErrorAPIProvider>
                         <Switch>
                             <Route exact path="/" component={PaginaPrincipal}/>
                             <Route path="/registro" component={PaginaRegistroCliente}/>
@@ -40,7 +40,7 @@ const App = () => {
                             <Route path="/contratar" component={PaginaContratacionPeluquero}/>
                             <Route path="*" component={PaginaError404}/>
                         </Switch>
-                    </ManejadorDeErrores>
+                    </ErrorAPIProvider>
                 </NotificacionProvider>
             </Container>
         </div>);

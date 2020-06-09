@@ -30,9 +30,7 @@ const PaginaRegistroCliente = () => {
 
     useEffect(() => {
         empezarRegistro(CLIENTE);
-        console.log("empezar");
         return () => {
-            console.log("corri");
             abandonarRegistro(CLIENTE);
         };// eslint-disable-next-line
     }, [abandonarRegistro]);

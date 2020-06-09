@@ -19,10 +19,7 @@ import {PendienteClienteRoute, PendientePeluqueroRoute} from "../wrappers/Pendie
 
 
 const App = () => {
-    const {loading, roles} = useUser();
-
-    console.log("en app");
-    console.log(JSON.stringify(roles));
+    const {loading} = useUser();
 
     if (loading) {
         return <LinearProgress color="secondary"/>;

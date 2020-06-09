@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, createContext} from "react";
+import React, {useState, useEffect, useContext, createContext, useCallback} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -88,12 +88,12 @@ const UserProvider = ({history, children, ...initOptions}) => {
         }
     };
 
-    const abandonarRegistro = (rol) => {
+    const abandonarRegistro = useCallback((rol) => {
         if (roles[rol] === PENDIENTE) {
             setRoles(prevState => ({...prevState, [rol]: VISITANTE}));
             if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) logout();
-        }
-    };
+        }// eslint-disable-next-line
+    },[roles]);
 
     const registrar = (rol) => setRoles(prevState => ({...prevState, [rol]: REGISTRADO}));
 

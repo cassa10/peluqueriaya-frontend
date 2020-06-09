@@ -7,13 +7,12 @@ const pendienteRoute = (redirect_uri) => ({ component: Component, path, ...rest 
     const { loading, isAuthenticated, loginWithRedirect } = useUser();
 
     useEffect(() => {
-        if (loading || isAuthenticated) {
-            return;
-        }
         const fn = async () => {
-            await loginWithRedirect({
-                appState: {targetUrl: redirect_uri}
-            });
+            if (!loading && !isAuthenticated) {
+                await loginWithRedirect({
+                    appState: {targetUrl: redirect_uri}
+                });
+            }
         };
         fn();
     }, [loading, isAuthenticated, loginWithRedirect, path]);

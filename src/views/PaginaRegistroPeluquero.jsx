@@ -32,10 +32,10 @@ const PaginaRegistroPeluquero = () => {
 
     useEffect(() => {
         empezarRegistro(PELUQUERO)
-        return async () => {
-            await abandonarRegistro(PELUQUERO);
+        return () => {
+            abandonarRegistro(PELUQUERO);
         }// eslint-disable-next-line
-    },[])
+    }, [abandonarRegistro]);
 
     const onSubmit = data => setPeluquero({ubicacion, ...data});
 

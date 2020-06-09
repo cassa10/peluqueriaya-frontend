@@ -30,10 +30,12 @@ const PaginaRegistroCliente = () => {
 
     useEffect(() => {
         empezarRegistro(CLIENTE);
-        return async () => {
-            await abandonarRegistro(CLIENTE);
+        console.log("empezar");
+        return () => {
+            console.log("corri");
+            abandonarRegistro(CLIENTE);
         };// eslint-disable-next-line
-    }, []);
+    }, [abandonarRegistro]);
 
     const onSubmit = data => setCliente({ubicacion, ...data});
 

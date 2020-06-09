@@ -13,18 +13,18 @@ exports[`App App levanta sin problemas 1`] = `
     maxWidth="lg"
   >
     <NotificacionProvider>
-      <ManejadorDeErrores>
+      <ErrorAPIProvider>
         <Switch>
           <Route
             component={[Function]}
             exact={true}
             path="/"
           />
-          <Route
+          <Component
             component={[Function]}
             path="/registro"
           />
-          <Route
+          <Component
             component={[Function]}
             path="/peluquero/registro"
           />
@@ -49,7 +49,7 @@ exports[`App App levanta sin problemas 1`] = `
             path="*"
           />
         </Switch>
-      </ManejadorDeErrores>
+      </ErrorAPIProvider>
     </NotificacionProvider>
   </WithStyles(ForwardRef(Container))>
 </div>

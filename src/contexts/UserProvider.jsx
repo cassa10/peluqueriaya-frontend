@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, createContext} from "react";
+import React, {useState, useEffect, useContext, createContext, useCallback} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -24,6 +24,7 @@ const UserProvider = ({history, children, ...initOptions}) => {
     const [user, setUser] = useState();
     const [auth0Client, setAuth0] = useState();
     const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [roles, setRoles] = useState(rolesIniciales);
 
     const onRedirectCallback = appState => {
@@ -44,6 +45,7 @@ const UserProvider = ({history, children, ...initOptions}) => {
                 onRedirectCallback(appState);
             }
             const isAuthenticated = await auth0FromHook.isAuthenticated();
+            setIsAuthenticated(isAuthenticated);
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
                 setUser(user);
@@ -70,9 +72,9 @@ const UserProvider = ({history, children, ...initOptions}) => {
         }
     };
 
-    const login = (rol) => {
+    const login = async (rol) => {
         if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) {
-            auth0Client.loginWithRedirect({appState: {targetUrl: rolesHandler[rol].uri_login}});
+            await auth0Client.loginWithRedirect({appState: {targetUrl: rolesHandler[rol].uri_login}});
         } else {
             history.push(rolesHandler[rol].uri_login);
         }
@@ -86,19 +88,19 @@ const UserProvider = ({history, children, ...initOptions}) => {
         }
     };
 
-    const abandonarRegistro = (rol) => {
+    const abandonarRegistro = useCallback((rol) => {
         if (roles[rol] === PENDIENTE) {
             setRoles(prevState => ({...prevState, [rol]: VISITANTE}));
             if (rolesHandler[rol].noEstaRegistradoEnOtroRol()) logout();
-        }
-    };
+        }// eslint-disable-next-line
+    },[roles]);
 
     const registrar = (rol) => setRoles(prevState => ({...prevState, [rol]: REGISTRADO}));
 
     return (<UserContext.Provider
             value={{user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
-                registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
-            }}>
+                isAuthenticated, registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
+                loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p)}}>
             {children}
         </UserContext.Provider>
     );

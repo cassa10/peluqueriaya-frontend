@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useManejadorDeErrores} from "../contexts/errors/ManejadorDeErrores";
+import {useErrorAPI} from "../contexts/ErrorAPIProvider";
 import axios from 'axios';
 import {useUser} from "../contexts/UserProvider";
 
@@ -9,7 +9,7 @@ const server = process.env.REACT_APP_APIBACKEND || 'http://localhost:8080';
 const usarAPI = (metodo) => (path, fDatos = () => {}, parametrosIniciales = null) => {
     const [parametros, setParametros] = useState(parametrosIniciales);
     const [cargando, setCargando] = useState(false);
-    const {setError} = useManejadorDeErrores();
+    const {setError} = useErrorAPI();
     const {getTokenSilently} = useUser();
 
     useEffect(() => {

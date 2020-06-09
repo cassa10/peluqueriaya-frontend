@@ -4,7 +4,7 @@ import {CLIENTE, PELUQUERO, REGISTRADO} from "../assets/constants";
 import { useUser } from "../contexts/UserProvider";
 import Can, {Cliente, Peluquero} from "./Can";
 
-const privateRoute = (componenteCan, rol) =>
+const registradoRoute = (componenteCan, rol) =>
     ({ component: Component, path, ...rest }) => {
     const ComponenteCan = componenteCan;
     const { loading, roles, login } = useUser();
@@ -28,5 +28,5 @@ const privateRoute = (componenteCan, rol) =>
 };
 
 
-export const PeluqueroRoute = privateRoute(Peluquero, PELUQUERO);
-export const ClienteRoute = privateRoute(Cliente, CLIENTE);
+export const PeluqueroRoute = registradoRoute(Peluquero, PELUQUERO);
+export const ClienteRoute = registradoRoute(Cliente, CLIENTE);

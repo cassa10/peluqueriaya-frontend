@@ -3,7 +3,7 @@ import React, {createContext, useContext, useEffect, useMemo, useState} from 're
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import {useHistory} from "react-router-dom";
-import PaginaError from "../../views/PaginaError";
+import PaginaError from "../views/PaginaError";
 
 const ErrorAPIContext = createContext();
 export const useErrorAPI = () => useContext(ErrorAPIContext);

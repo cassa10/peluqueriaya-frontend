@@ -24,6 +24,7 @@ const UserProvider = ({history, children, ...initOptions}) => {
     const [user, setUser] = useState();
     const [auth0Client, setAuth0] = useState();
     const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [roles, setRoles] = useState(rolesIniciales);
 
     const onRedirectCallback = appState => {
@@ -44,6 +45,7 @@ const UserProvider = ({history, children, ...initOptions}) => {
                 onRedirectCallback(appState);
             }
             const isAuthenticated = await auth0FromHook.isAuthenticated();
+            setIsAuthenticated(isAuthenticated);
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
                 setUser(user);
@@ -97,8 +99,8 @@ const UserProvider = ({history, children, ...initOptions}) => {
 
     return (<UserContext.Provider
             value={{user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
-                registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p)
-            }}>
+                isAuthenticated, registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
+                loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p)}}>
             {children}
         </UserContext.Provider>
     );

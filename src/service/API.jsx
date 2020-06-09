@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useErrorAPI} from "../contexts/errors/ErrorAPIProvider";
+import {useErrorAPI} from "../contexts/ErrorAPIProvider";
 import axios from 'axios';
 import {useUser} from "../contexts/UserProvider";
 

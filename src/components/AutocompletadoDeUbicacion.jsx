@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {TextField, InputAdornment} from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useGetUbicacionConDireccion} from "../service/ServicioDeMapas";
-import EstadoIcon from "./EstadoIcon";
+import EstadoIcon from "./icons/EstadoIcon";
 
 
 const AutocompletadoDeUbicacion = ({ubicacion, setUbicacion, valido, setValido, ...props}) => {

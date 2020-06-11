@@ -12,7 +12,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import ModalInfoClienteTurno from "../components/ModalInfoClienteTurno";
 import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import IconSvg from "../components/IconSvg";
+import IconSvg from "../components/icons/IconSvg";
 import formatDate from '../formatters/formatDate';
 import formatTime from '../formatters/formatTime';
 import Swal from 'sweetalert2';

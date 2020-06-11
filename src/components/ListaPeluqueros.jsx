@@ -5,7 +5,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from '@material-ui/core/styles';
 import {Card, Grid, CardActions, CardContent, Button} from '@material-ui/core';
 import ModalServiciosPeluquero from './ModalServiciosPeluquero';
-import PuntajeStars from './PuntajeStars';
+import PuntajeStars from './icons/PuntajeStars';
 import Swal from 'sweetalert2';
 import formatPrice from '../formatters/formatPrice';
 import StarIcon from '@material-ui/icons/Star';

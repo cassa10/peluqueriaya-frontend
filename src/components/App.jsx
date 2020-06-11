@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import Container from "@material-ui/core/Container";
-import Barra from "./Barra";
+import Barra from "./ContenidoHeader";
 import PaginaPrincipal from "../views/PaginaPrincipal";
 import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
 import ErrorAPIProvider from "../contexts/ErrorAPIProvider";

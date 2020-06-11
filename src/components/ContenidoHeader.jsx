@@ -1,9 +1,9 @@
 import React from 'react';
 import Toolbar from "@material-ui/core/Toolbar";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {useUser} from "../contexts/UserProvider";
-import Can, {NoCliente, NoPeluquero} from "../wrappers/Can";
+import Can, {NoCliente, NoPeluquero, Registrado} from "../wrappers/Can";
 import {CLIENTE, PELUQUERO} from "../assets/constants";
 import {getSidebarTrigger} from "@mui-treasury/layout";
 import styled from "styled-components";
@@ -29,22 +29,28 @@ const ContenidoHeader = () => {
     const classes = useStyles();
     const {login} = useUser();
     let {push} = useHistory();
+    const {pathname} = useLocation();
 
     return <Toolbar>
-        <SidebarTrigger sidebarId="primarySidebar"/>
-        <img className={classes.img} src={logo} alt="logo" onClick={() => push("/")}/>
+        <Can>
+            <Registrado>
+                <SidebarTrigger sidebarId="primarySidebar"/>
+            </Registrado>
+        </Can>
+        {pathname !== "/" &&
+        <img className={classes.img} src={logo} alt="logo" onClick={() => push("/")}/>}
         <Can>
             <NoCliente>
                 <Tooltip title="Soy Cliente">
                     <IconButton edge="end" onClick={() => login(CLIENTE)}>
-                        <PersonOutlineIcon fontSize="large" color="primary"/>
+                        <PersonOutlineIcon fontSize="large" color="secondary"/>
                     </IconButton>
                 </Tooltip>
             </NoCliente>
             <NoPeluquero>
                 <Tooltip title="Soy Peluquero">
                     <IconButton edge="end" onClick={() => login(PELUQUERO)}>
-                        <TijeraIcon fontSize="large" color="primary"/>
+                        <TijeraIcon fontSize="large" color="secondary"/>
                     </IconButton>
                 </Tooltip>
             </NoPeluquero>

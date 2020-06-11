@@ -7,7 +7,7 @@ import {
     getDrawerSidebar,
     getSidebarContent,
     getContent,
-    getFixedScheme
+    getDefaultScheme
 } from '@mui-treasury/layout';
 import theme from "./assets/theme";
 import ContenidoBarraLateral from "./components/sidebar/ContenidoBarraLateral";
@@ -16,34 +16,40 @@ import ContenidoHeader from "./components/ContenidoHeader";
 import {useUser} from "./contexts/UserProvider";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ContenidoCuerpo from "./components/ContenidoCuerpo";
+import Can, {Registrado} from "./wrappers/Can";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const SidebarContent = getSidebarContent(styled);
 const Content = getContent(styled);
 
-const scheme = getFixedScheme();
+const scheme = getDefaultScheme();
 
 const App = () => {
     const {loading} = useUser();
+    const initialState = {sidebar: {primarySidebar: { collapsed: true, open: true }}};
 
     return (
-        <Root theme={theme} scheme={scheme}>
+        <Root theme={theme} scheme={scheme} initialState={initialState}>
             {({state: {sidebar}}) => {
                 if (loading) {
                     return <LinearProgress color="secondary"/>;
                 }
                 return <>
                     <CssBaseline/>
-                    <Header color="secondary">
+                    <Header color="primary">
                         <ContenidoHeader/>
                     </Header>
-                    <DrawerSidebar sidebarId="primarySidebar">
-                        <SidebarContent>
-                            <ContenidoBarraLateral collapsed={sidebar.primarySidebar.collapsed}/>
-                        </SidebarContent>
-                        <CollapseBtnStyled/>
-                    </DrawerSidebar>
+                    <Can>
+                        <Registrado>
+                            <DrawerSidebar sidebarId="primarySidebar">
+                                <SidebarContent>
+                                    <ContenidoBarraLateral collapsed={sidebar.primarySidebar.collapsed}/>
+                                </SidebarContent>
+                                <CollapseBtnStyled/>
+                            </DrawerSidebar>
+                        </Registrado>
+                    </Can>
                     <Content>
                         <ContenidoCuerpo/>
                     </Content>

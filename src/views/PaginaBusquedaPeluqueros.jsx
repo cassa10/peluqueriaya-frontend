@@ -47,16 +47,16 @@ const PaginaBusquedaPeluqueros = () => {
                 <AppBar position="static">
                     <Toolbar className={clases.toolbar} variant="dense">
                         <Grid container direction="row" justify="space-evenly" alignItems="center" spacing={1}>
-                            <Grid item xs={4}>
+                            <Grid item md={3}>
                                 <CampoDeBusqueda onClick={setFiltro} clear={limpiarFiltro}/>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item>
                                 <CheckBoxsDeTiposDePeluquero setFiltro={setFiltro}/>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item>
                                 <SeleccionOrdenarPor setFiltro={setFiltro}/>
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item>
                                 {!(cargando || peluqueros.length === 0)?
                                     < Pagination color="secondary" disabled={cargando} count={total} page={actual}
                                     onChange={handleChange}/>: null}

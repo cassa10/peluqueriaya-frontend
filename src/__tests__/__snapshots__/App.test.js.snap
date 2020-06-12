@@ -7,50 +7,26 @@ exports[`App App levanta en loading 1`] = `
 `;
 
 exports[`App App levanta sin problemas 1`] = `
-<div>
-  <Barra />
-  <WithStyles(ForwardRef(Container))
-    maxWidth="lg"
+<Fragment>
+  <Header
+    color="primary"
   >
-    <NotificacionProvider>
-      <ErrorAPIProvider>
-        <Switch>
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/"
-          />
-          <Component
-            component={[Function]}
-            path="/registro"
-          />
-          <Component
-            component={[Function]}
-            path="/peluquero/registro"
-          />
-          <Component
-            component={[Function]}
-            path="/perfil"
-          />
-          <Component
-            component={[Function]}
-            path="/peluquero/turnos"
-          />
-          <Route
-            component={[Function]}
-            path="/search"
-          />
-          <Route
-            component={[Function]}
-            path="/contratar"
-          />
-          <Route
-            component={[Function]}
-            path="*"
-          />
-        </Switch>
-      </ErrorAPIProvider>
-    </NotificacionProvider>
-  </WithStyles(ForwardRef(Container))>
-</div>
+    <ContenidoHeader />
+  </Header>
+  <DrawerSidebar
+    sidebarId="primarySidebar"
+  >
+    <SidebarContent>
+      <Can>
+        <Registrado>
+          <ContenidoBarraLateral />
+        </Registrado>
+      </Can>
+    </SidebarContent>
+    <CollapseBtnStyled />
+  </DrawerSidebar>
+  <Content>
+    <ContenidoCuerpo />
+  </Content>
+</Fragment>
 `;

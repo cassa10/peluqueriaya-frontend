@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import {useErrorAPI} from "../contexts/ErrorAPIProvider";
 import axios from 'axios';
 import {useUser} from "../contexts/UserProvider";
 
@@ -9,8 +8,7 @@ const server = process.env.REACT_APP_APIBACKEND || 'http://localhost:8080';
 const usarAPI = (metodo) => (path, fDatos = () => {}, parametrosIniciales = null) => {
     const [parametros, setParametros] = useState(parametrosIniciales);
     const [cargando, setCargando] = useState(false);
-    const {setError} = useErrorAPI();
-    const {getTokenSilently} = useUser();
+    const {getTokenSilently, setError} = useUser();
 
     useEffect(() => {
         let cancelar = false;

@@ -1,26 +1,21 @@
 /* eslint-disable no-unused-vars */
-import React, {createContext, useContext, useEffect, useMemo, useState} from 'react';
+import React, {createContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import {useHistory} from "react-router-dom";
 import PaginaError from "../views/PaginaError";
+import {useUser} from "./UserProvider";
 
 const ErrorAPIContext = createContext();
-export const useErrorAPI = () => useContext(ErrorAPIContext);
 
 const ErrorAPIProvider = ({children}) => {
-    const [error, setError] = useState();
+    const {error, setError} = useUser();
     const history = useHistory();
 
     useEffect(() => {
         return history.listen(() => setError(undefined));
         // eslint-disable-next-line
     }, [])
-
-    const contextPayload = useMemo(
-        () => ({setError}),
-        [setError]
-    );
 
     const mostrarContenido = () => {
         if (error) {
@@ -33,7 +28,7 @@ const ErrorAPIProvider = ({children}) => {
     }
 
     return (
-        <ErrorAPIContext.Provider value={contextPayload}>
+        <ErrorAPIContext.Provider value={{}}>
             {mostrarContenido()}
         </ErrorAPIContext.Provider>
     )

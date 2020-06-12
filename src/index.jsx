@@ -4,9 +4,11 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router, withRouter} from 'react-router-dom';
 import UserProvider from "./contexts/UserProvider";
-import OtherApp from "./App";
+import withRoot from "./wrappers/withRoot";
+import App from "./App";
 
 const UserProviderWithRouter = withRouter(UserProvider);
+const AppWithRoot = withRoot(App);
 
 ReactDOM.render(
     <Router>
@@ -14,7 +16,7 @@ ReactDOM.render(
                                 client_id={process.env.REACT_APP_CLIENT_ID}
                                 audience={process.env.REACT_APP_AUDIENCE}
                                 redirect_uri={window.location.origin}>
-            <OtherApp/>
+            <AppWithRoot/>
         </UserProviderWithRouter>
     </Router>,
     document.querySelector('#father')

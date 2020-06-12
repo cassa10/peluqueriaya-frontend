@@ -3,7 +3,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import {useHistory, useLocation} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {useUser} from "../contexts/UserProvider";
-import Can, {NoCliente, NoPeluquero, Registrado} from "../wrappers/Can";
+import Can, {NoCliente, NoPeluquero} from "../wrappers/Can";
 import {CLIENTE, PELUQUERO} from "../assets/constants";
 import {getSidebarTrigger} from "@mui-treasury/layout";
 import styled from "styled-components";
@@ -32,11 +32,7 @@ const ContenidoHeader = () => {
     const {pathname} = useLocation();
 
     return <Toolbar>
-        <Can>
-            <Registrado>
-                <SidebarTrigger sidebarId="primarySidebar"/>
-            </Registrado>
-        </Can>
+        <SidebarTrigger sidebarId="primarySidebar"/>
         {pathname !== "/" &&
         <img className={classes.img} src={logo} alt="logo" onClick={() => push("/")}/>}
         <Can>

@@ -13,7 +13,7 @@ const ListItemIconText = ({primary, icon: Icon, ...props}) => {
 
 ListItemIconText.propTypes = {
     primary: PropTypes.string.isRequired,
-    icon: PropTypes.object.isRequired,
+    icon: PropTypes.any.isRequired,
 };
 
 export default ListItemIconText;

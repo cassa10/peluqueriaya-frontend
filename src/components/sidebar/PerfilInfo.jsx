@@ -51,9 +51,9 @@ const PerfilInfo = ({collapsed, imagenSrc, titulo, textoSecundario}) => {
 
 PerfilInfo.propTypes = {
     collapsed: PropTypes.bool,
-    imagenSrc: PropTypes.string.isRequired,
-    titulo: PropTypes.string.isRequired,
-    textoSecundario: PropTypes.string.isRequired
+    imagenSrc: PropTypes.string,
+    titulo: PropTypes.string,
+    textoSecundario: PropTypes.string
 };
 
 export const ClientePerfilInfo = ({collapsed, imgPerfil, fullName, email}) => (
@@ -62,9 +62,9 @@ export const ClientePerfilInfo = ({collapsed, imgPerfil, fullName, email}) => (
 
 ClientePerfilInfo.propTypes = {
     collapsed: PropTypes.bool,
-    imgPerfil: PropTypes.string.isRequired,
-    fullName: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired
+    imgPerfil: PropTypes.string,
+    fullName: PropTypes.string,
+    email: PropTypes.string
 };
 
 export const PeluqueroPerfilInfo = ({collapsed, logo, nombre, email}) => (
@@ -73,7 +73,7 @@ export const PeluqueroPerfilInfo = ({collapsed, logo, nombre, email}) => (
 
 PeluqueroPerfilInfo.propTypes = {
     collapsed: PropTypes.bool,
-    logo: PropTypes.string.isRequired,
-    nombre: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired
+    logo: PropTypes.string,
+    nombre: PropTypes.string,
+    email: PropTypes.string
 };

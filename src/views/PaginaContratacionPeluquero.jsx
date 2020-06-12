@@ -89,10 +89,7 @@ const PaginaContratacionPeluquero = () => {
     
     const {setParametros} = usePostPedirTurno(handleTurnoPedidoSuccess)
 
-
-    const precioTotal = () => {
-        return peluquero.corteMin + sumBy(serviciosSeleccionados, (servicio) => {return servicio.precio})
-    }
+    const precioTotal = () => peluquero.corteMin + sumBy(serviciosSeleccionados,"precio");
 
     const getUbicacion = () =>  {
         return {

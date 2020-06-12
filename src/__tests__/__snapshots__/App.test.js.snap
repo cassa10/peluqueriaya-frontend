@@ -423,7 +423,11 @@ exports[`App App levanta sin problemas 1`] = `
     sidebarId="primarySidebar"
   >
     <SidebarContent>
-      <ContenidoBarraLateral />
+      <Can>
+        <Registrado>
+          <ContenidoBarraLateral />
+        </Registrado>
+      </Can>
     </SidebarContent>
     <CollapseBtnStyled />
   </DrawerSidebar>

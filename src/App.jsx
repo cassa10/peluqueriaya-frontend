@@ -8,6 +8,7 @@ import {useUser} from "./contexts/UserProvider";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ContenidoCuerpo from "./components/ContenidoCuerpo";
 import PropTypes from "prop-types";
+import Can, {Registrado} from "./wrappers/Can";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -27,7 +28,11 @@ const App = ({collapsed}) => {
         </Header>
         <DrawerSidebar sidebarId="primarySidebar">
             <SidebarContent>
-                <ContenidoBarraLateral collapsed={collapsed}/>
+                <Can>
+                    <Registrado>
+                        <ContenidoBarraLateral collapsed={collapsed}/>
+                    </Registrado>
+                </Can>
             </SidebarContent>
             <CollapseBtnStyled/>
         </DrawerSidebar>

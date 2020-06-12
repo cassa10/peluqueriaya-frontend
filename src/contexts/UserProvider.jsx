@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, createContext, useCallback} from "react";
+import React, {useState, useEffect, useContext, createContext, useCallback, useMemo} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -22,6 +22,7 @@ const rolesIniciales = {
 
 const UserProvider = ({history, children, ...initOptions}) => {
     const [user, setUser] = useState();
+    const [error, setError] = useState();
     const [auth0Client, setAuth0] = useState();
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -97,8 +98,13 @@ const UserProvider = ({history, children, ...initOptions}) => {
 
     const registrar = (rol) => setRoles(prevState => ({...prevState, [rol]: REGISTRADO}));
 
+    const contextPayload = useMemo(
+        () => ({setError}),
+        [setError]
+    );
+
     return (<UserContext.Provider
-            value={{user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
+            value={{error, ...contextPayload, user, loading, roles, setRoles, login, logout, empezarRegistro, abandonarRegistro,
                 isAuthenticated, registrar, getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
                 loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p)}}>
             {children}

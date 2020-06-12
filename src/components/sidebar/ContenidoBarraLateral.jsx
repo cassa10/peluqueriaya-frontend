@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PerfilInfo from "./PerfilInfo";
+import {ClientePerfilInfo, PeluqueroPerfilInfo} from "./PerfilInfo";
 import {getSidebarContent} from "@mui-treasury/layout";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -13,15 +13,32 @@ import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import {useUser} from "../../contexts/UserProvider";
 import ClienteOpcionesList from "./ClienteOpcionesList";
 import PeluqueroOpcionesList from "./PeluqueroOpcionesList";
+import {useGetPerfil} from "../../service/ServicioDeRol";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 const SidebarContent = getSidebarContent(styled);
 
 const ContenidoBarraLateral = ({collapsed}) => {
     const [mostrarOpcCliente, setMostrarOpcCliente] = useState(true);
-    const {logout} = useUser();
+    const {logout, user:{email}} = useUser();
+    const [{cliente, peluquero}, setPerfil] = useState({cliente: null, peluquero: null});
+    const {cargando} = useGetPerfil(setPerfil);
+
+    const perfilInfoProps = (rol) => ({collapsed, email, ...rol});
 
     return <SidebarContent>
-        <PerfilInfo collapsed={collapsed}/>
+        {cargando?
+            <CircularProgress color="secondary"/>:
+            <Can>
+            <ClienteNoPeluquero><ClientePerfilInfo {...perfilInfoProps(cliente)}/></ClienteNoPeluquero>
+            <PeluqueroNoCliente><PeluqueroPerfilInfo {...perfilInfoProps(peluquero)}/></PeluqueroNoCliente>
+            <ClienteYPeluquero>
+                {mostrarOpcCliente ?
+                    <ClientePerfilInfo {...perfilInfoProps(cliente)}/> :
+                    <PeluqueroPerfilInfo {...perfilInfoProps(peluquero)}/>}
+            </ClienteYPeluquero>
+        </Can>}
         <List>
             <Can>
                 <ClienteNoPeluquero><ClienteOpcionesList/></ClienteNoPeluquero>
@@ -33,12 +50,12 @@ const ContenidoBarraLateral = ({collapsed}) => {
         </List>
         <Divider/>
         <List>
-            <ListItemIconText button onClick={() => logout()} icon={ExitToAppIcon} primary="Cerrar Sesion"/>
+            <ListItemIconText button onClick={() => logout()} icon={ExitToAppIcon} primary="Cerrar Sesión"/>
             <Can>
                 <ClienteYPeluquero>
                     <ListItemIconText
-                        icon={mostrarOpcCliente ? PersonOutlineIcon : TijeraIcon}
-                        primary={mostrarOpcCliente ? "Cliente" : "Peluquero"}
+                        icon={mostrarOpcCliente ? TijeraIcon : PersonOutlineIcon}
+                        primary={mostrarOpcCliente ? "Peluquero" : "Cliente"}
                         button onClick={() => setMostrarOpcCliente(prevState => !prevState)}
                     />
                 </ClienteYPeluquero>

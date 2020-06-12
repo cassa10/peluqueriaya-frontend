@@ -18,7 +18,7 @@ const ClienteMenu = () => {
             icon: AccountCircleIcon
         },{
             primary: "Buscar peluqueros",
-            to: "/buscar",
+            to: "/",
             icon: SearchIcon
         }
     ];

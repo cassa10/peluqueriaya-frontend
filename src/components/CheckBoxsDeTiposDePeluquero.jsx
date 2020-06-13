@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Person, PersonOutline } from "@material-ui/icons";
-
 import { FormGroup, FormControlLabel, Checkbox } from "@material-ui/core";
 
 const CheckBoxsDeTiposDePeluquero = ({ setFiltro }) => {

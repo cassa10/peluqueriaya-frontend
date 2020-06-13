@@ -18,6 +18,7 @@ import formatTime from '../formatters/formatTime';
 import Swal from 'sweetalert2';
 import RoomIcon from '@material-ui/icons/Room';
 import StarIcon from '@material-ui/icons/Star';
+import StyledRating from '../components/StyledRating';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -135,6 +136,7 @@ const PaginaGestionPeluquero = () => {
                         />
                     </Grid>
                     <Grid item>
+                        {peluquero.puntuacionPromedio > 0 && <StyledRating defaultValue={peluquero.puntuacionPromedio}/>}
                         <Typography className={classes.peluqueroNombre} textalign="center" variant="h5" component="h2">
                             {peluquero.nombre}
                         </Typography>

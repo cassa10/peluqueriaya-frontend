@@ -108,7 +108,8 @@ const PaginaGestionPeluquero = () => {
 
     const createPanelPeluquero = () => {
         return (
-            <Grid container className={classes.panelPeluquero} spacing={1}>
+
+            <Grid container className={classes.panelPeluquero}>
                 <Grid item  xs={6}>
                     {mostrarDatosPeluquero(peluquero)}
                 </Grid>
@@ -429,10 +430,24 @@ const PaginaGestionPeluquero = () => {
 
     const createView = () => {
         return (
-            <div>
-                {createPanelPeluquero()}
-                {createTableDataTurnos()}
-            </div>
+            <>
+                <Grid container>
+                    <Grid item xs />
+                    <Grid item xs={10}>
+                        {createPanelPeluquero()}
+                    </Grid>
+                    <Grid item xs />
+                    
+                </Grid>
+                <Grid container>
+                    <Grid item xs />
+                    <Grid item xs={10}>
+                    {createTableDataTurnos()}
+                    </Grid>
+                    <Grid item xs />
+                    
+                </Grid>
+            </>
         );
     }
 

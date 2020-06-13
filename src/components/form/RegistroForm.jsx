@@ -2,8 +2,8 @@ import React from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-
-import { Container, Avatar, Typography, Grid } from "@material-ui/core";
+import { Container, Typography, Grid } from "@material-ui/core";
+import AvatarValidado from "../AvatarValidado";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,9 +30,9 @@ const RegistroForm = ({ nombre, onSubmit, avatarSrc, children }) => {
   return (
     <Container component="main" maxWidth="md">
       <div className={clases.paper}>
-        <Avatar className={clases.avatar} src={avatarSrc}>
+        <AvatarValidado className={clases.avatar} src={avatarSrc}>
           <LockOutlinedIcon />
-        </Avatar>
+        </AvatarValidado>
         <Typography component="h1" variant="h5">
           {nombre}
         </Typography>

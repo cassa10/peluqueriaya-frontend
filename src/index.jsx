@@ -10,18 +10,16 @@ const UserProviderWithRouter = withRouter(UserProvider);
 const AppWithRoot = withRoot(App);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <UserProviderWithRouter
-        domain={process.env.REACT_APP_DOMAIN}
-        client_id={process.env.REACT_APP_CLIENT_ID}
-        audience={process.env.REACT_APP_AUDIENCE}
-        redirect_uri={window.location.origin}
-      >
-        <AppWithRoot />
-      </UserProviderWithRouter>
-    </Router>
-  </React.StrictMode>,
+  <Router>
+    <UserProviderWithRouter
+      domain={process.env.REACT_APP_DOMAIN}
+      client_id={process.env.REACT_APP_CLIENT_ID}
+      audience={process.env.REACT_APP_AUDIENCE}
+      redirect_uri={window.location.origin}
+    >
+      <AppWithRoot />
+    </UserProviderWithRouter>
+  </Router>,
   document.getElementById("root")
 );
 

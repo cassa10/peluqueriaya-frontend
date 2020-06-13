@@ -2,7 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Avatar, Typography, Divider } from "@material-ui/core";
+import { Typography, Divider } from "@material-ui/core";
+import AvatarValidado from "../AvatarValidado";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,9 +45,9 @@ const PerfilInfo = ({ collapsed, imagenSrc, titulo, textoSecundario }) => {
 
   return (
     <div className={rootStyles}>
-      <Avatar className={avatarStyles} src={imagenSrc}>
+      <AvatarValidado className={avatarStyles} src={imagenSrc}>
         P
-      </Avatar>
+      </AvatarValidado>
       <div className={classes.avatarPadding} />
       <Typography variant="h6" noWrap>
         {titulo}

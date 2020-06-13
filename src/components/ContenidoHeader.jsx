@@ -22,6 +22,14 @@ const useStyles = makeStyles(() => ({
         width: '350px',
         minWidth: '150px',
         cursor: 'pointer'
+    },
+    customHoverFocus: {
+        color: "#F5F5DC",
+        marginLeft: "5px",
+        "&:hover, &.Mui-focusVisible": { 
+            color: "white",
+            boxShadow: '0 2px 0px 0px white'
+        }
     }
 }));
 
@@ -39,14 +47,14 @@ const ContenidoHeader = () => {
             <NoCliente>
                 <Tooltip title="Soy Cliente">
                     <IconButton edge="end" onClick={() => login(CLIENTE)}>
-                        <PersonOutlineIcon fontSize="large" color="secondary"/>
+                        <PersonOutlineIcon className={classes.customHoverFocus} fontSize="large"/>
                     </IconButton>
                 </Tooltip>
             </NoCliente>
             <NoPeluquero>
                 <Tooltip title="Soy Peluquero">
                     <IconButton edge="end" onClick={() => login(PELUQUERO)}>
-                        <TijeraIcon fontSize="large" color="secondary"/>
+                        <TijeraIcon className={classes.customHoverFocus} fontSize="large"/>
                     </IconButton>
                 </Tooltip>
             </NoPeluquero>

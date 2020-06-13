@@ -14,7 +14,10 @@ const useStyles = makeStyles({
     root: {
         minWidth: 275,
         background: "#ecf4f3",
-        margin: 12,
+        marginTop: 45,
+        marginBottom: 18,
+        marginLeft: 12,
+        marginRight: 12,
         '&:hover': {
             boxShadow: '0 -5px 0px 0px #2b71a6'
         }
@@ -119,8 +122,12 @@ const ListaPeluqueros = ({resultados, botonIrPaginaPrincipal}) => {
                                 src={logoPredeterminado(peluquero.logo)}
                                 alt="logo"
                             />
-                            {peluquero.puntuacionPromedio &&
-                                <PuntajePeluquero defaultValue={peluquero.puntuacionPromedio}/>}
+                            <div>
+                                {peluquero.puntuacionPromedio > 0 ?
+                                    <PuntajePeluquero defaultValue={peluquero.puntuacionPromedio}/>:
+                                    <br />
+                                }
+                            </div>
                             <Typography variant="h5" component="h2">
                                 {peluquero.nombre}
                             </Typography>

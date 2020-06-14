@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RegistroForm from "../components/form/RegistroForm";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, ErrorMessage, useForm } from "react-hook-form";
 import Campo from "../components/form/Campo";
 import {
   Typography,
@@ -12,9 +12,13 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import BotonSubmit from "../components/form/BotonSubmit";
-import { useGetTiposDeServicios } from "../service/ServicioDeServicio";
-import intersectionWith from "lodash/intersectionWith";
-import map from "lodash/map";
+import {
+  useGetTiposDeServicios,
+  usePostServicio,
+} from "../service/ServicioDeServicio";
+import servicioSchema from "../assets/validations/servicioSchema";
+import { useNotificacion } from "../contexts/NotificacionProvider";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -35,20 +39,20 @@ const useStyles = makeStyles((theme) => ({
 
 const PaginaCrearServicio = () => {
   const classes = useStyles();
-  const { register, handleSubmit, errors, control, getValues } = useForm({
-    reValidateMode: "onChange",
-  });
   const [opcionesTipos, setOpcionesTipos] = useState([]);
   useGetTiposDeServicios(setOpcionesTipos);
+  const { register, handleSubmit, errors, control } = useForm({
+    reValidateMode: "onChange",
+    validationSchema: servicioSchema,
+  });
+  const { setNotificacion } = useNotificacion();
+  const { push } = useHistory();
+  const { cargando, setServicio } = usePostServicio(({ message }) => {
+    setNotificacion(message);
+    push("/peluquero/servicios");
+  });
 
-  const onSubmit = ({ tipos }) => {
-    const tiposDto = intersectionWith(
-      opcionesTipos,
-      tipos,
-      ({ nombre }, othVal) => nombre === othVal
-    );
-    console.log(map(tiposDto, "id"));
-  };
+  const onSubmit = (data) => setServicio({ opcionesTipos, ...data });
 
   const formProps = () => ({ errors, inputRef: register });
 
@@ -56,7 +60,7 @@ const PaginaCrearServicio = () => {
     <RegistroForm nombre="Crear servicio" onSubmit={handleSubmit(onSubmit)}>
       <Grid item xs={12}>
         <Typography gutterBottom>
-          ¿Que tipo de servicio es? Elijá al menos uno
+          ¿Que tipo de servicio esta ofreciendo? Elijá al menos uno
         </Typography>
         <Controller
           as={
@@ -107,6 +111,13 @@ const PaginaCrearServicio = () => {
           control={control}
           defaultValue={[]}
         />
+        <ErrorMessage errors={errors} name="tipos">
+          {({ message }) => (
+            <Typography variant="caption" color="error">
+              {message}
+            </Typography>
+          )}
+        </ErrorMessage>
       </Grid>
       <Campo
         sm={6}
@@ -116,9 +127,8 @@ const PaginaCrearServicio = () => {
         {...formProps()}
       />
       <Grid container item xs={12} sm={6} justify="center">
-        <BotonSubmit nombre="Crear" />
+        <BotonSubmit nombre="Crear" disabled={cargando} />
       </Grid>
-      <div>{JSON.stringify(getValues())}</div>
     </RegistroForm>
   );
 };

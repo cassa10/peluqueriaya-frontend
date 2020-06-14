@@ -21,7 +21,9 @@ const TabDeFiltradoPorServicio = ({ setFiltro, limpiarFiltro }) => {
   const classes = useStyles();
   const [tipoDeServicio, setTipoDeServicio] = useState(false);
   const [tiposDeServicio, setTiposDeServicio] = useState(null);
-  useGetTiposDeServicios(setTiposDeServicio);
+  const fdatos = (data) =>
+    setTiposDeServicio([{ id: "BORRAR", nombre: "Todos" }, ...data]);
+  useGetTiposDeServicios(fdatos);
 
   const handleChange = (event, nuevoTipoDeServicio) => {
     if (nuevoTipoDeServicio === "BORRAR") {

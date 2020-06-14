@@ -44,19 +44,21 @@ const PerfilInfo = ({ collapsed, imagenSrc, titulo, textoSecundario }) => {
   );
 
   return (
-    <div className={rootStyles}>
-      <AvatarValidado className={avatarStyles} src={imagenSrc}>
-        P
-      </AvatarValidado>
-      <div className={classes.avatarPadding} />
-      <Typography variant="h6" noWrap>
-        {titulo}
-      </Typography>
-      <Typography color="textSecondary" noWrap gutterBottom>
-        {textoSecundario}
-      </Typography>
+    <>
+      <div className={rootStyles}>
+        <AvatarValidado className={avatarStyles} src={imagenSrc}>
+          P
+        </AvatarValidado>
+        <div className={classes.avatarPadding} />
+        <Typography variant="h6" noWrap>
+          {titulo}
+        </Typography>
+        <Typography color="textSecondary" noWrap gutterBottom>
+          {textoSecundario}
+        </Typography>
+      </div>
       <Divider />
-    </div>
+    </>
   );
 };
 

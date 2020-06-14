@@ -1,7 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Grid, Button } from "@material-ui/core";
 
-const BotonSubmit = ({ ...props }) => {
+const BotonSubmit = ({ nombre = "Registrar", ...props }) => {
   return (
     <Grid container item xs={12} justify="center">
       <Button
@@ -11,10 +12,14 @@ const BotonSubmit = ({ ...props }) => {
         size="large"
         {...props}
       >
-        Registrar
+        {nombre}
       </Button>
     </Grid>
   );
+};
+
+BotonSubmit.propTypes = {
+  nombre: PropTypes.string,
 };
 
 export default BotonSubmit;

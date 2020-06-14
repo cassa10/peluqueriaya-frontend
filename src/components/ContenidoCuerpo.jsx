@@ -36,10 +36,7 @@ const ContenidoCuerpo = () => {
             path="/peluquero/turnos"
             component={PaginaGestionPeluquero}
           />
-          <PeluqueroRoute
-            path="/peluquero/servicio"
-            component={PaginaCrearServicio}
-          />
+          <Route path="/peluquero/servicio" component={PaginaCrearServicio} />
           <Route path="/search" component={PaginaBusquedaPeluqueros} />
           <Route path="/contratar" component={PaginaContratacionPeluquero} />
           <Route path="*" component={PaginaError404} />

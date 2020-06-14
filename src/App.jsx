@@ -5,6 +5,7 @@ import {
   getDrawerSidebar,
   getSidebarContent,
   getContent,
+  getFooter,
 } from "@mui-treasury/layout";
 import ContenidoBarraLateral from "./components/sidebar/ContenidoBarraLateral";
 import CollapseBtnStyled from "./components/sidebar/CollapseBtnStyled";
@@ -14,13 +15,26 @@ import ContenidoCuerpo from "./components/ContenidoCuerpo";
 import PropTypes from "prop-types";
 import Can, { Registrado } from "./wrappers/Can";
 import { LinearProgress } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const SidebarContent = getSidebarContent(styled);
 const Content = getContent(styled);
+const Footer = getFooter(styled);
+
+const useStyles = makeStyles(() => ({
+  footer: {
+    maxWidth: 700,
+    margin: "auto",
+    textAlign: "center",
+    paddingTop: "10%",
+  },
+}));
 
 const App = ({ collapsed }) => {
+  const classes = useStyles();
   const { loading } = useUser();
 
   if (loading) {
@@ -32,19 +46,26 @@ const App = ({ collapsed }) => {
       <Header color="primary">
         <ContenidoHeader />
       </Header>
-      <DrawerSidebar sidebarId="primarySidebar">
-        <SidebarContent>
-          <Can>
-            <Registrado>
+      <Can>
+        <Registrado>
+          <DrawerSidebar sidebarId="primarySidebar">
+            <SidebarContent>
               <ContenidoBarraLateral collapsed={collapsed} />
-            </Registrado>
-          </Can>
-        </SidebarContent>
-        <CollapseBtnStyled />
-      </DrawerSidebar>
+            </SidebarContent>
+            <CollapseBtnStyled />
+          </DrawerSidebar>
+        </Registrado>
+      </Can>
       <Content>
         <ContenidoCuerpo />
       </Content>
+      <div className={classes.footer}>
+        <Footer>
+          <Typography variant="caption" align="center">
+            © 2020 - MIT License
+          </Typography>
+        </Footer>
+      </div>
     </>
   );
 };

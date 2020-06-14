@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useGetPeluqueroLogeado } from "../service/ServicioDePeluquero";
+import { useGetPeluqueroLogeado, usePostPeluqueroConectar, usePostPeluqueroDesconectar } from "../service/ServicioDePeluquero";
 import { useGetTurnosPeluquero, usePostConfirmarTurno, usePostFinalizarTurno } from "../service/ServicioDeTurno";
 import CirculitoCargando from "../components/CirculoCargando";
 import {
-    Button, Table, TableBody, IconButton,
-    TableCell, TableContainer, TableHead,
+    Button, Table, TableBody, IconButton, Switch,
+    TableCell, TableContainer, TableHead, Tooltip,
     TableRow, Paper, LinearProgress, ButtonGroup, Grid, Typography
 } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -18,6 +18,7 @@ import formatTime from '../formatters/formatTime';
 import Swal from 'sweetalert2';
 import RoomIcon from '@material-ui/icons/Room';
 import StarIcon from '@material-ui/icons/Star';
+import StyledRating from '../components/StyledRating';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -100,15 +101,28 @@ const PaginaGestionPeluquero = () => {
 
     const [isOrdRecientes, setIsOrdRecientes] = useState(false);
 
-    const refreshTurnos = () => setFiltro();
+    const refreshTurnos = () => { 
+        setFiltro()
+    }
 
-    const {setIdTurnoInParamConfirmarTurno} = usePostConfirmarTurno(refreshTurnos)
+    const refreshWindow = () => {
+        window.location.reload()
+    }
 
-    const {setIdTurnoInParamFinalizarTurno} = usePostFinalizarTurno(refreshTurnos)
+    const {setIdTurnoInParamConfirmarTurno} = usePostConfirmarTurno(refreshWindow)
 
+    const {setIdTurnoInParamFinalizarTurno} = usePostFinalizarTurno(refreshWindow)
+
+    const {desconectarPeluquero} = usePostPeluqueroDesconectar(() => {})
+
+    const {conectarPeluquero} = usePostPeluqueroConectar(() => {})
+
+
+    
     const createPanelPeluquero = () => {
         return (
-            <Grid container className={classes.panelPeluquero} spacing={1}>
+
+            <Grid container className={classes.panelPeluquero}>
                 <Grid item  xs={6}>
                     {mostrarDatosPeluquero(peluquero)}
                 </Grid>
@@ -123,9 +137,53 @@ const PaginaGestionPeluquero = () => {
         return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png"
     }
 
+    const handleCerrarPeluqueria = (accept) => {
+        
+        if(accept){
+            desconectarPeluquero()
+            window.location.reload()
+        }
+    }
+
+    const handleAbrirPeluqueria = (accept) => {
+        
+        if(accept){
+            conectarPeluquero()
+            window.location.reload()
+        }
+        
+    }
+
+    const dialogCerrarPeluqueria = (event) => {
+
+        ! event.target.checked?
+        Swal.fire({
+            title: '¿Estás seguro?',
+            html: 'Si cerras la peluqueria, dejarás de aparecer en las búsquedas. Además, todos los turnos pendientes y en espera se cancelarán!',
+            showCancelButton: true,
+            cancelButtonColor: 'Red',
+            confirmButtonColor: 'Green',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'De acuerdo',
+            reverseButtons: true,
+        }).then((result) => handleCerrarPeluqueria(result.value))
+        :
+        Swal.fire({
+            title: '¿Estás a un paso de abrir la peluqueria?',
+            html: 'Al aceptar, aparecerás en la búsquedas y podrás recibir turnos',
+            showCancelButton: true,
+            cancelButtonColor: 'Red',
+            confirmButtonColor: 'Green',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'De acuerdo',
+            reverseButtons: true,
+        }).then((result) => handleAbrirPeluqueria(result.value))
+    }
+
     const mostrarDatosPeluquero = (peluquero) => {
         return(
-            <Grid container item className={classes.gridInfoPeluquero} direction="row" justify="center" alignItems="center" spacing={4}>
+            <Grid container item className={classes.gridInfoPeluquero} direction="row" justify="center" alignItems="center" spacing={1}>
+                    <Grid item xs={1} />
                     <Grid item className={classes.gridLogoItem}>
                         <img
                             className={classes.logoImg}
@@ -133,12 +191,23 @@ const PaginaGestionPeluquero = () => {
                             alt="logo"
                         />
                     </Grid>
+                    <Grid item xs={1}/>
                     <Grid item>
+                        {peluquero.puntuacionPromedio > 0 && <StyledRating defaultValue={peluquero.puntuacionPromedio}/>}
                         <Typography className={classes.peluqueroNombre} textalign="center" variant="h5" component="h2">
                             {peluquero.nombre}
                         </Typography>
+                        <div>
+                            
+                            <Typography className={classes.peluqueroNombre}>
+                            <Tooltip title={peluquero.estaDesconectado?"Estar disponible":"Cerrar Peluqueria"}>
+                                <Switch checked={! peluquero.estaDesconectado} onChange={dialogCerrarPeluqueria} disabled={! (peluquero.estaDisponible || peluquero.estaDesconectado)} />
+                            </Tooltip>
+                                {peluquero.estaDesconectado?'Desconectado':'Disponible'}
+                            </Typography>
+                        </div>
+                        
                     </Grid>
-
             </Grid>
         );
     }
@@ -429,10 +498,24 @@ const PaginaGestionPeluquero = () => {
 
     const createView = () => {
         return (
-            <div>
-                {createPanelPeluquero()}
-                {createTableDataTurnos()}
-            </div>
+            <>
+                <Grid container>
+                    <Grid item xs />
+                    <Grid item xs={10}>
+                        {createPanelPeluquero()}
+                    </Grid>
+                    <Grid item xs />
+                    
+                </Grid>
+                <Grid container>
+                    <Grid item xs />
+                    <Grid item xs={10}>
+                    {createTableDataTurnos()}
+                    </Grid>
+                    <Grid item xs />
+                    
+                </Grid>
+            </>
         );
     }
 

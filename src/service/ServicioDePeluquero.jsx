@@ -61,8 +61,10 @@ export const useGetPeluqueroLogeado = (setterDatos) => {
         setParametros({});
         // eslint-disable-next-line
     },[])
+
+    const refrescarPeluquero = () => setParametros({})
     
-    return {cargando}
+    return {cargando, refrescarPeluquero}
 }
 
 export const usePostPeluquero = (fdatos) => {

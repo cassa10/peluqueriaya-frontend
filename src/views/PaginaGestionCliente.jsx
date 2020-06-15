@@ -10,6 +10,7 @@ import {
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
 import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
+import ModalCalificarTurno from "../components/ModalCalificarTurno";
 import CancelIcon from '@material-ui/icons/Cancel';
 import RoomIcon from '@material-ui/icons/Room';
 import formatDate from '../formatters/formatDate';
@@ -107,8 +108,6 @@ const PaginaGestionCliente = () => {
     }
 
     const {setIdTurnoInParamCancelarTurno} = usePostCancelarTurno(refreshTurnos)
-
-
     
     const createPanelCliente = () => {
         return (
@@ -176,18 +175,18 @@ const PaginaGestionCliente = () => {
         return(`${puntaje}/5`);
     }
 
-    const showPuntuacionData = (puntaje) => {
+    const showPuntuacionData = (turno) => {
         return(
-            puntaje>0?
-            <><div><StarIcon /></div>{displayPuntaje(puntaje)}</>:
-            'Sin puntuar aún'
+            turno.puntaje>0?
+            <><div><StarIcon /></div>{displayPuntaje(turno.puntaje)}</>:
+            <ModalCalificarTurno turno={turno} refreshTurnos={refreshTurnos} />
         );
     }
 
     const handlePuntuacionPorEstado = (turno) => 
         turno.estaCancelado?
             <div className={classes.iconIsolate}><BlockIcon /></div>:
-            showPuntuacionData(turno.puntaje)
+            showPuntuacionData(turno)
     
     
 

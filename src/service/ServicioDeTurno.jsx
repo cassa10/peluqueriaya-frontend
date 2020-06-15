@@ -65,5 +65,45 @@ export const usePostFinalizarTurno = (setterResponseData) => {
   const setIdTurnoInParamFinalizarTurno = (id) =>
     setParametros({ idTurno: id });
 
-  return { cargandoFinalizarTurno: cargando, setIdTurnoInParamFinalizarTurno };
-};
+    return {cargandoFinalizarTurno: cargando, setIdTurnoInParamFinalizarTurno};
+}
+
+export const useGetTurnosCliente = (tamanioPagina, setterResponseData) => {
+    
+
+    const crearPaginacion = ({content, pageable,  totalPages}) => {
+        setterResponseData((prevState) => ({
+            ...prevState,
+            turnos: content,
+            actual: pageable.pageNumber+1,
+            total: totalPages,
+        }))
+    }
+
+    const {cargando, parametros, setParametros} = useGetConAuth(`/turno/cliente`,crearPaginacion);
+
+    useEffect(() => {
+        setParametros({size: tamanioPagina, sort: 'fechaInicio,asc'});
+        // eslint-disable-next-line
+    }, [])
+
+    const setFiltro = (filtro) => setParametros((prevState) => ({...prevState, ...filtro}));
+
+    const limpiarFiltro = (filtro) => {
+        if (filtro in parametros) {
+            // eslint-disable-next-line no-unused-vars
+            const {[filtro]: value, ...otrosFiltros} = parametros;
+            setParametros(otrosFiltros);
+        }
+    }
+    
+    return {cargandoTurnos: cargando, setFiltro, limpiarFiltro}
+}
+
+export const usePostCancelarTurno = (setterResponseData) => {
+    const {cargando, setParametros} = usePostConAuth("/turno/cancelar", setterResponseData);
+
+    const setIdTurnoInParamCancelarTurno = (id) => setParametros({idTurno: id});
+
+    return {cargandoCancelarTurno: cargando, setIdTurnoInParamCancelarTurno};
+}

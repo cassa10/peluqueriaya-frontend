@@ -16,6 +16,7 @@ import PaginaContratacionPeluquero from "../../views/PaginaContratacionPeluquero
 import { PaginaError404 } from "../../views/PaginaError";
 import NotificacionProvider from "../../contexts/NotificacionProvider";
 import PaginaCrearServicio from "../../views/PaginaCrearServicio";
+import PaginaGestionCliente from "../../views/PaginaGestionCliente";
 
 const ContenidoCuerpo = () => {
   return (
@@ -32,6 +33,7 @@ const ContenidoCuerpo = () => {
             component={PaginaRegistroPeluquero}
           />
           <ClienteRoute path="/perfil" component={PaginaPerfil} />
+          <ClienteRoute path="/turnos" component={PaginaGestionCliente}/>
           <PeluqueroRoute
             path="/peluquero/turnos"
             component={PaginaGestionPeluquero}

@@ -12,6 +12,7 @@ import Can, { Cliente, NoCliente } from "../wrappers/Can";
 import { CLIENTE } from "../assets/constants";
 import { useUser } from "../contexts/UserProvider";
 import formatPrice from "../formatters/formatPrice";
+import StyledRating from "../components/StyledRating";
 
 const useStyles = makeStyles({
   gridInfoPeluquero: {
@@ -190,6 +191,9 @@ const PaginaContratacionPeluquero = () => {
           />
         </Grid>
         <Grid item>
+          {peluquero.puntuacionPromedio > 0 && (
+            <StyledRating defaultValue={peluquero.puntuacionPromedio} />
+          )}
           <Typography
             className={classes.peluqueroNombre}
             textalign="center"

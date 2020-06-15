@@ -107,3 +107,12 @@ export const usePostCancelarTurno = (setterResponseData) => {
 
     return {cargandoCancelarTurno: cargando, setIdTurnoInParamCancelarTurno};
 }
+
+export const usePostCalificarTurno = (setterResponseData) => {
+  const {cargando, setParametros} = usePostConAuth("/turno/calificar", setterResponseData);
+
+  const setIdTurnoYCalificacionInParamCalificarTurno = (id, puntuacion) => setParametros({idTurno: id, puntaje: puntuacion});
+
+  return {cargandoCalificarTurno: cargando, setIdTurnoYCalificacionInParamCalificarTurno};
+}
+

@@ -1,21 +1,21 @@
 import React from "react";
-import ErrorAPIProvider from "../contexts/ErrorAPIProvider";
+import ErrorAPIProvider from "../../contexts/ErrorAPIProvider";
 import { Route, Switch } from "react-router-dom";
-import PaginaPrincipal from "../views/PaginaPrincipal";
+import PaginaPrincipal from "../../views/PaginaPrincipal";
 import {
   PendienteClienteRoute,
   PendientePeluqueroRoute,
-} from "../wrappers/PendienteRoute";
-import PaginaRegistroCliente from "../views/PaginaRegistroCliente";
-import PaginaRegistroPeluquero from "../views/PaginaRegistroPeluquero";
-import { ClienteRoute, PeluqueroRoute } from "../wrappers/RegistradoRoute";
-import PaginaPerfil from "../views/PaginaPerfil";
-import PaginaGestionPeluquero from "../views/PaginaGestionPeluquero";
-import PaginaBusquedaPeluqueros from "../views/PaginaBusquedaPeluqueros";
-import PaginaContratacionPeluquero from "../views/PaginaContratacionPeluquero";
-import { PaginaError404 } from "../views/PaginaError";
-import NotificacionProvider from "../contexts/NotificacionProvider";
-import PaginaCrearServicio from "../views/PaginaCrearServicio";
+} from "../../wrappers/PendienteRoute";
+import PaginaRegistroCliente from "../../views/PaginaRegistroCliente";
+import PaginaRegistroPeluquero from "../../views/PaginaRegistroPeluquero";
+import { ClienteRoute, PeluqueroRoute } from "../../wrappers/RegistradoRoute";
+import PaginaPerfil from "../../views/PaginaPerfil";
+import PaginaGestionPeluquero from "../../views/PaginaGestionPeluquero";
+import PaginaBusquedaPeluqueros from "../../views/PaginaBusquedaPeluqueros";
+import PaginaContratacionPeluquero from "../../views/PaginaContratacionPeluquero";
+import { PaginaError404 } from "../../views/PaginaError";
+import NotificacionProvider from "../../contexts/NotificacionProvider";
+import PaginaCrearServicio from "../../views/PaginaCrearServicio";
 
 const ContenidoCuerpo = () => {
   return (
@@ -36,7 +36,10 @@ const ContenidoCuerpo = () => {
             path="/peluquero/turnos"
             component={PaginaGestionPeluquero}
           />
-          <Route path="/peluquero/servicio" component={PaginaCrearServicio} />
+          <PeluqueroRoute
+            path="/peluquero/servicio"
+            component={PaginaCrearServicio}
+          />
           <Route path="/search" component={PaginaBusquedaPeluqueros} />
           <Route path="/contratar" component={PaginaContratacionPeluquero} />
           <Route path="*" component={PaginaError404} />

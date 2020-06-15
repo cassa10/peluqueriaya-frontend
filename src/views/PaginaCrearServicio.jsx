@@ -18,7 +18,7 @@ import {
 } from "../service/ServicioDeServicio";
 import servicioSchema from "../assets/validations/servicioSchema";
 import { useNotificacion } from "../contexts/NotificacionProvider";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -47,17 +47,19 @@ const PaginaCrearServicio = () => {
   });
   const { setNotificacion } = useNotificacion();
   const { push } = useHistory();
-  const { cargando, setServicio } = usePostServicio(({ message }) => {
-    setNotificacion(message);
+  const { cargando, setServicio } = usePostServicio(({ message: mensaje }) => {
+    setNotificacion({ mensaje, severidad: "success" });
     push("/peluquero/servicios");
   });
 
   const onSubmit = (data) => setServicio({ opcionesTipos, ...data });
 
-  const formProps = () => ({ errors, inputRef: register });
+  const formProps = { errors, inputRef: register };
 
   return (
     <RegistroForm nombre="Crear servicio" onSubmit={handleSubmit(onSubmit)}>
+      <Campo sm={6} type="number" name="precio" label="Precio" {...formProps} />
+      <Campo sm={6} name="nombre" label="Nombre" {...formProps} />
       <Grid item xs={12}>
         <Typography gutterBottom>
           ¿Que tipo de servicio esta ofreciendo? Elijá al menos uno
@@ -119,16 +121,7 @@ const PaginaCrearServicio = () => {
           )}
         </ErrorMessage>
       </Grid>
-      <Campo
-        sm={6}
-        type="number"
-        name="precio"
-        label="Precio de servicio"
-        {...formProps()}
-      />
-      <Grid container item xs={12} sm={6} justify="center">
-        <BotonSubmit nombre="Crear" disabled={cargando} />
-      </Grid>
+      <BotonSubmit nombre="Crear" disabled={cargando} />
     </RegistroForm>
   );
 };

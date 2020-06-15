@@ -47,7 +47,7 @@ const PaginaRegistroPeluquero = () => {
 
   const onSubmit = (data) => setPeluquero({ ubicacion, ...data });
 
-  const formProps = () => ({ errors, inputRef: register });
+  const formProps = { errors, inputRef: register };
 
   return (
     <Can>
@@ -66,19 +66,19 @@ const PaginaRegistroPeluquero = () => {
               label="Nombre"
               autoComplete="organization"
               autoFocus
-              {...formProps()}
+              {...formProps}
             />
             <Campo
               name="emailOpcional"
               label="Correo Electrónico"
               autoComplete="email"
-              {...formProps()}
+              {...formProps}
             />
             <Campo
               name="logo"
               label="Enlace de logo"
               autoComplete="photo"
-              {...formProps()}
+              {...formProps}
             />
             <Grid item xs={12}>
               <AutocompletadoDeUbicacion
@@ -92,7 +92,7 @@ const PaginaRegistroPeluquero = () => {
               type="number"
               name="corteMin"
               label="Precio fijo por trabajo"
-              {...formProps()}
+              {...formProps}
             />
             <Campo
               sm={6}
@@ -100,14 +100,14 @@ const PaginaRegistroPeluquero = () => {
               name="distanciaMax"
               label="Distancia maxima a recorrer por cliente"
               InputLabelProps={{ shrink: true }}
-              {...formProps()}
+              {...formProps}
             />
             <Campo
               name="descripcion"
               label="Descripción"
               multiline
               rows={3}
-              {...formProps()}
+              {...formProps}
             />
             <CampoTiposDePeluquero
               {...{ register, unregister, setValue, errors, name: "tipos" }}

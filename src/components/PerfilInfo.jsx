@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Typography, Divider } from "@material-ui/core";
-import AvatarValidado from "../AvatarValidado";
+import AvatarValidado from "./AvatarValidado";
 
 const useStyles = makeStyles(() => ({
   root: {

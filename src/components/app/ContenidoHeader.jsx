@@ -1,14 +1,14 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { useUser } from "../contexts/UserProvider";
-import Can, { NoCliente, NoPeluquero } from "../wrappers/Can";
-import { CLIENTE, PELUQUERO } from "../assets/constants";
+import { useUser } from "../../contexts/UserProvider";
+import Can, { NoCliente, NoPeluquero } from "../../wrappers/Can";
+import { CLIENTE, PELUQUERO } from "../../assets/constants";
 import { getSidebarTrigger } from "@mui-treasury/layout";
 import styled from "styled-components";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
-import TijeraIcon from "./icons/TijeraIcon";
-import logo from "../assets/images/peluqueriaya-logo.png";
+import TijeraIcon from "../icons/TijeraIcon";
+import logo from "../../assets/images/peluqueriaya-logo.png";
 
 import { Toolbar, IconButton, Tooltip } from "@material-ui/core";
 

@@ -36,7 +36,7 @@ const PaginaRegistroCliente = () => {
 
   const onSubmit = (data) => setCliente({ ubicacion, ...data });
 
-  const formProps = () => ({ errors, inputRef: register });
+  const formProps = { errors, inputRef: register };
 
   return (
     <Can>
@@ -56,26 +56,26 @@ const PaginaRegistroCliente = () => {
               label="Nombre"
               autoComplete="given-name"
               autoFocus
-              {...formProps()}
+              {...formProps}
             />
             <Campo
               sm={6}
               name="apellido"
               label="Apellido"
               autoComplete="family-name"
-              {...formProps()}
+              {...formProps}
             />
             <Campo
               name="emailOpcional"
               label="Correo Electrónico"
               autoComplete="email"
-              {...formProps()}
+              {...formProps}
             />
             <Campo
               name="nroTelefono"
               label="Numero de Teléfono"
               autoComplete="tel"
-              {...formProps()}
+              {...formProps}
             />
           </Grid>
           <Grid container item xs={12} sm={6} spacing={2}>
@@ -83,7 +83,7 @@ const PaginaRegistroCliente = () => {
               name="imgPerfil"
               label="Enlace de imagen de perfil"
               autoComplete="photo"
-              {...formProps()}
+              {...formProps}
             />
             <Grid item xs={12}>
               <AutocompletadoDeUbicacion

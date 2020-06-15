@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import { ClientePerfilInfo, PeluqueroPerfilInfo } from "./PerfilInfo";
+import { ClientePerfilInfo, PeluqueroPerfilInfo } from "../../PerfilInfo";
 import { getSidebarContent } from "@mui-treasury/layout";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import ListItemIconText from "./ListItemIconText";
+import ListItemIconText from "../../ListItemIconText";
 import Can, {
   ClienteNoPeluquero,
   ClienteYPeluquero,
   PeluqueroNoCliente,
-} from "../../wrappers/Can";
-import TijeraIcon from "../icons/TijeraIcon";
+} from "../../../wrappers/Can";
+import TijeraIcon from "../../icons/TijeraIcon";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
-import { useUser } from "../../contexts/UserProvider";
+import { useUser } from "../../../contexts/UserProvider";
 import ClienteOpcionesList from "./ClienteOpcionesList";
 import PeluqueroOpcionesList from "./PeluqueroOpcionesList";
-import { useGetPerfil } from "../../service/ServicioDeRol";
+import { useGetPerfil } from "../../../service/ServicioDeRol";
 import { Divider, List, CircularProgress } from "@material-ui/core";
 
 const SidebarContent = getSidebarContent(styled);

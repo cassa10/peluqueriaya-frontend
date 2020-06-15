@@ -7,11 +7,11 @@ import {
   getContent,
   getFooter,
 } from "@mui-treasury/layout";
-import ContenidoBarraLateral from "./components/sidebar/ContenidoBarraLateral";
-import CollapseBtnStyled from "./components/sidebar/CollapseBtnStyled";
-import ContenidoHeader from "./components/ContenidoHeader";
+import ContenidoBarraLateral from "./components/app/sidebar/ContenidoBarraLateral";
+import CollapseBtnStyled from "./components/app/sidebar/CollapseBtnStyled";
+import ContenidoHeader from "./components/app/ContenidoHeader";
 import { useUser } from "./contexts/UserProvider";
-import ContenidoCuerpo from "./components/ContenidoCuerpo";
+import ContenidoCuerpo from "./components/app/ContenidoCuerpo";
 import PropTypes from "prop-types";
 import Can, { Registrado } from "./wrappers/Can";
 import { LinearProgress } from "@material-ui/core";
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
     maxWidth: 700,
     margin: "auto",
     textAlign: "center",
-    paddingTop: "10%",
+    paddingTop: "8%",
   },
 }));
 

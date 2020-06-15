@@ -2,7 +2,7 @@ import React from "react";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SearchIcon from "@material-ui/icons/Search";
-import ListItemLink from "./ListItemLink";
+import ListItemLink from "../../ListItemLink";
 
 const ClienteMenu = () => {
   const listItems = [

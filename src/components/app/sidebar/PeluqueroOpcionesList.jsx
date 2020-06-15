@@ -3,7 +3,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import NotesIcon from "@material-ui/icons/Notes";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
-import ListItemLink from "./ListItemLink";
+import ListItemLink from "../../ListItemLink";
 
 const PeluqueroOpcionesList = () => {
   const listItems = [

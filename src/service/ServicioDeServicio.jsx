@@ -9,7 +9,7 @@ export const useGetTiposDeServicios = (fdatos) => {
 export const usePostServicio = (fdatos) => {
   const { cargando, setParametros } = usePostConAuth("/servicio", fdatos);
 
-  const setServicio = ({ opcionesTipos, tipos, precio }) => {
+  const setServicio = ({ opcionesTipos, tipos, ...rest }) => {
     const tiposDto = map(
       intersectionWith(
         opcionesTipos,
@@ -18,7 +18,7 @@ export const usePostServicio = (fdatos) => {
       ),
       "id"
     );
-    setParametros({ tipos: tiposDto, precio });
+    setParametros({ tipos: tiposDto, ...rest });
   };
 
   return { cargando, setServicio };

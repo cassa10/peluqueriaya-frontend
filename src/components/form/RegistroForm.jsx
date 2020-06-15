@@ -37,7 +37,7 @@ const RegistroForm = ({ nombre, onSubmit, avatarSrc, children }) => {
           {nombre}
         </Typography>
         <form className={clases.form} onSubmit={onSubmit}>
-          <Grid container spacing={3}>
+          <Grid container spacing={4}>
             {children}
           </Grid>
         </form>

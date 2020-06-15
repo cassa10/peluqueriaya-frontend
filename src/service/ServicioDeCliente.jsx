@@ -2,14 +2,14 @@ import {usePostConAuth, useGetConAuth} from "./API";
 import {useEffect} from "react";
 
 export const usePostCliente = (fdatos) => {
-    const {cargando, setParametros} = usePostConAuth("/cliente", fdatos);
+  const { cargando, setParametros } = usePostConAuth("/cliente", fdatos);
 
-    const setCliente = ({ubicacion: {position}, ...resto}) => {
-        const {lat: latitude, lng: longitude} = position;
-        setParametros({ubicacion: {latitude, longitude}, ...resto});
-    }
+  const setCliente = ({ ubicacion: { position }, ...resto }) => {
+    const { lat: latitude, lng: longitude } = position;
+    setParametros({ ubicacion: { latitude, longitude }, ...resto });
+  };
 
-    return {cargando, setCliente}
+  return { cargando, setCliente };
 };
 
 export const useGetClienteLogeado = (setterDatos) => {

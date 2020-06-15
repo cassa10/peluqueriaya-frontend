@@ -13,20 +13,32 @@ exports[`App App levanta sin problemas 1`] = `
   >
     <ContenidoHeader />
   </Header>
-  <DrawerSidebar
-    sidebarId="primarySidebar"
-  >
-    <SidebarContent>
-      <Can>
-        <Registrado>
+  <Can>
+    <Registrado>
+      <DrawerSidebar
+        sidebarId="primarySidebar"
+      >
+        <SidebarContent>
           <ContenidoBarraLateral />
-        </Registrado>
-      </Can>
-    </SidebarContent>
-    <CollapseBtnStyled />
-  </DrawerSidebar>
+        </SidebarContent>
+        <CollapseBtnStyled />
+      </DrawerSidebar>
+    </Registrado>
+  </Can>
   <Content>
     <ContenidoCuerpo />
   </Content>
+  <div
+    className="makeStyles-footer-1"
+  >
+    <Footer>
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        variant="caption"
+      >
+        © 2020 - MIT License
+      </WithStyles(ForwardRef(Typography))>
+    </Footer>
+  </div>
 </Fragment>
 `;

@@ -84,7 +84,7 @@ const PaginaGestionPeluquero = () => {
 
     const [peluquero, setPeluquero] = useState({ id: 0, nombre: '' });
 
-    const { cargando } = useGetPeluqueroLogeado(setPeluquero)
+    const { cargando, refrescarPeluquero } = useGetPeluqueroLogeado(setPeluquero)
 
     const [{ turnos, actual, tamanio, total }, setPaginacion] = useState({
         turnos: [],
@@ -105,13 +105,14 @@ const PaginaGestionPeluquero = () => {
         setFiltro()
     }
 
-    const refreshWindow = () => {
-        window.location.reload()
+    const refreshTurnosYPeluquero = () => {
+        refrescarPeluquero()
+        refreshTurnos()
     }
 
-    const {setIdTurnoInParamConfirmarTurno} = usePostConfirmarTurno(refreshWindow)
+    const {setIdTurnoInParamConfirmarTurno} = usePostConfirmarTurno(refreshTurnosYPeluquero)
 
-    const {setIdTurnoInParamFinalizarTurno} = usePostFinalizarTurno(refreshWindow)
+    const {setIdTurnoInParamFinalizarTurno} = usePostFinalizarTurno(refreshTurnosYPeluquero)
 
     const {desconectarPeluquero} = usePostPeluqueroDesconectar(() => {})
 
@@ -399,21 +400,25 @@ const PaginaGestionPeluquero = () => {
     const handleTurnosRecientes = () => {
         setIsOrdRecientes(true)
         setFiltro({ sort: 'fechaInicio,desc' });
+        handleChangePage(undefined, 1)
     }
 
     const handleTurnosAntiguos = () => {
         setIsOrdRecientes(false)
         setFiltro({ sort: 'fechaInicio,asc' });
+        handleChangePage(undefined, 1)
     }
 
     const handleTurnosSelected = () => {
         setIsTurnosSelected(true)
         setFiltro({esHistorico: false})
+        handleChangePage(undefined, 1)
     }
 
     const handleTurnosHistoricosSelected = () => {
         setIsTurnosSelected(false)
         setFiltro({esHistorico: true})
+        handleChangePage(undefined, 1)
     }
 
     const handleActualizarTurnos = () => {

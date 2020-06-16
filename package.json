@@ -15,6 +15,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.10",
     "lodash": "^4.17.15",
+    "material-table": "^1.61.0",
     "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -43,7 +44,10 @@
       "eslint:recommended",
       "plugin:react/recommended",
       "plugin:jest/recommended"
-    ]
+    ],
+    "rules": {
+      "react/display-name": "off"
+    }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [

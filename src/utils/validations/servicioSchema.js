@@ -1,7 +1,7 @@
 import yup from "./yup";
 
 const servicioSchema = yup.object().shape({
-  nombre: yup.string().required().min(2).max(30),
+  nombre: yup.string().required().min(10).max(60),
   precio: yup
     .number()
     .transform((cv) => (isNaN(cv) ? undefined : cv))

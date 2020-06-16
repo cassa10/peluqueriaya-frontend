@@ -9,9 +9,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { sumBy } from "lodash";
 import Swal from "sweetalert2";
 import Can, { Cliente, NoCliente } from "../wrappers/Can";
-import { CLIENTE } from "../assets/constants";
+import { CLIENTE } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
-import formatPrice from "../formatters/formatPrice";
+import formatPrice from "../utils/formatters/formatPrice";
 import StyledRating from "../components/StyledRating";
 
 const useStyles = makeStyles({

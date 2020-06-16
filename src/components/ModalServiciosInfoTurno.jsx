@@ -10,7 +10,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import formatPrice from "../formatters/formatPrice";
+import formatPrice from "../utils/formatters/formatPrice";
 import { sumBy } from "lodash";
 
 const useStyles = makeStyles((theme) => ({

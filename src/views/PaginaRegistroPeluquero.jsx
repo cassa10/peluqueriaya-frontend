@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Can, { Peluquero, Pendiente } from "../wrappers/Can";
-import { PELUQUERO } from "../assets/constants";
+import { PELUQUERO } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
 import { useForm } from "react-hook-form";
-import peluqueroSchema from "../assets/validations/peluqueroSchema";
+import peluqueroSchema from "../utils/validations/peluqueroSchema";
 import Campo from "../components/form/Campo";
 import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
 import CampoTiposDePeluquero from "../components/form/CampoTiposDePeluquero";

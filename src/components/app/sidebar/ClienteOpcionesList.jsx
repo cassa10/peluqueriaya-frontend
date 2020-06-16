@@ -3,8 +3,10 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SearchIcon from "@material-ui/icons/Search";
 import ListItemLink from "../../ListItemLink";
+import { useLocation } from "react-router-dom";
 
 const ClienteMenu = () => {
+  const { pathname } = useLocation();
   const listItems = [
     {
       primary: "Mis turnos",
@@ -24,7 +26,7 @@ const ClienteMenu = () => {
   ];
 
   return listItems.map((listItem, index) => (
-    <ListItemLink key={index} {...listItem} />
+    <ListItemLink key={index} {...listItem} location={pathname} />
   ));
 };
 

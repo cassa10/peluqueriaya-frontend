@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
     maxWidth: 700,
     margin: "auto",
     textAlign: "center",
-    paddingTop: "8%",
+    paddingTop: "5%",
   },
 }));
 

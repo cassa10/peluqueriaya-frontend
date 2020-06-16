@@ -2,34 +2,21 @@ import React, { useState } from "react";
 import RegistroForm from "../components/form/RegistroForm";
 import { Controller, ErrorMessage, useForm } from "react-hook-form";
 import Campo from "../components/form/Campo";
-import {
-  Typography,
-  Chip,
-  Grid,
-  Input,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
+import { Typography, Grid, Input, MenuItem, Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import BotonSubmit from "../components/form/BotonSubmit";
 import {
   useGetTiposDeServicios,
   usePostServicio,
 } from "../service/ServicioDeServicio";
-import servicioSchema from "../assets/validations/servicioSchema";
+import servicioSchema from "../utils/validations/servicioSchema";
 import { useNotificacion } from "../contexts/NotificacionProvider";
 import { useHistory } from "react-router-dom";
+import FilaDeChips from "../components/FilaDeChips";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
     fontWeight: theme.typography.fontWeightMedium,
-  },
-  chip: {
-    margin: 2,
-  },
-  chips: {
-    display: "flex",
-    flexWrap: "wrap",
   },
   paper: {
     maxHeight: 224,
@@ -85,18 +72,7 @@ const PaginaCrearServicio = () => {
                 },
                 getContentAnchorEl: null,
               }}
-              renderValue={(selected) => (
-                <div className={classes.chips}>
-                  {selected.map((value) => (
-                    <Chip
-                      key={value}
-                      label={value}
-                      className={classes.chip}
-                      color="secondary"
-                    />
-                  ))}
-                </div>
-              )}
+              renderValue={(selected) => <FilaDeChips valores={selected} />}
             >
               {opcionesTipos.map(({ nombre, id }) => (
                 <MenuItem

@@ -1,7 +1,7 @@
 import yup, { validarImagenUrl } from "./yup";
 
 const peluqueroSchema = yup.object().shape({
-  nombre: yup.string().required().min(2).max(30),
+  nombre: yup.string().required().min(10).max(60),
   emailOpcional: yup
     .string()
     .required("Campo correo electrónico es requerido")

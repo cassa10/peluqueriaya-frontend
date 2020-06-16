@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 
-const ListItemLink = ({ icon: Icon, primary, to }) => {
+const ListItemLink = ({ icon: Icon, primary, to, location }) => {
   const renderLink = useMemo(
     () =>
       forwardRef((itemProps, ref) => (
@@ -14,7 +14,7 @@ const ListItemLink = ({ icon: Icon, primary, to }) => {
   );
 
   return (
-    <ListItem button component={renderLink}>
+    <ListItem button component={renderLink} selected={location === to}>
       <ListItemIcon>
         <Icon />
       </ListItemIcon>
@@ -30,6 +30,7 @@ ListItemLink.propTypes = {
   icon: PropTypes.object.isRequired,
   primary: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
 };
 
 export default ListItemLink;

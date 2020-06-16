@@ -26,14 +26,16 @@ export const usePostServicio = (fdatos) => {
 
 export const useGetServicios = (fdatos) => {
   const setServicios = (serviciosDTO) => {
-    const servicios = serviciosDTO.map(({ nombre, precio, tiposDTO }) => {
-      const tipos = map(tiposDTO, "nombre");
-      return { nombre, precio, tipos };
-    });
+    const servicios = serviciosDTO.map(
+      ({ nombre, precio, tipos: tiposDTO }) => {
+        const tipos = map(tiposDTO, "nombre");
+        return { nombre, precio, tipos };
+      }
+    );
     fdatos(servicios);
   };
 
-  const { cargando } = useGetConAuth("peluquero/servicios", setServicios, {});
+  const { cargando } = useGetConAuth("/peluquero/servicios", setServicios, {});
 
   return { cargando };
 };

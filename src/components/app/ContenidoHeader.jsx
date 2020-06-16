@@ -4,7 +4,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useUser } from "../../contexts/UserProvider";
 import Can, { NoCliente, NoPeluquero } from "../../wrappers/Can";
-import { CLIENTE, PELUQUERO } from "../../assets/constants";
+import { CLIENTE, PELUQUERO } from "../../utils/constants";
 import { getSidebarTrigger } from "@mui-treasury/layout";
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";

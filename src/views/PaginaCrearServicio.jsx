@@ -16,7 +16,7 @@ import {
   useGetTiposDeServicios,
   usePostServicio,
 } from "../service/ServicioDeServicio";
-import servicioSchema from "../assets/validations/servicioSchema";
+import servicioSchema from "../utils/validations/servicioSchema";
 import { useNotificacion } from "../contexts/NotificacionProvider";
 import { useHistory } from "react-router-dom";
 

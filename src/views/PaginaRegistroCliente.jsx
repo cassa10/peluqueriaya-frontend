@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../contexts/UserProvider";
 import Can, { Cliente, Pendiente } from "../wrappers/Can";
-import { CLIENTE } from "../assets/constants";
+import { CLIENTE } from "../utils/constants";
 import { Redirect } from "react-router-dom";
 import Campo from "../components/form/Campo";
 import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
 import BotonSubmit from "../components/form/BotonSubmit";
 import RegistroForm from "../components/form/RegistroForm";
 import { useForm } from "react-hook-form";
-import clienteSchema from "../assets/validations/clienteSchema";
+import clienteSchema from "../utils/validations/clienteSchema";
 import { usePostCliente } from "../service/ServicioDeCliente";
 import { useNotificacion } from "../contexts/NotificacionProvider";
 import { Grid } from "@material-ui/core";

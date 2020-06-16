@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import ModalServiciosPeluquero from "./ModalServiciosPeluquero";
 import Swal from "sweetalert2";
-import formatPrice from "../formatters/formatPrice";
+import formatPrice from "../utils/formatters/formatPrice";
 import PuntajePeluquero from "./StyledRating";
 
 const useStyles = makeStyles({

@@ -2,7 +2,7 @@ import { shallow } from "enzyme";
 import SelectorDeServicios from "../components/SelectorDeServicios";
 import React from "react";
 import { crearServicio } from "../testUtils/crearServicio";
-import formatPrice from "../formatters/formatPrice";
+import formatPrice from "../utils/formatters/formatPrice";
 
 const mockServicios = [
   crearServicio(100, "Servicio 1", 150.5),

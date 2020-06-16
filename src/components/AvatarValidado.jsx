@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar } from "@material-ui/core";
-import { validarImagenUrl } from "../assets/validations/yup";
+import { validarImagenUrl } from "../utils/validations/yup";
+import PropTypes from "prop-types";
 
 const AvatarValidado = ({ children, src, ...props }) => {
   const avatarProps = validarImagenUrl.isValidSync(src)
@@ -12,6 +13,11 @@ const AvatarValidado = ({ children, src, ...props }) => {
   ) : (
     <Avatar {...avatarProps} />
   );
+};
+
+AvatarValidado.propTypes = {
+  children: PropTypes.node,
+  src: PropTypes.string,
 };
 
 export default AvatarValidado;

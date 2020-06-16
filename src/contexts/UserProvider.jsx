@@ -18,7 +18,7 @@ import {
   URI_LOGIN_CLIENTE,
   URI_LOGIN_PELUQUERO,
   PENDIENTE,
-} from "../assets/constants";
+} from "../utils/constants";
 
 export const UserContext = createContext();
 export const useUser = () => useContext(UserContext);

@@ -11,7 +11,7 @@ import {
   Checkbox,
   Divider,
 } from "@material-ui/core";
-import formatPrice from "../formatters/formatPrice";
+import formatPrice from "../utils/formatters/formatPrice";
 
 const useStyles = makeStyles({
   root: {

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
-import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../assets/constants";
+import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
 
 const pendienteRoute = (redirect_uri) => ({
   component: Component,

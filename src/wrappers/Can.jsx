@@ -5,7 +5,7 @@ import {
   PENDIENTE,
   REGISTRADO,
   VISITANTE,
-} from "../assets/constants";
+} from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
 
 export const Cliente = ({ children, roles }) =>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useUser } from "../contexts/UserProvider";
-import { CLIENTE, PELUQUERO, REGISTRADO } from "../assets/constants";
+import { CLIENTE, PELUQUERO, REGISTRADO } from "../utils/constants";
 import { getDefaultScheme, Root } from "@mui-treasury/layout";
 import theme from "../assets/theme";
 import { CssBaseline } from "@material-ui/core";

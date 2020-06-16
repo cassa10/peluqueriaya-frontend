@@ -1,16 +1,20 @@
-/* eslint-disable react/display-name */
-import React from "react";
+import React, { useState } from "react";
 import { Container, Box } from "@material-ui/core";
 import PaginaTitulo from "../components/PaginaTitulo";
 import TablaConIconos from "../components/TablaConIconos";
 import formatPrice from "../utils/formatters/formatPrice";
 import FilaDeChips from "../components/FilaDeChips";
+import { useGetServicios } from "../service/ServicioDeServicio";
 
 const PaginaVerServicios = () => {
+  const [servicios, setServicios] = useState([]);
+  const { cargando } = useGetServicios(setServicios);
+
   return (
     <Container maxWidth="md">
       <Box justifyContent="center" mt={3}>
         <TablaConIconos
+          isLoading={cargando}
           title={<PaginaTitulo titulo="Servicios" />}
           columns={[
             { field: "nombre", title: "Nombre" },
@@ -28,6 +32,7 @@ const PaginaVerServicios = () => {
               ),
             },
           ]}
+          data={servicios}
         />
       </Box>
     </Container>

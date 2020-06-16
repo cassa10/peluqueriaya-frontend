@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React, { memo, useEffect } from "react";
 import CheckBoxsDeTiposDePeluquero from "../CheckBoxsDeTiposDePeluquero";
 import PropTypes from "prop-types";

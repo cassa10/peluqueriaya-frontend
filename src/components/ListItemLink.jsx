@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React, { forwardRef, useMemo } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import PropTypes from "prop-types";

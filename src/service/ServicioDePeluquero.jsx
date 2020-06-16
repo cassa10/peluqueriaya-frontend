@@ -78,8 +78,10 @@ export const useGetPeluqueroLogeado = (setterDatos) => {
     // eslint-disable-next-line
   }, []);
 
-  return { cargando };
-};
+  const refrescarPeluquero = () => setParametros({})
+  
+  return {cargando, refrescarPeluquero}
+}
 
 export const usePostPeluquero = (fdatos) => {
   const { setParametros, cargando } = usePostConAuth("/peluquero", fdatos);

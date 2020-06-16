@@ -100,20 +100,34 @@ const useStyles = makeStyles({
 });
 
 const PaginaGestionPeluquero = () => {
+
   const classes = useStyles();
 
-  const [peluquero, setPeluquero] = useState({ id: 0, nombre: "" });
+  const [peluquero, setPeluquero] = useState({ id: 0, nombre: '' });
 
-  const { cargando } = useGetPeluqueroLogeado(setPeluquero);
+  const { cargando, refrescarPeluquero } = useGetPeluqueroLogeado(setPeluquero)
 
   const [{ turnos, actual, tamanio, total }, setPaginacion] = useState({
-    turnos: [],
-    actual: 1,
-    tamanio: 3,
-    total: 1,
+      turnos: [],
+      actual: 1,
+      tamanio: 3,
+      total: 1,
   });
 
   const [isTurnosSelected, setIsTurnosSelected] = useState(true);
+
+  const refreshTurnos = () => { 
+      setFiltro()
+  }
+
+  const refreshTurnosYPeluquero = () => {
+      refrescarPeluquero()
+      refreshTurnos()
+  }
+
+  const {setIdTurnoInParamConfirmarTurno} = usePostConfirmarTurno(refreshTurnosYPeluquero)
+
+  const {setIdTurnoInParamFinalizarTurno} = usePostFinalizarTurno(refreshTurnosYPeluquero)
 
   const { cargandoTurnos, setFiltro } = useGetTurnosPeluquero(
     tamanio,
@@ -123,22 +137,6 @@ const PaginaGestionPeluquero = () => {
   const [cargandoChangePage, setCargandoChangePage] = useState(false);
 
   const [isOrdRecientes, setIsOrdRecientes] = useState(false);
-
-  const refreshTurnos = () => {
-    setFiltro();
-  };
-
-  const refreshWindow = () => {
-    window.location.reload();
-  };
-
-  const { setIdTurnoInParamConfirmarTurno } = usePostConfirmarTurno(
-    refreshWindow
-  );
-
-  const { setIdTurnoInParamFinalizarTurno } = usePostFinalizarTurno(
-    refreshWindow
-  );
 
   const { desconectarPeluquero } = usePostPeluqueroDesconectar(() => {});
 
@@ -411,89 +409,76 @@ const PaginaGestionPeluquero = () => {
       : mostrarRowModalInfoCliente(turno);
   };
 
-  const showTurnos = () => {
-    return (
-      <TableBody>
-        {turnos.map((turno) => (
-          <TableRow
-            key={turno.id}
-            className={estadoTurnoBackgroundIndex(turno.estado)}
-          >
-            {handleShowClientInfo(isTurnosSelected, turno)}
-            <StyledTableCell align="center">
-              <ModalServiciosInfoTurno turno={turno} />
-            </StyledTableCell>
-            <StyledTableCell align="center" component="th" scope="turno">
-              {turno.estado}
-            </StyledTableCell>
-            <StyledTableCell align="center">{`${formatDate(
-              turno.fechaInicio
-            )} ${formatTime(turno.fechaInicio)}`}</StyledTableCell>
-            {handleShowDataInRow(
-              !isTurnosSelected,
-              `${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`
-            )}
-            {handleShowDataInRow(
-              isTurnosSelected,
-              showAppropiateActionButton(turno)
-            )}
-            {handleShowDataInRow(
-              !isTurnosSelected,
-              showPuntuacionData(turno.puntaje)
-            )}
-          </TableRow>
-        ))}
-      </TableBody>
-    );
-  };
+  const handleShowTurnos = () =>!cargandoTurnos && showTurnos();
 
-  const handleShowTurnos = () => {
-    return !cargandoTurnos ? showTurnos() : null;
-  };
+
+  const showTurnos = () => {
+      return(
+          <TableBody>
+          {turnos.map((turno) => (
+              <TableRow key={turno.id} className={estadoTurnoBackgroundIndex(turno.estado)}>
+                  {handleShowClientInfo(isTurnosSelected, turno)}
+                  <StyledTableCell align="center">
+                      <ModalServiciosInfoTurno turno={turno} />
+                  </StyledTableCell>
+                  <StyledTableCell align="center" component="th" scope="turno">
+                      {turno.estado}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}</StyledTableCell>
+                  {handleShowDataInRow(!isTurnosSelected,`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`)}
+                  {handleShowDataInRow(isTurnosSelected,showAppropiateActionButton(turno))}
+                  {handleShowDataInRow(!isTurnosSelected, showPuntuacionData(turno.puntaje))}
+              </TableRow>
+          ))}
+          </TableBody>
+      );
+  }
 
   const showPaginationButtons = () => {
-    return (
-      <Grid container justify="center" alignItems="center">
-        <Pagination
-          color="secondary"
-          disabled={cargandoTurnos}
-          count={total}
-          page={actual}
-          onChange={handleChangePage}
-        />
-      </Grid>
-    );
-  };
+      return(
+          <Grid container justify="center" alignItems="center">
+              <Pagination color="secondary" disabled={cargandoTurnos} count={total} page={actual} onChange={handleChangePage}/>
+          </Grid>   
+      )
+  }
 
   const handleShowPaginationButtons = () => {
-    return !cargandoTurnos || cargandoChangePage
-      ? showPaginationButtons()
-      : null;
-  };
+      return(
+          !cargandoTurnos || cargandoChangePage?
+              showPaginationButtons(): 
+              null
+      );
+  }
 
   const handleShowTableDataLoading = () => {
-    return cargandoTurnos ? <LinearProgress /> : null;
-  };
+      return(
+          cargandoTurnos && <LinearProgress/>
+      );
+  }
 
   const handleTurnosRecientes = () => {
-    setIsOrdRecientes(true);
-    setFiltro({ sort: "fechaInicio,desc" });
-  };
+      setIsOrdRecientes(true)
+      setFiltro({ sort: 'fechaInicio,desc' });
+      handleChangePage(undefined, 1)
+  }
 
   const handleTurnosAntiguos = () => {
-    setIsOrdRecientes(false);
-    setFiltro({ sort: "fechaInicio,asc" });
-  };
+      setIsOrdRecientes(false)
+      setFiltro({ sort: 'fechaInicio,asc' });
+      handleChangePage(undefined, 1)
+  }
 
   const handleTurnosSelected = () => {
-    setIsTurnosSelected(true);
-    setFiltro({ esHistorico: false });
-  };
+      setIsTurnosSelected(true)
+      setFiltro({esHistorico: false})
+      handleChangePage(undefined, 1)
+  }
 
   const handleTurnosHistoricosSelected = () => {
-    setIsTurnosSelected(false);
-    setFiltro({ esHistorico: true });
-  };
+      setIsTurnosSelected(false)
+      setFiltro({esHistorico: true})
+      handleChangePage(undefined, 1)
+  }
 
   const handleActualizarTurnos = () => {
     refreshTurnos();

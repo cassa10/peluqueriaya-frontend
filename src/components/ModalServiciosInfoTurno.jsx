@@ -111,8 +111,8 @@ const ModalServiciosInfoTurno = ({ turno }) => {
         <ShoppingCartIcon style={{ fontSize: 30 }} />
       </IconButton>
       <Dialog
-          fullWidth={false}
-          maxWidth="xs"
+          fullWidth={true}
+          maxWidth="sm"
           open={open}
           onClose={handleClose}
           aria-labelledby="max-width-dialog-title"

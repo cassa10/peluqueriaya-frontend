@@ -39,6 +39,7 @@ import Swal from "sweetalert2";
 import RoomIcon from "@material-ui/icons/Room";
 import StarIcon from "@material-ui/icons/Star";
 import StyledRating from "../components/StyledRating";
+import ModalEditarPerfilPeluquero from "../components/ModalEditarPerfilPeluquero";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -230,27 +231,28 @@ const PaginaGestionPeluquero = () => {
             component="h2"
           >
             {peluquero.nombre}
+            <ModalEditarPerfilPeluquero peluquero={peluquero} />
           </Typography>
-          <div>
+          <>
             <Typography className={classes.peluqueroNombre}>
-              <Tooltip
-                title={
-                  peluquero.estaDesconectado
-                    ? "Estar disponible"
-                    : "Cerrar Peluqueria"
+            <Tooltip
+              title={
+                peluquero.estaDesconectado
+                  ? "Estar disponible"
+                  : "Cerrar Peluqueria"
+              }
+            >
+              <Switch
+                checked={!peluquero.estaDesconectado}
+                onChange={dialogCerrarPeluqueria}
+                disabled={
+                  !(peluquero.estaDisponible || peluquero.estaDesconectado)
                 }
-              >
-                <Switch
-                  checked={!peluquero.estaDesconectado}
-                  onChange={dialogCerrarPeluqueria}
-                  disabled={
-                    !(peluquero.estaDisponible || peluquero.estaDesconectado)
-                  }
-                />
-              </Tooltip>
+              />
+            </Tooltip>
               {peluquero.estaDesconectado ? "Desconectado" : "Disponible"}
             </Typography>
-          </div>
+          </>
         </Grid>
       </Grid>
     );

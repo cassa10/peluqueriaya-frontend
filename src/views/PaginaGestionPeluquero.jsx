@@ -211,8 +211,8 @@ const PaginaGestionPeluquero = () => {
         alignItems="center"
         spacing={1}
       >
-        <Grid item xs={1} />
-        <Grid item className={classes.gridLogoItem}>
+        <Grid item xs="auto" />
+        <Grid item className={classes.gridLogoItem} xs="auto">
           <img
             className={classes.logoImg}
             src={logoPredeterminado(peluquero.logo)}

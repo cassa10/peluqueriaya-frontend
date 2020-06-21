@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import {
   Container,
   Grid,
-  Paper,
   Typography,
   ButtonGroup,
   Button,
@@ -20,38 +19,36 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   font: {
-    color: theme.palette.secondary.main,
+    color: 'white',
     textAlign: "center",
-  },
-  paper: {
-    padding: "inherit",
+    fontFamily: 'Arial',
   },
   gridItem: {
+    margin: "auto",
+  },
+  gridItemTitle: {
     margin: "auto",
   },
 }));
 
 const PaginaError = ({
-  message = "Ha ocurrido un error inesperado. Por favor intente nuevamente",
-  status = "Error :(",
+  message = "Ha ocurrido un error inesperado. Por favor, intente nuevamente",
+  status = "Ups, hubo un error :(",
   subErrors = [],
 }) => {
   const clases = useStyles();
   let { goBack } = useHistory();
 
   return (
-    <Container maxWidth="sm" className={clases.root}>
+    <Container maxWidth="md" className={clases.root}>
       <Grid container justify="center" direction="column" spacing={3}>
-        <Grid item>
-          <Paper elevation={3}>
-            <Typography variant="h1" className={clases.font}>
+        <Grid item className={clases.gridItemTitle}>
+            <Typography variant="h2" className={clases.font}>
               {status}
             </Typography>
-          </Paper>
         </Grid>
         <Grid item className={clases.gridItem}>
-          <Paper className={clases.paper} elevation={3}>
-            <Typography className={clases.font} variant="h5">
+            <Typography className={clases.font} variant="h6">
               {message}
             </Typography>
             {subErrors.map((mensaje, index) => (
@@ -59,7 +56,6 @@ const PaginaError = ({
                 {` • ${mensaje}`}
               </Typography>
             ))}
-          </Paper>
         </Grid>
         <Grid item className={clases.gridItem}>
           <ButtonGroup variant="contained" color="secondary">
@@ -81,7 +77,6 @@ export default PaginaError;
 
 export const PaginaError404 = () => {
   const error = {
-    status: 404,
     message: "La pagina solicitada no existe",
   };
 

@@ -231,7 +231,7 @@ const PaginaGestionPeluquero = () => {
             component="h2"
           >
             {peluquero.nombre}
-            <ModalEditarPerfilPeluquero peluquero={peluquero} />
+            <ModalEditarPerfilPeluquero peluquero={peluquero} refreshDatosPeluquero={refrescarPeluquero} />
           </Typography>
           <>
             <Typography className={classes.peluqueroNombre}>

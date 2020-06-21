@@ -6,7 +6,7 @@ import { ErrorMessage } from "react-hook-form";
 import { Grid, Typography } from "@material-ui/core";
 
 const CampoTiposDePeluquero = memo(
-  ({ register, unregister, setValue, errors, name }) => {
+  ({ register, unregister, setValue, errors, name, defaultValues = {hombre: false, mujer: false, kids: false} }) => {
     useEffect(() => {
       register({ name });
       return () => unregister(name);
@@ -20,6 +20,7 @@ const CampoTiposDePeluquero = memo(
           </Typography>
         </Grid>
         <CheckBoxsDeTiposDePeluquero
+          defaultValues={defaultValues}
           setFiltro={({ tipos }) => setValue(name, tipos)}
         />
         <ErrorMessage errors={errors} name="tipos">
@@ -40,6 +41,7 @@ CampoTiposDePeluquero.propTypes = {
   setValue: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
+  defaultValues: PropTypes.object,
 };
 
 export default CampoTiposDePeluquero;

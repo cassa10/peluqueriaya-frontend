@@ -3,12 +3,8 @@ import PropTypes from "prop-types";
 import { Person, PersonOutline } from "@material-ui/icons";
 import { FormGroup, FormControlLabel, Checkbox } from "@material-ui/core";
 
-const CheckBoxsDeTiposDePeluquero = ({ setFiltro }) => {
-  const [tiposDePeluquero, setTiposDePeluquero] = useState({
-    hombre: false,
-    mujer: false,
-    kids: false,
-  });
+const CheckBoxsDeTiposDePeluquero = ({ setFiltro, defaultValues = {mujer: false, hombre: false, kids: false} }) => {
+  const [tiposDePeluquero, setTiposDePeluquero] = useState(defaultValues);
 
   const handleChange = (event) => {
     const nuevosTiposPeluqueros = {
@@ -46,6 +42,7 @@ const CheckBoxsDeTiposDePeluquero = ({ setFiltro }) => {
 };
 
 CheckBoxsDeTiposDePeluquero.propTypes = {
+  defaultValues: PropTypes.object,
   setFiltro: PropTypes.func.isRequired,
 };
 

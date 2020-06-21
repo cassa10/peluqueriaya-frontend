@@ -94,6 +94,14 @@ export const usePostPeluquero = (fdatos) => {
   return { cargando, setPeluquero };
 };
 
+export const usePostEditarDatosPeluquero = (fdatos) => {
+  const { setParametros, cargando } = usePostConAuth("/peluquero/editar", fdatos);
+
+  const setPeluquero = (datos) => setParametros(datos);
+
+  return { cargando, setPeluquero };
+};
+
 export const usePostPeluqueroDesconectar = (fdatos) => {
   const { setParametros } = usePostConAuth("/peluquero/desconectar", fdatos);
 

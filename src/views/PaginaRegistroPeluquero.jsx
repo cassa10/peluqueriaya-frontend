@@ -13,6 +13,7 @@ import { Redirect } from "react-router-dom";
 import { useNotificacion } from "../contexts/NotificacionProvider";
 import { usePostPeluquero } from "../service/ServicioDePeluquero";
 import { Grid } from "@material-ui/core";
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const PaginaRegistroPeluquero = () => {
   const { empezarRegistro, abandonarRegistro, registrar } = useUser();
@@ -92,13 +93,19 @@ const PaginaRegistroPeluquero = () => {
               type="number"
               name="corteMin"
               label="Precio fijo por trabajo"
+              InputProps={{
+                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+              }}
               {...formProps}
             />
             <Campo
               sm={6}
               type="number"
+              InputProps={{
+                endAdornment: <InputAdornment position="end">Km</InputAdornment>,
+              }}
               name="distanciaMax"
-              label="Distancia maxima a recorrer por cliente"
+              label="Distancia max a recorrer por cliente"
               InputLabelProps={{ shrink: true }}
               {...formProps}
             />

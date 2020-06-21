@@ -1,5 +1,4 @@
 import React from "react";
-import AssignmentIcon from "@material-ui/icons/Assignment";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import NotesIcon from "@material-ui/icons/Notes";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
@@ -10,13 +9,8 @@ const PeluqueroOpcionesList = () => {
   const { pathname } = useLocation();
   const listItems = [
     {
-      primary: "Mis turnos",
+      primary: "Perfil y Turnos",
       to: "/peluquero/turnos",
-      icon: AssignmentIcon,
-    },
-    {
-      primary: "Mi  perfil",
-      to: "/peluquero/perfil",
       icon: AccountCircleIcon,
     },
     {

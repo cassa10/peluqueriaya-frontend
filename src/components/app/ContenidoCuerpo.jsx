@@ -9,7 +9,6 @@ import {
 import PaginaRegistroCliente from "../../views/PaginaRegistroCliente";
 import PaginaRegistroPeluquero from "../../views/PaginaRegistroPeluquero";
 import { ClienteRoute, PeluqueroRoute } from "../../wrappers/RegistradoRoute";
-import PaginaPerfil from "../../views/PaginaPerfil";
 import PaginaGestionPeluquero from "../../views/PaginaGestionPeluquero";
 import PaginaBusquedaPeluqueros from "../../views/PaginaBusquedaPeluqueros";
 import PaginaContratacionPeluquero from "../../views/PaginaContratacionPeluquero";
@@ -33,7 +32,6 @@ const ContenidoCuerpo = () => {
             path="/peluquero/registro"
             component={PaginaRegistroPeluquero}
           />
-          <ClienteRoute path="/perfil" component={PaginaPerfil} />
           <ClienteRoute path="/turnos" component={PaginaGestionCliente}/>
           <PeluqueroRoute
             path="/peluquero/turnos"

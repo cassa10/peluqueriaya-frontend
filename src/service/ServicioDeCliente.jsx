@@ -20,6 +20,17 @@ export const useGetClienteLogeado = (setterDatos) => {
         setParametros({});
         // eslint-disable-next-line
     },[])
+
+    const refrescarCliente = () => setParametros({})
     
-    return {cargando}
+    return {cargando, refrescarCliente}
 }
+
+
+export const usePostEditarDatosCliente = (fdatos) => {
+  const { setParametros, cargando } = usePostConAuth("/cliente/editar", fdatos);
+
+  const setCliente = (datos) => setParametros(datos);
+
+  return { cargando, setCliente };
+};

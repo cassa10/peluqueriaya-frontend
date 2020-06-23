@@ -9,7 +9,6 @@ import {
 import PaginaRegistroCliente from "../../views/PaginaRegistroCliente";
 import PaginaRegistroPeluquero from "../../views/PaginaRegistroPeluquero";
 import { ClienteRoute, PeluqueroRoute } from "../../wrappers/RegistradoRoute";
-import PaginaPerfil from "../../views/PaginaPerfil";
 import PaginaGestionPeluquero from "../../views/PaginaGestionPeluquero";
 import PaginaBusquedaPeluqueros from "../../views/PaginaBusquedaPeluqueros";
 import PaginaContratacionPeluquero from "../../views/PaginaContratacionPeluquero";

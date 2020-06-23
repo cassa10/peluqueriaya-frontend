@@ -5,6 +5,7 @@ import {
 } from "../service/ServicioDeTurno";
 import { useGetClienteLogeado } from "../service/ServicioDeCliente";
 import CirculitoCargando from "../components/CirculoCargando";
+import ModalEditarPerfilCliente from "../components/ModalEditarPerfilCliente";
 import {
   Button,
   Table,
@@ -99,7 +100,7 @@ const PaginaGestionCliente = () => {
 
   const [cliente, setCliente] = useState({ id: 0, nombre: "" });
 
-  const { cargando } = useGetClienteLogeado(setCliente);
+  const { cargando, refrescarCliente } = useGetClienteLogeado(setCliente);
 
   const [{ turnos, actual, tamanio, total }, setPaginacion] = useState({
     turnos: [],
@@ -170,7 +171,7 @@ const PaginaGestionCliente = () => {
             variant="h5"
             component="h2"
           >
-            {cliente.fullName}
+            {cliente.fullName} <ModalEditarPerfilCliente cliente={cliente} refreshDatosCliente={refrescarCliente}/>
           </Typography>
         </Grid>
       </Grid>

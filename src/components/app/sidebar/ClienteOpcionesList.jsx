@@ -1,5 +1,4 @@
 import React from "react";
-import AssignmentIcon from "@material-ui/icons/Assignment";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SearchIcon from "@material-ui/icons/Search";
 import ListItemLink from "../../ListItemLink";
@@ -9,13 +8,8 @@ const ClienteMenu = () => {
   const { pathname } = useLocation();
   const listItems = [
     {
-      primary: "Mis turnos",
+      primary: "Perfil y Turnos",
       to: "/turnos",
-      icon: AssignmentIcon,
-    },
-    {
-      primary: "Mi  perfil",
-      to: "/perfil",
       icon: AccountCircleIcon,
     },
     {

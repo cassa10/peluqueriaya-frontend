@@ -33,7 +33,6 @@ const ContenidoCuerpo = () => {
             path="/peluquero/registro"
             component={PaginaRegistroPeluquero}
           />
-          <ClienteRoute path="/perfil" component={PaginaPerfil} />
           <ClienteRoute path="/turnos" component={PaginaGestionCliente}/>
           <PeluqueroRoute
             path="/peluquero/turnos"

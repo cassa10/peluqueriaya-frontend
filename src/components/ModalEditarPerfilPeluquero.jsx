@@ -69,6 +69,7 @@ const ModalEditarPerfilPeluquero = ({ peluquero, refreshDatosPeluquero }) => {
     const postSuccess = ({ message: mensaje }) => {
         setNotificacion({ mensaje, severidad: "success" });
         refreshDatosPeluquero();
+        window.location.reload();
     }
     
     const { setNotificacion } = useNotificacion();

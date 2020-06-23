@@ -31,6 +31,7 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 import ModalInfoClienteTurno from "../components/ModalInfoClienteTurno";
 import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
+import ModalEditarUbicacion from "../components/ModalEditarUbicacion";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import IconSvg from "../components/icons/IconSvg";
 import formatDate from "../utils/formatters/formatDate";
@@ -251,6 +252,7 @@ const PaginaGestionPeluquero = () => {
               />
             </Tooltip>
               {peluquero.estaDesconectado ? "Desconectado" : "Disponible"}
+              <ModalEditarUbicacion ubicacionActual={peluquero.ubicacion} estaDesconectado={peluquero.estaDesconectado} />
             </Typography>
           </>
         </Grid>

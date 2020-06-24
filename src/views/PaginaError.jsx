@@ -19,9 +19,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   font: {
-    color: 'white',
+    color: "white",
     textAlign: "center",
-    fontFamily: 'Arial',
   },
   gridItem: {
     margin: "auto",
@@ -43,19 +42,19 @@ const PaginaError = ({
     <Container maxWidth="md" className={clases.root}>
       <Grid container justify="center" direction="column" spacing={3}>
         <Grid item className={clases.gridItemTitle}>
-            <Typography variant="h2" className={clases.font}>
-              {status}
-            </Typography>
+          <Typography variant="h2" className={clases.font}>
+            {status}
+          </Typography>
         </Grid>
         <Grid item className={clases.gridItem}>
-            <Typography className={clases.font} variant="h6">
-              {message}
+          <Typography className={clases.font} variant="h6">
+            {message}
+          </Typography>
+          {subErrors.map((mensaje, index) => (
+            <Typography className={clases.font} variant="body2" key={index}>
+              {` • ${mensaje}`}
             </Typography>
-            {subErrors.map((mensaje, index) => (
-              <Typography className={clases.font} variant="body2" key={index}>
-                {` • ${mensaje}`}
-              </Typography>
-            ))}
+          ))}
         </Grid>
         <Grid item className={clases.gridItem}>
           <ButtonGroup variant="contained" color="secondary">

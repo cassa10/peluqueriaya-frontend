@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { Container, Box } from "@material-ui/core";
 import PaginaTitulo from "../components/PaginaTitulo";
-import TablaConIconos from "../components/TablaConIconos";
+import TablaMaterial from "../components/TablaMaterial";
 import formatPrice from "../utils/formatters/formatPrice";
 import FilaDeChips from "../components/FilaDeChips";
-import { useGetServicios } from "../service/ServicioDeServicio";
+import {
+  useDeleteServicio,
+  useGetServicios,
+} from "../service/ServicioDeServicio";
+import reject from "lodash/reject";
 
 const PaginaVerServicios = () => {
   const [servicios, setServicios] = useState([]);
   const { cargando } = useGetServicios(setServicios);
+  const { cargandoBorrado, setServicioABorrar } = useDeleteServicio((id) => {
+    setServicios((prevState) => reject(prevState, ["id", id]));
+  });
 
   return (
     <Container maxWidth="md">
       <Box justifyContent="center" mt={3}>
-        <TablaConIconos
-          isLoading={cargando}
+        <TablaMaterial
           title={<PaginaTitulo titulo="Servicios" />}
           columns={[
             { field: "nombre", title: "Nombre" },
@@ -33,6 +39,17 @@ const PaginaVerServicios = () => {
             },
           ]}
           data={servicios}
+          localization={{
+            body: {
+              editRow: { deleteText: "¿Quieres borrar este servicio?" },
+              emptyDataSourceMessage: "No hay servicios",
+            },
+          }}
+          isLoading={cargando || cargandoBorrado}
+          editable={{
+            onRowDelete: async ({ id }) => setServicioABorrar({ id }),
+            deleteTooltip: () => "Borrar",
+          }}
         />
       </Box>
     </Container>

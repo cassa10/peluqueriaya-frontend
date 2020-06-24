@@ -19,7 +19,7 @@ const molot = {
 let theme = createMuiTheme(
   {
     typography: {
-      h1: {
+      h2: {
         fontFamily: "Molot, Arial",
       },
     },

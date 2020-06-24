@@ -24,8 +24,5 @@ export const useGetClienteLogeado = (setterDatos) => {
 
 export const usePostEditarDatosCliente = (fdatos) => {
   const { setParametros, cargando } = usePostConAuth("/cliente/editar", fdatos);
-
-  const setCliente = (datos) => setParametros(datos);
-
-  return { cargando, setCliente };
+  return { cargando, setCliente: setParametros };
 };

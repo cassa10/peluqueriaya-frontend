@@ -95,7 +95,7 @@ const useStyles = makeStyles({
   },
 });
 
-const PaginaGestionCliente = () => {
+const PaginaTurnosCliente = () => {
   const classes = useStyles();
 
   const [cliente, setCliente] = useState({ id: 0, nombre: "" });
@@ -171,7 +171,11 @@ const PaginaGestionCliente = () => {
             variant="h5"
             component="h2"
           >
-            {cliente.fullName} <ModalEditarPerfilCliente cliente={cliente} refreshDatosCliente={refrescarCliente}/>
+            {cliente.fullName}{" "}
+            <ModalEditarPerfilCliente
+              cliente={cliente}
+              refreshDatosCliente={refrescarCliente}
+            />
           </Typography>
         </Grid>
       </Grid>
@@ -506,4 +510,4 @@ const PaginaGestionCliente = () => {
   );
 };
 
-export default PaginaGestionCliente;
+export default PaginaTurnosCliente;

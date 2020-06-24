@@ -69,39 +69,38 @@ PerfilInfo.propTypes = {
   textoSecundario: PropTypes.string,
 };
 
-export const ClientePerfilInfo = ({
-  collapsed,
-  imgPerfil,
-  fullName,
-  email,
-}) => (
-  <PerfilInfo
-    collapsed={collapsed}
-    textoSecundario={email}
-    titulo={fullName}
-    imagenSrc={imgPerfil}
-  />
-);
+export const ClientePerfilInfo = ({ collapsed, email, perfil }) => {
+  const { fullName, imgPerfil } = perfil;
+  return (
+    <PerfilInfo
+      collapsed={collapsed}
+      textoSecundario={email}
+      titulo={fullName}
+      imagenSrc={imgPerfil}
+    />
+  );
+};
 
 ClientePerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
-  imgPerfil: PropTypes.string,
-  fullName: PropTypes.string,
+  perfil: PropTypes.object,
   email: PropTypes.string,
 };
 
-export const PeluqueroPerfilInfo = ({ collapsed, logo, nombre, email }) => (
-  <PerfilInfo
-    collapsed={collapsed}
-    textoSecundario={email}
-    titulo={nombre}
-    imagenSrc={logo}
-  />
-);
+export const PeluqueroPerfilInfo = ({ collapsed, email, perfil }) => {
+  const { nombre, logo } = perfil;
+  return (
+    <PerfilInfo
+      collapsed={collapsed}
+      textoSecundario={email}
+      titulo={nombre}
+      imagenSrc={logo}
+    />
+  );
+};
 
 PeluqueroPerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
-  logo: PropTypes.string,
-  nombre: PropTypes.string,
+  perfil: PropTypes.object,
   email: PropTypes.string,
 };

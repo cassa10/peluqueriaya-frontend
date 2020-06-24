@@ -15,30 +15,20 @@ import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import { useUser } from "../../../contexts/UserProvider";
 import ClienteOpcionesList from "./ClienteOpcionesList";
 import PeluqueroOpcionesList from "./PeluqueroOpcionesList";
-import { useGetPerfil } from "../../../service/ServicioDeRol";
-import { Divider, List, CircularProgress } from "@material-ui/core";
+import { Divider, List } from "@material-ui/core";
 import Swal from "sweetalert2";
 
 const SidebarContent = getSidebarContent(styled);
 
 const ContenidoBarraLateral = ({ collapsed }) => {
   const [mostrarOpcCliente, setMostrarOpcCliente] = useState(true);
-  const {
-    logout,
-    user: { email },
-  } = useUser();
-  const [{ cliente, peluquero }, setPerfil] = useState({
-    cliente: null,
-    peluquero: null,
-  });
-  const { cargando } = useGetPerfil(setPerfil);
+  const { user, logout } = useUser();
 
-  const perfilInfoProps = (rol) => ({ collapsed, email, ...rol });
-
-  const handleLogout = (isAcepted) => {
-    if(isAcepted)
-      logout()
-  }
+  const perfilInfoProps = (rol) => {
+    const { email, ...perfiles } = user;
+    const perfil = perfiles[rol];
+    return { collapsed, email, perfil };
+  };
 
   const handleDialogLogout = () => {
     Swal.fire({
@@ -49,31 +39,28 @@ const ContenidoBarraLateral = ({ collapsed }) => {
       cancelButtonText: "Cancelar",
       confirmButtonText: "Si, quiero irme!",
       reverseButtons: true,
-    }).then((result) => handleLogout(result.value));
-  }
-  
-  
+    }).then(({ value: confirmado }) => {
+      if (confirmado) logout();
+    });
+  };
+
   return (
     <SidebarContent>
-      {cargando ? (
-        <CircularProgress color="secondary" />
-      ) : (
-        <Can>
-          <ClienteNoPeluquero>
-            <ClientePerfilInfo {...perfilInfoProps(cliente)} />
-          </ClienteNoPeluquero>
-          <PeluqueroNoCliente>
-            <PeluqueroPerfilInfo {...perfilInfoProps(peluquero)} />
-          </PeluqueroNoCliente>
-          <ClienteYPeluquero>
-            {mostrarOpcCliente ? (
-              <ClientePerfilInfo {...perfilInfoProps(cliente)} />
-            ) : (
-              <PeluqueroPerfilInfo {...perfilInfoProps(peluquero)} />
-            )}
-          </ClienteYPeluquero>
-        </Can>
-      )}
+      <Can>
+        <ClienteNoPeluquero>
+          <ClientePerfilInfo {...perfilInfoProps("cliente")} />
+        </ClienteNoPeluquero>
+        <PeluqueroNoCliente>
+          <PeluqueroPerfilInfo {...perfilInfoProps("peluquero")} />
+        </PeluqueroNoCliente>
+        <ClienteYPeluquero>
+          {mostrarOpcCliente ? (
+            <ClientePerfilInfo {...perfilInfoProps("cliente")} />
+          ) : (
+            <PeluqueroPerfilInfo {...perfilInfoProps("peluquero")} />
+          )}
+        </ClienteYPeluquero>
+      </Can>
       <List>
         <Can>
           <ClienteNoPeluquero>

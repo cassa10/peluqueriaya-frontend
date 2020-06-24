@@ -27,13 +27,7 @@ const AutocompletadoDeUbicacion = ({
 
   const manejarOnInputChange = (e, value, reason) => {
     if (reason !== "reset") {
-      setUbicacion({
-        title: value,
-        position: {
-          lat: "",
-          lng: "",
-        },
-      });
+      setUbicacion({ direccion: value, latitude: "", longitude: "" });
     }
     setValido(reason === "reset");
     autocompletarUbicacionConDireccion(value);
@@ -68,7 +62,7 @@ const AutocompletadoDeUbicacion = ({
       options={ubicaciones}
       loading={cargando}
       getOptionLabel={(option) =>
-        typeof option === "string" ? option : option.title
+        typeof option === "string" ? option : option.direccion
       }
       renderInput={renderInput}
     />

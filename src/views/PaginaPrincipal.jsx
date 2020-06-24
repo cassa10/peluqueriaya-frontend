@@ -25,9 +25,7 @@ const PaginaPrincipal = () => {
   let { push } = useHistory();
 
   const buscarPeluqueros = () => {
-    const { position } = ubicacion;
-    sessionStorage.setItem("userLocationLatitude", position.lat);
-    sessionStorage.setItem("userLocationLongitude", position.lng);
+    sessionStorage.setItem("ubicacion", JSON.stringify(ubicacion));
     push("/search");
   };
 

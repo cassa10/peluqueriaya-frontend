@@ -17,6 +17,7 @@ import ClienteOpcionesList from "./ClienteOpcionesList";
 import PeluqueroOpcionesList from "./PeluqueroOpcionesList";
 import { useGetPerfil } from "../../../service/ServicioDeRol";
 import { Divider, List, CircularProgress } from "@material-ui/core";
+import Swal from "sweetalert2";
 
 const SidebarContent = getSidebarContent(styled);
 
@@ -34,6 +35,24 @@ const ContenidoBarraLateral = ({ collapsed }) => {
 
   const perfilInfoProps = (rol) => ({ collapsed, email, ...rol });
 
+  const handleLogout = (isAcepted) => {
+    if(isAcepted)
+      logout()
+  }
+
+  const handleDialogLogout = () => {
+    Swal.fire({
+      title: "¿Querés desconectarte?",
+      showCancelButton: true,
+      cancelButtonColor: "Red",
+      confirmButtonColor: "Green",
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Si, quiero irme!",
+      reverseButtons: true,
+    }).then((result) => handleLogout(result.value));
+  }
+  
+  
   return (
     <SidebarContent>
       {cargando ? (
@@ -76,7 +95,7 @@ const ContenidoBarraLateral = ({ collapsed }) => {
       <List>
         <ListItemIconText
           button
-          onClick={() => logout()}
+          onClick={handleDialogLogout}
           icon={ExitToAppIcon}
           primary="Cerrar Sesión"
         />

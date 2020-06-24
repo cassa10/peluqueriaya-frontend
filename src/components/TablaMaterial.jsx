@@ -1,4 +1,6 @@
 import React, { forwardRef } from "react";
+import PropTypes from "prop-types";
+import merge from "lodash/merge";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -40,9 +42,14 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const localization = {
+const es_AR = {
   body: {
     emptyDataSourceMessage: "No hay resultados",
+    editRow: {
+      deleteTooltip: "Borrar",
+      saveTooltip: "Confirmar",
+      cancelTooltip: "Cancelar",
+    },
   },
   toolbar: {
     searchTooltip: "Buscar",
@@ -51,10 +58,21 @@ const localization = {
   pagination: {
     labelRowsSelect: "Filas",
   },
+  header: {
+    actions: "Acciones",
+  },
 };
 
-const TablaConIconos = (props) => (
-  <MaterialTable icons={tableIcons} localization={localization} {...props} />
+const TablaMaterial = ({ localization = {}, ...props }) => (
+  <MaterialTable
+    icons={tableIcons}
+    localization={merge(es_AR, localization)}
+    {...props}
+  />
 );
 
-export default TablaConIconos;
+TablaMaterial.propTypes = {
+  localization: PropTypes.object,
+};
+
+export default TablaMaterial;

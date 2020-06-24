@@ -1,4 +1,4 @@
-import { useGet, useGetConAuth, usePostConAuth } from "./API";
+import { useDeleteConAuth, useGet, useGetConAuth, usePostConAuth } from "./API";
 import intersectionWith from "lodash/intersectionWith";
 import map from "lodash/map";
 
@@ -27,9 +27,9 @@ export const usePostServicio = (fdatos) => {
 export const useGetServicios = (fdatos) => {
   const setServicios = (serviciosDTO) => {
     const servicios = serviciosDTO.map(
-      ({ nombre, precio, tipos: tiposDTO }) => {
+      ({ nombre, precio, tipos: tiposDTO, id }) => {
         const tipos = map(tiposDTO, "nombre");
-        return { nombre, precio, tipos };
+        return { nombre, precio, tipos, id };
       }
     );
     fdatos(servicios);
@@ -38,4 +38,9 @@ export const useGetServicios = (fdatos) => {
   const { cargando } = useGetConAuth("/peluquero/servicios", setServicios, {});
 
   return { cargando };
+};
+
+export const useDeleteServicio = (fdatos) => {
+  const { cargando, setParametros } = useDeleteConAuth("/servicio", fdatos);
+  return { cargandoBorrado: cargando, setServicioABorrar: setParametros };
 };

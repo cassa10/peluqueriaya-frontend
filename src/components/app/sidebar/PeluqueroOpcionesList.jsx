@@ -49,7 +49,7 @@ const PeluqueroOpcionesList = () => {
       {listItems.map((listItem, index) =>
         listItem.primary === "Editar perfil" && estaDesconectado ? (
           <Tooltip
-            title="Debe estar desconectado para editar su perfil!"
+            title="Debe estar conectado para editar su perfil!"
             key={index}
             appendToBody
           >

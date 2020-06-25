@@ -30,7 +30,7 @@ const PaginaEdicionPeluquero = () => {
 
   if (estaDesconectado) {
     setNotificacion({
-      mensaje: "Debe estar desconectado para editar su perfil!",
+      mensaje: "Debe estar conectado para editar su perfil!",
       severidad: "warning",
     });
     return <Redirect to="/peluquero/turnos" />;

@@ -14,6 +14,7 @@ const PaginaEdicionPeluquero = () => {
         id,
         estaDesconectado,
         estaDisponible,
+        puntuacion,
         ...peluqueroDatos
       },
     },

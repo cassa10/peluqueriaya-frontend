@@ -84,6 +84,7 @@ export const usePutEditarPeluquero = (fdatos) => {
     tipos,
     estaDesconectado,
     estaDisponible,
+    puntuacion,
   }) => {
     fdatos({
       id,
@@ -98,6 +99,7 @@ export const usePutEditarPeluquero = (fdatos) => {
       tipos,
       estaDesconectado,
       estaDisponible,
+      puntuacion,
     });
   };
   const { setParametros, cargando } = usePutConAuth(

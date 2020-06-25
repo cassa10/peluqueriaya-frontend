@@ -12,7 +12,7 @@ import Can, { Cliente, NoCliente } from "../wrappers/Can";
 import { CLIENTE } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
 import formatPrice from "../utils/formatters/formatPrice";
-import StyledRating from "../components/StyledRating";
+import StyledRating from "../components/PuntajePeluquero";
 
 const useStyles = makeStyles({
   gridInfoPeluquero: {

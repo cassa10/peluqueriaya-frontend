@@ -1,21 +1,24 @@
 import React from "react";
 import { useNotificacion } from "../contexts/NotificacionProvider";
-import { usePostEditarDatosCliente } from "../service/ServicioDeCliente";
+import { usePutEditarCliente } from "../service/ServicioDeCliente";
 import FormularioCliente from "../components/FormularioCliente";
 import { useUser } from "../contexts/UserProvider";
 
 const PaginaEdicionCliente = () => {
   const {
+    setUser,
     user: {
       cliente: { estado, id, fullName, ...clienteDatos },
     },
   } = useUser();
   const { setNotificacion } = useNotificacion();
-  const { cargando, setCliente } = usePostEditarDatosCliente(
-    ({ message: mensaje }) => {
-      setNotificacion({ mensaje, severidad: "success" });
-    }
-  );
+  const { cargando, setCliente } = usePutEditarCliente((perfilNuevo) => {
+    setNotificacion({
+      mensaje: "Perfil editado exitosamente!",
+      severidad: "success",
+    });
+    setUser((prevState) => ({ ...prevState, cliente: perfilNuevo }));
+  });
 
   return (
     <FormularioCliente

@@ -3,9 +3,6 @@ import {
   useGetTurnosCliente,
   usePostCancelarTurno,
 } from "../service/ServicioDeTurno";
-import { useGetClienteLogeado } from "../service/ServicioDeCliente";
-import CirculitoCargando from "../components/CirculoCargando";
-import ModalEditarPerfilCliente from "../components/ModalEditarPerfilCliente";
 import {
   Button,
   Table,
@@ -19,7 +16,8 @@ import {
   LinearProgress,
   ButtonGroup,
   Grid,
-  Typography,
+  Box,
+  Container,
 } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
@@ -44,28 +42,6 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const useStyles = makeStyles({
-  panelCliente: {
-    marginTop: "45px",
-    marginBottom: "20px",
-    backgroundColor: "#0eacd4",
-    borderLeft: "10px solid #017787",
-    borderRight: "10px solid #017787",
-  },
-  clienteNombre: {
-    color: "#ffffff",
-  },
-  gridLogoItem: {
-    marginTop: "10px",
-    marginBottom: "5px",
-  },
-  logoImg: {
-    minWidth: 150,
-    maxWidth: 150,
-    minHeight: 150,
-    maxHeight: 150,
-    border: "solid",
-    borderColor: "#017787",
-  },
   tableContainer: {
     marginBottom: "30px",
   },
@@ -97,90 +73,23 @@ const useStyles = makeStyles({
 
 const PaginaTurnosCliente = () => {
   const classes = useStyles();
-
-  const [cliente, setCliente] = useState({ id: 0, nombre: "" });
-
-  const { cargando, refrescarCliente } = useGetClienteLogeado(setCliente);
-
   const [{ turnos, actual, tamanio, total }, setPaginacion] = useState({
     turnos: [],
     actual: 1,
     tamanio: 5,
     total: 1,
   });
-
   const [isTurnosSelected, setIsTurnosSelected] = useState(true);
-
   const { cargandoTurnos, setFiltro } = useGetTurnosCliente(
     tamanio,
     setPaginacion
   );
-
   const [cargandoChangePage, setCargandoChangePage] = useState(false);
-
   const [isOrdRecientes, setIsOrdRecientes] = useState(false);
-
-  const refreshTurnos = () => {
-    setFiltro();
-  };
-
+  const refreshTurnos = () => setFiltro();
   const { setIdTurnoInParamCancelarTurno } = usePostCancelarTurno(
     refreshTurnos
   );
-
-  const createPanelCliente = () => {
-    return (
-      <Grid container className={classes.panelCliente}>
-        <Grid item xs={6}>
-          {mostrarDatosCliente(cliente)}
-        </Grid>
-      </Grid>
-    );
-  };
-
-  const logoPredeterminado = (logoSrc) => {
-    if (logoSrc.length > 0) {
-      return logoSrc;
-    }
-    return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png";
-  };
-
-  const mostrarDatosCliente = (cliente) => {
-    return (
-      <Grid
-        container
-        item
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={1}
-      >
-        <Grid item xs={1} />
-        <Grid item className={classes.gridLogoItem}>
-          <img
-            className={classes.logoImg}
-            src={logoPredeterminado(cliente.imgPerfil)}
-            alt="logo"
-          />
-        </Grid>
-        <Grid item xs={1} />
-        <Grid item>
-          <Typography
-            className={classes.clienteNombre}
-            textalign="center"
-            variant="h5"
-            component="h2"
-          >
-            {cliente.fullName}{" "}
-            <ModalEditarPerfilCliente
-              cliente={cliente}
-              refreshDatosCliente={refrescarCliente}
-            />
-          </Typography>
-        </Grid>
-      </Grid>
-    );
-  };
 
   const handleChangePage = (event, value) => {
     if (actual !== value) {
@@ -206,17 +115,13 @@ const PaginaTurnosCliente = () => {
     }
   };
 
-  const displayPuntaje = (puntaje) => {
-    return `${puntaje}/5`;
-  };
-
   const showPuntuacionData = (turno) => {
     return turno.puntaje > 0 ? (
       <>
         <div>
           <StarIcon />
         </div>
-        {displayPuntaje(turno.puntaje)}
+        {`${turno.puntaje}/5`}
       </>
     ) : (
       <ModalCalificarTurno turno={turno} refreshTurnos={refreshTurnos} />
@@ -358,6 +263,11 @@ const PaginaTurnosCliente = () => {
             )}
           </TableRow>
         ))}
+        {turnos.length === 0 && (
+          <TableRow style={{ height: 300 }}>
+            <TableCell colSpan={6} />
+          </TableRow>
+        )}
       </TableBody>
     );
   };
@@ -484,29 +394,12 @@ const PaginaTurnosCliente = () => {
     );
   };
 
-  const createView = () => {
-    return (
-      <>
-        <Grid container>
-          <Grid item xs />
-          <Grid item xs={10}>
-            {createPanelCliente()}
-          </Grid>
-          <Grid item xs />
-        </Grid>
-        <Grid container>
-          <Grid item xs />
-          <Grid item xs={10}>
-            {createTableDataTurnos()}
-          </Grid>
-          <Grid item xs />
-        </Grid>
-      </>
-    );
-  };
-
   return (
-    <div>{cargando || !cliente.id ? <CirculitoCargando /> : createView()}</div>
+    <Container maxWidth="md">
+      <Box justifyContent="center" mt={3}>
+        {createTableDataTurnos()}
+      </Box>
+    </Container>
   );
 };
 

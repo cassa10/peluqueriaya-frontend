@@ -28,7 +28,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const PerfilInfo = ({ collapsed, imagenSrc, titulo, textoSecundario }) => {
+const PerfilInfo = ({
+  collapsed,
+  imagenSrc,
+  titulo,
+  textoSecundario1,
+  textoSecundario2,
+}) => {
   const classes = useStyles();
 
   const rootStyles = clsx(
@@ -53,8 +59,11 @@ const PerfilInfo = ({ collapsed, imagenSrc, titulo, textoSecundario }) => {
         <Typography variant="h6" noWrap>
           {titulo}
         </Typography>
+        <Typography color="textSecondary" noWrap>
+          {textoSecundario1}
+        </Typography>
         <Typography color="textSecondary" noWrap gutterBottom>
-          {textoSecundario}
+          {textoSecundario2}
         </Typography>
       </div>
       <Divider />
@@ -66,15 +75,17 @@ PerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
   imagenSrc: PropTypes.string,
   titulo: PropTypes.string,
-  textoSecundario: PropTypes.string,
+  textoSecundario1: PropTypes.string,
+  textoSecundario2: PropTypes.string,
 };
 
 export const ClientePerfilInfo = ({ collapsed, email, perfil }) => {
-  const { fullName, imgPerfil } = perfil;
+  const { fullName, imgPerfil, nroTelefono } = perfil;
   return (
     <PerfilInfo
       collapsed={collapsed}
-      textoSecundario={email}
+      textoSecundario1={email}
+      textoSecundario2={nroTelefono}
       titulo={fullName}
       imagenSrc={imgPerfil}
     />
@@ -88,11 +99,12 @@ ClientePerfilInfo.propTypes = {
 };
 
 export const PeluqueroPerfilInfo = ({ collapsed, email, perfil }) => {
-  const { nombre, logo } = perfil;
+  const { nombre, logo, descripcion } = perfil;
   return (
     <PerfilInfo
       collapsed={collapsed}
-      textoSecundario={email}
+      textoSecundario1={email}
+      textoSecundario2={descripcion}
       titulo={nombre}
       imagenSrc={logo}
     />

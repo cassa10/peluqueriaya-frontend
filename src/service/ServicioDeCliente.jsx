@@ -1,4 +1,4 @@
-import { usePostConAuth, useGetConAuth } from "./API";
+import { usePostConAuth, useGetConAuth, usePutConAuth } from "./API";
 import { useEffect } from "react";
 
 export const usePostCliente = (fdatos) => {
@@ -22,7 +22,7 @@ export const useGetClienteLogeado = (setterDatos) => {
   return { cargando, refrescarCliente };
 };
 
-export const usePostEditarDatosCliente = (fdatos) => {
-  const { setParametros, cargando } = usePostConAuth("/cliente/editar", fdatos);
+export const usePutEditarCliente = (fdatos) => {
+  const { setParametros, cargando } = usePutConAuth("/cliente", fdatos);
   return { cargando, setCliente: setParametros };
 };

@@ -16,7 +16,8 @@ import { PaginaError404 } from "../../views/PaginaError";
 import NotificacionProvider from "../../contexts/NotificacionProvider";
 import PaginaCrearServicio from "../../views/PaginaCrearServicio";
 import PaginaVerServicios from "../../views/PaginaVerServicios";
-import PaginaGestionCliente from "../../views/PaginaGestionCliente";
+import PaginaTurnosCliente from "../../views/PaginaTurnosCliente";
+import PaginaEdicionCliente from "../../views/PaginaEdicionCliente";
 
 const ContenidoCuerpo = () => {
   return (
@@ -32,7 +33,8 @@ const ContenidoCuerpo = () => {
             path="/peluquero/registro"
             component={PaginaRegistroPeluquero}
           />
-          <ClienteRoute path="/turnos" component={PaginaGestionCliente}/>
+          <ClienteRoute path="/turnos" component={PaginaTurnosCliente} />
+          <ClienteRoute path="/perfil" component={PaginaEdicionCliente} />
           <PeluqueroRoute
             path="/peluquero/turnos"
             component={PaginaGestionPeluquero}

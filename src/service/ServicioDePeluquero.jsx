@@ -18,18 +18,16 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
   const { push } = useHistory();
 
   useEffect(() => {
-    const ubicacionLocal = {
-      latitude: sessionStorage.getItem("userLocationLatitude"),
-      longitude: sessionStorage.getItem("userLocationLongitude"),
-    };
-    if (ubicacionLocal.latitude === null || ubicacionLocal.longitude === null)
-      push("/");
-    else
+    const ubicacion = JSON.parse(sessionStorage.getItem("ubicacion"));
+    if (ubicacion) {
       setParametros({
-        ...ubicacionLocal,
+        ...ubicacion,
         size: tamanioPagina,
         sort: "nombre,asc",
       });
+    } else {
+      push("/");
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -78,28 +76,22 @@ export const useGetPeluqueroLogeado = (setterDatos) => {
     // eslint-disable-next-line
   }, []);
 
-  const refrescarPeluquero = () => setParametros({})
-  
-  return {cargando, refrescarPeluquero}
-}
+  const refrescarPeluquero = () => setParametros({});
+
+  return { cargando, refrescarPeluquero };
+};
 
 export const usePostPeluquero = (fdatos) => {
   const { setParametros, cargando } = usePostConAuth("/peluquero", fdatos);
-
-  const setPeluquero = ({ ubicacion: { position }, ...resto }) => {
-    const { lat: latitude, lng: longitude } = position;
-    setParametros({ ubicacion: { latitude, longitude }, ...resto });
-  };
-
-  return { cargando, setPeluquero };
+  return { cargando, setPeluquero: setParametros };
 };
 
 export const usePostEditarDatosPeluquero = (fdatos) => {
-  const { setParametros, cargando } = usePostConAuth("/peluquero/editar", fdatos);
-
-  const setPeluquero = (datos) => setParametros(datos);
-
-  return { cargando, setPeluquero };
+  const { setParametros, cargando } = usePostConAuth(
+    "/peluquero/editar",
+    fdatos
+  );
+  return { cargando, setPeluquero: setParametros };
 };
 
 export const usePostPeluqueroDesconectar = (fdatos) => {

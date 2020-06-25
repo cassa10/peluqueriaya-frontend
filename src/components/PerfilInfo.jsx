@@ -28,7 +28,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const PerfilInfo = ({ collapsed, imagenSrc, titulo, textoSecundario }) => {
+const PerfilInfo = ({
+  collapsed,
+  imagenSrc,
+  titulo,
+  textoSecundario1,
+  textoSecundario2,
+}) => {
   const classes = useStyles();
 
   const rootStyles = clsx(
@@ -53,8 +59,11 @@ const PerfilInfo = ({ collapsed, imagenSrc, titulo, textoSecundario }) => {
         <Typography variant="h6" noWrap>
           {titulo}
         </Typography>
+        <Typography color="textSecondary" noWrap>
+          {textoSecundario1}
+        </Typography>
         <Typography color="textSecondary" noWrap gutterBottom>
-          {textoSecundario}
+          {textoSecundario2}
         </Typography>
       </div>
       <Divider />
@@ -66,42 +75,44 @@ PerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
   imagenSrc: PropTypes.string,
   titulo: PropTypes.string,
-  textoSecundario: PropTypes.string,
+  textoSecundario1: PropTypes.string,
+  textoSecundario2: PropTypes.string,
 };
 
-export const ClientePerfilInfo = ({
-  collapsed,
-  imgPerfil,
-  fullName,
-  email,
-}) => (
-  <PerfilInfo
-    collapsed={collapsed}
-    textoSecundario={email}
-    titulo={fullName}
-    imagenSrc={imgPerfil}
-  />
-);
+export const ClientePerfilInfo = ({ collapsed, email, perfil }) => {
+  const { fullName, imgPerfil, nroTelefono } = perfil;
+  return (
+    <PerfilInfo
+      collapsed={collapsed}
+      textoSecundario1={email}
+      textoSecundario2={nroTelefono}
+      titulo={fullName}
+      imagenSrc={imgPerfil}
+    />
+  );
+};
 
 ClientePerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
-  imgPerfil: PropTypes.string,
-  fullName: PropTypes.string,
+  perfil: PropTypes.object,
   email: PropTypes.string,
 };
 
-export const PeluqueroPerfilInfo = ({ collapsed, logo, nombre, email }) => (
-  <PerfilInfo
-    collapsed={collapsed}
-    textoSecundario={email}
-    titulo={nombre}
-    imagenSrc={logo}
-  />
-);
+export const PeluqueroPerfilInfo = ({ collapsed, email, perfil }) => {
+  const { nombre, logo, descripcion } = perfil;
+  return (
+    <PerfilInfo
+      collapsed={collapsed}
+      textoSecundario1={email}
+      textoSecundario2={descripcion}
+      titulo={nombre}
+      imagenSrc={logo}
+    />
+  );
+};
 
 PeluqueroPerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
-  logo: PropTypes.string,
-  nombre: PropTypes.string,
+  perfil: PropTypes.object,
   email: PropTypes.string,
 };

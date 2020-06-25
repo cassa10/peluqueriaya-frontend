@@ -1,4 +1,4 @@
-import { useGet, useGetConAuth, usePostConAuth, usePutConAuth } from "./API";
+import { useGet, usePostConAuth, usePutConAuth } from "./API";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -65,22 +65,6 @@ export const useGetPeluqueroAContratar = (setterDatos) => {
   return { cargando };
 };
 
-export const useGetPeluqueroLogeado = (setterDatos) => {
-  const { cargando, setParametros } = useGetConAuth("/peluquero", (datos) =>
-    setterDatos(datos)
-  );
-
-  //Si no aplico el setParametros no se me setean los datos
-  useEffect(() => {
-    setParametros({});
-    // eslint-disable-next-line
-  }, []);
-
-  const refrescarPeluquero = () => setParametros({});
-
-  return { cargando, refrescarPeluquero };
-};
-
 export const usePostPeluquero = (fdatos) => {
   const { setParametros, cargando } = usePostConAuth("/peluquero", fdatos);
   return { cargando, setPeluquero: setParametros };
@@ -98,6 +82,8 @@ export const usePutEditarPeluquero = (fdatos) => {
     estado,
     descripcion,
     tipos,
+    estaDesconectado,
+    estaDisponible,
   }) => {
     fdatos({
       id,
@@ -110,6 +96,8 @@ export const usePutEditarPeluquero = (fdatos) => {
       estado,
       descripcion,
       tipos,
+      estaDesconectado,
+      estaDisponible,
     });
   };
   const { setParametros, cargando } = usePutConAuth(

@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import FormularioPeluquero from "../components/FormularioPeluquero";
 import { useNotificacion } from "../contexts/NotificacionProvider";
 import { usePutEditarPeluquero } from "../service/ServicioDePeluquero";
@@ -8,7 +9,13 @@ const PaginaEdicionPeluquero = () => {
   const {
     setUser,
     user: {
-      peluquero: { estado, id, ...peluqueroDatos },
+      peluquero: {
+        estado,
+        id,
+        estaDesconectado,
+        estaDisponible,
+        ...peluqueroDatos
+      },
     },
   } = useUser();
   const { setNotificacion } = useNotificacion();
@@ -19,6 +26,14 @@ const PaginaEdicionPeluquero = () => {
     });
     setUser((prevState) => ({ ...prevState, peluquero: perfilNuevo }));
   });
+
+  if (estaDesconectado) {
+    setNotificacion({
+      mensaje: "Debe estar desconectado para editar su perfil!",
+      severidad: "warning",
+    });
+    return <Redirect to="/peluquero/turnos" />;
+  }
 
   return (
     <FormularioPeluquero

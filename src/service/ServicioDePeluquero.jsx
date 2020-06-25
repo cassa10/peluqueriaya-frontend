@@ -1,4 +1,4 @@
-import { useGet, useGetConAuth, usePostConAuth } from "./API";
+import { useGet, useGetConAuth, usePostConAuth, usePutConAuth } from "./API";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -86,10 +86,35 @@ export const usePostPeluquero = (fdatos) => {
   return { cargando, setPeluquero: setParametros };
 };
 
-export const usePostEditarDatosPeluquero = (fdatos) => {
-  const { setParametros, cargando } = usePostConAuth(
-    "/peluquero/editar",
-    fdatos
+export const usePutEditarPeluquero = (fdatos) => {
+  const fdatosAPeluquero = ({
+    id,
+    logo,
+    nombre,
+    corteMin,
+    distanciaMax,
+    emailOpcional,
+    ubicacion,
+    estado,
+    descripcion,
+    tipos,
+  }) => {
+    fdatos({
+      id,
+      logo,
+      nombre,
+      corteMin,
+      distanciaMax,
+      emailOpcional,
+      ubicacion,
+      estado,
+      descripcion,
+      tipos,
+    });
+  };
+  const { setParametros, cargando } = usePutConAuth(
+    "/peluquero",
+    fdatosAPeluquero
   );
   return { cargando, setPeluquero: setParametros };
 };

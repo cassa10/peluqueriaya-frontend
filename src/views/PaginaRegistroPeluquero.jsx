@@ -1,36 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Can, { Peluquero, Pendiente } from "../wrappers/Can";
 import { PELUQUERO } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
-import { useForm } from "react-hook-form";
-import peluqueroSchema from "../utils/validations/peluqueroSchema";
-import Campo from "../components/form/Campo";
-import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
-import CampoTiposDePeluquero from "../components/form/CampoTiposDePeluquero";
-import BotonSubmit from "../components/form/BotonSubmit";
-import RegistroForm from "../components/form/RegistroForm";
 import { Redirect } from "react-router-dom";
 import { useNotificacion } from "../contexts/NotificacionProvider";
 import { usePostPeluquero } from "../service/ServicioDePeluquero";
-import { Grid } from "@material-ui/core";
-import InputAdornment from '@material-ui/core/InputAdornment';
+import FormularioPeluquero from "../components/FormularioPeluquero";
 
 const PaginaRegistroPeluquero = () => {
   const { empezarRegistro, abandonarRegistro, registrar } = useUser();
-  const [ubicacion, setUbicacion] = useState(null);
-  const [valido, setValido] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    errors,
-    unregister,
-    setValue,
-  } = useForm({
-    reValidateMode: "onChange",
-    validationSchema: peluqueroSchema,
-    defaultValues: { tipos: [] },
-  });
   const { setNotificacion } = useNotificacion();
   const { setPeluquero, cargando } = usePostPeluquero(
     ({ message: mensaje }) => {
@@ -46,82 +24,17 @@ const PaginaRegistroPeluquero = () => {
     }; // eslint-disable-next-line
   }, [abandonarRegistro]);
 
-  const onSubmit = (data) => setPeluquero({ ubicacion, ...data });
-
-  const formProps = { errors, inputRef: register };
-
   return (
     <Can>
       <Peluquero>
-        <Redirect to="/peluquero/turnos" />
+        <Redirect to="/peluquero/perfil" />
       </Peluquero>
       <Pendiente>
-        <RegistroForm
-          onSubmit={handleSubmit(onSubmit)}
-          nombre="Registro Peluquero"
-          avatarSrc={watch("logo")}
-        >
-          <Grid container item xs={12} sm={6} spacing={2}>
-            <Campo
-              name="nombre"
-              label="Nombre"
-              autoComplete="organization"
-              autoFocus
-              {...formProps}
-            />
-            <Campo
-              name="emailOpcional"
-              label="Correo Electrónico"
-              autoComplete="email"
-              {...formProps}
-            />
-            <Campo
-              name="logo"
-              label="Enlace de logo"
-              autoComplete="photo"
-              {...formProps}
-            />
-            <Grid item xs={12}>
-              <AutocompletadoDeUbicacion
-                {...{ ubicacion, setUbicacion, valido, setValido }}
-              />
-            </Grid>
-          </Grid>
-          <Grid container item xs={12} sm={6} spacing={2}>
-            <Campo
-              sm={6}
-              type="number"
-              name="corteMin"
-              label="Precio fijo por trabajo"
-              InputProps={{
-                startAdornment: <InputAdornment position="start">$</InputAdornment>,
-              }}
-              {...formProps}
-            />
-            <Campo
-              sm={6}
-              type="number"
-              InputProps={{
-                endAdornment: <InputAdornment position="end">Km</InputAdornment>,
-              }}
-              name="distanciaMax"
-              label="Distancia max a recorrer por cliente"
-              InputLabelProps={{ shrink: true }}
-              {...formProps}
-            />
-            <Campo
-              name="descripcion"
-              label="Descripción"
-              multiline
-              rows={3}
-              {...formProps}
-            />
-            <CampoTiposDePeluquero
-              {...{ register, unregister, setValue, errors, name: "tipos" }}
-            />
-            <BotonSubmit disabled={!valido || cargando} />
-          </Grid>
-        </RegistroForm>
+        <FormularioPeluquero
+          onSubmit={setPeluquero}
+          nombre={"Registro Peluquero"}
+          botonProps={{ disabled: cargando }}
+        />
       </Pendiente>
     </Can>
   );

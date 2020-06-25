@@ -1,17 +1,23 @@
 import React from "react";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import NotesIcon from "@material-ui/icons/Notes";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import ListItemLink from "../../ListItemLink";
 import { useLocation } from "react-router-dom";
+import EditIcon from "@material-ui/icons/Edit";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 
 const PeluqueroOpcionesList = () => {
   const { pathname } = useLocation();
   const listItems = [
     {
-      primary: "Perfil y Turnos",
+      primary: "Mis turnos",
       to: "/peluquero/turnos",
-      icon: AccountCircleIcon,
+      icon: AssignmentIcon,
+    },
+    {
+      primary: "Editar perfil",
+      to: "/peluquero/perfil",
+      icon: EditIcon,
     },
     {
       primary: "Mis servicios",

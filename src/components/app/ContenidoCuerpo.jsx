@@ -18,6 +18,7 @@ import PaginaCrearServicio from "../../views/PaginaCrearServicio";
 import PaginaVerServicios from "../../views/PaginaVerServicios";
 import PaginaTurnosCliente from "../../views/PaginaTurnosCliente";
 import PaginaEdicionCliente from "../../views/PaginaEdicionCliente";
+import PaginaEdicionPeluquero from "../../views/PaginaEdicionPeluquero";
 
 const ContenidoCuerpo = () => {
   return (
@@ -35,6 +36,10 @@ const ContenidoCuerpo = () => {
           />
           <ClienteRoute path="/turnos" component={PaginaTurnosCliente} />
           <ClienteRoute path="/perfil" component={PaginaEdicionCliente} />
+          <PeluqueroRoute
+            path="/peluquero/perfil"
+            component={PaginaEdicionPeluquero}
+          />
           <PeluqueroRoute
             path="/peluquero/turnos"
             component={PaginaGestionPeluquero}

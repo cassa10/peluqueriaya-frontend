@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNotificacion } from "../contexts/NotificacionProvider";
-import { usePostEditarDatosPeluquero } from "../service/ServicioDePeluquero";
+import { usePutEditarPeluquero } from "../service/ServicioDePeluquero";
 import { useGetDireccionConCoords } from "../service/ServicioDeMapas";
 import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
 import {
@@ -75,7 +75,7 @@ const ModalEditarUbicacion = ({ ubicacionActual, estaDesconectado }) => {
   };
 
   const { setNotificacion } = useNotificacion();
-  const { setPeluquero } = usePostEditarDatosPeluquero(postSuccess);
+  const { setPeluquero } = usePutEditarPeluquero(postSuccess);
 
   const mostrarDialogError = () => {
     Swal.fire({

@@ -4,6 +4,9 @@ import { TextField, InputAdornment } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useGetUbicacionConDireccion } from "../service/ServicioDeMapas";
 import EstadoIcon from "./icons/EstadoIcon";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import MapIcon from "@material-ui/icons/Map";
 
 const AutocompletadoDeUbicacion = ({
   ubicacion,
@@ -44,6 +47,20 @@ const AutocompletadoDeUbicacion = ({
         ...params.InputProps,
         startAdornment: (
           <InputAdornment position="start">
+            {valido && (
+              <Tooltip title="Verifique su dirección en GoogleMaps">
+                <IconButton
+                  color="secondary"
+                  onClick={() =>
+                    window.open(
+                      `https://maps.google.com/?q=${ubicacion.latitude},${ubicacion.longitude}`
+                    )
+                  }
+                >
+                  <MapIcon />
+                </IconButton>
+              </Tooltip>
+            )}
             <EstadoIcon cargando={cargando} condicion={valido} />
           </InputAdornment>
         ),

@@ -1,9 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App App levanta en loading 1`] = `
-<WithStyles(ForwardRef(LinearProgress))
-  color="secondary"
-/>
+<Fragment>
+  <Header
+    color="primary"
+  >
+    <ContenidoHeader />
+  </Header>
+  <Can>
+    <Registrado>
+      <DrawerSidebar
+        sidebarId="primarySidebar"
+      >
+        <SidebarContent>
+          <ContenidoBarraLateral />
+        </SidebarContent>
+        <CollapseBtnStyled />
+      </DrawerSidebar>
+    </Registrado>
+  </Can>
+  <Content>
+    <ErrorAPIProvider>
+      <ContenidoCuerpo />
+    </ErrorAPIProvider>
+  </Content>
+  <div
+    className="makeStyles-footer-1"
+  >
+    <Footer>
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        variant="caption"
+      >
+        © 2020 - MIT License
+      </WithStyles(ForwardRef(Typography))>
+    </Footer>
+  </div>
+</Fragment>
 `;
 
 exports[`App App levanta sin problemas 1`] = `

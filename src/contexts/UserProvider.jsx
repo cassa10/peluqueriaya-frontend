@@ -60,15 +60,24 @@ const UserProvider = ({ history, children, ...initOptions }) => {
       if (isAuthenticated) {
         const { email } = await auth0FromHook.getUser();
         const token = await auth0FromHook.getTokenSilently();
-        const { data } = await axios.get("http://localhost:8080/perfil", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const { peluquero, cliente } = data;
-        setRoles({
-          [CLIENTE]: cliente ? REGISTRADO : VISITANTE,
-          [PELUQUERO]: peluquero ? REGISTRADO : VISITANTE,
-        });
-        setUser({ email, peluquero, cliente });
+        try {
+          const { data } = await axios.get("http://localhost:8080/perfil", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const { peluquero, cliente } = data;
+          setRoles({
+            [CLIENTE]: cliente ? REGISTRADO : VISITANTE,
+            [PELUQUERO]: peluquero ? REGISTRADO : VISITANTE,
+          });
+          setUser({ email, peluquero, cliente });
+        } catch {
+          setRoles({
+            [CLIENTE]: VISITANTE,
+            [PELUQUERO]: VISITANTE,
+          });
+        } finally {
+          setLoading(false);
+        }
       }
       setLoading(false);
     };

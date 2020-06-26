@@ -90,12 +90,16 @@ PerfilInfo.propTypes = {
 };
 
 export const ClientePerfilInfo = ({ collapsed, email, perfil = {} }) => {
-  const { fullName, imgPerfil, nroTelefono } = perfil;
+  const {
+    fullName,
+    imgPerfil,
+    ubicacion: { direccion },
+  } = perfil;
   return (
     <PerfilInfo
       collapsed={collapsed}
       textoSecundario1={email}
-      textoSecundario2={nroTelefono}
+      textoSecundario2={direccion}
       titulo={fullName}
       imagenSrc={imgPerfil}
     />

@@ -13,6 +13,7 @@ const PaginaRegistroCliente = () => {
   const { cargando, setCliente } = usePostCliente(({ message: mensaje }) => {
     registrar(CLIENTE);
     setNotificacion({ mensaje, severidad: "success" });
+    window.location.reload();
   });
 
   useEffect(() => {

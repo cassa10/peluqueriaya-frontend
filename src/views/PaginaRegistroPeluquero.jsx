@@ -14,6 +14,7 @@ const PaginaRegistroPeluquero = () => {
     ({ message: mensaje }) => {
       registrar(PELUQUERO);
       setNotificacion({ mensaje, severidad: "success" });
+      window.location.reload();
     }
   );
 
@@ -27,7 +28,7 @@ const PaginaRegistroPeluquero = () => {
   return (
     <Can>
       <Peluquero>
-        <Redirect to="/peluquero/perfil" />
+        <Redirect to="/peluquero/turnos" />
       </Peluquero>
       <Pendiente>
         <FormularioPeluquero

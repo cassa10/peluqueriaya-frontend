@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
   getHeader,
@@ -10,13 +11,11 @@ import {
 import ContenidoBarraLateral from "./components/app/sidebar/ContenidoBarraLateral";
 import CollapseBtnStyled from "./components/app/sidebar/CollapseBtnStyled";
 import ContenidoHeader from "./components/app/ContenidoHeader";
-import { useUser } from "./contexts/UserProvider";
 import ContenidoCuerpo from "./components/app/ContenidoCuerpo";
-import PropTypes from "prop-types";
 import Can, { Registrado } from "./wrappers/Can";
-import { LinearProgress } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import ErrorAPIProvider from "./contexts/ErrorAPIProvider";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -35,11 +34,6 @@ const useStyles = makeStyles(() => ({
 
 const App = ({ collapsed }) => {
   const classes = useStyles();
-  const { loading } = useUser();
-
-  if (loading) {
-    return <LinearProgress color="secondary" />;
-  }
 
   return (
     <>
@@ -57,7 +51,9 @@ const App = ({ collapsed }) => {
         </Registrado>
       </Can>
       <Content>
-        <ContenidoCuerpo />
+        <ErrorAPIProvider>
+          <ContenidoCuerpo />
+        </ErrorAPIProvider>
       </Content>
       <div className={classes.footer}>
         <Footer>

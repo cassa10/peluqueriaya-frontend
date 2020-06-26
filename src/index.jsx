@@ -2,23 +2,26 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router, withRouter } from "react-router-dom";
-import UserProvider from "./contexts/UserProvider";
-import withRoot from "./wrappers/withRoot";
 import App from "./App";
+import UserProvider from "./contexts/UserProvider";
+import Auth0Provider from "./contexts/Auth0Provider";
+import withRoot from "./wrappers/withRoot";
 
-const UserProviderWithRouter = withRouter(UserProvider);
+const Auth0ProviderWithRouter = withRouter(Auth0Provider);
 const AppWithRoot = withRoot(App);
 
 ReactDOM.render(
   <Router>
-    <UserProviderWithRouter
+    <Auth0ProviderWithRouter
       domain={process.env.REACT_APP_DOMAIN}
       client_id={process.env.REACT_APP_CLIENT_ID}
       audience={process.env.REACT_APP_AUDIENCE}
       redirect_uri={window.location.origin}
     >
-      <AppWithRoot />
-    </UserProviderWithRouter>
+      <UserProvider>
+        <AppWithRoot />
+      </UserProvider>
+    </Auth0ProviderWithRouter>
   </Router>,
   document.getElementById("root")
 );

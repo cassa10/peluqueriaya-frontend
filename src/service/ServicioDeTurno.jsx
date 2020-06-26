@@ -1,11 +1,11 @@
 import { useGetConAuth, usePostConAuth } from "./API";
 import { useEffect } from "react";
 
-export const usePostPedirTurno = (setterResponseData) => {
-  const { cargando, setParametros } = usePostConAuth(
-    "/turno/pedir",
-    setterResponseData
-  );
+export const usePostPedirTurno = (fdatos) => {
+  const { cargando, setParametros } = usePostConAuth({
+    path: "/turno/pedir",
+    fdatos,
+  });
 
   return { cargandoPedirTurno: cargando, setParametros };
 };
@@ -20,10 +20,10 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
     }));
   };
 
-  const { cargando, parametros, setParametros } = useGetConAuth(
-    `/turno/peluquero`,
-    crearPaginacion
-  );
+  const { cargando, parametros, setParametros } = useGetConAuth({
+    path: `/turno/peluquero`,
+    fdatos: crearPaginacion,
+  });
 
   useEffect(() => {
     setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
@@ -44,11 +44,11 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
   return { cargandoTurnos: cargando, setFiltro, limpiarFiltro };
 };
 
-export const usePostConfirmarTurno = (setterResponseData) => {
-  const { cargando, setParametros } = usePostConAuth(
-    "/turno/confirmar",
-    setterResponseData
-  );
+export const usePostConfirmarTurno = (fdatos) => {
+  const { cargando, setParametros } = usePostConAuth({
+    path: "/turno/confirmar",
+    fdatos,
+  });
 
   const setIdTurnoInParamConfirmarTurno = (id) =>
     setParametros({ idTurno: id });
@@ -56,63 +56,74 @@ export const usePostConfirmarTurno = (setterResponseData) => {
   return { cargandoConfirmarTurno: cargando, setIdTurnoInParamConfirmarTurno };
 };
 
-export const usePostFinalizarTurno = (setterResponseData) => {
-  const { cargando, setParametros } = usePostConAuth(
-    "/turno/finalizar",
-    setterResponseData
-  );
+export const usePostFinalizarTurno = (fdatos) => {
+  const { cargando, setParametros } = usePostConAuth({
+    path: "/turno/finalizar",
+    fdatos,
+  });
 
   const setIdTurnoInParamFinalizarTurno = (id) =>
     setParametros({ idTurno: id });
 
-    return {cargandoFinalizarTurno: cargando, setIdTurnoInParamFinalizarTurno};
-}
+  return { cargandoFinalizarTurno: cargando, setIdTurnoInParamFinalizarTurno };
+};
 
 export const useGetTurnosCliente = (tamanioPagina, setterResponseData) => {
-    
+  const crearPaginacion = ({ content, pageable, totalPages }) => {
+    setterResponseData((prevState) => ({
+      ...prevState,
+      turnos: content,
+      actual: pageable.pageNumber + 1,
+      total: totalPages,
+    }));
+  };
 
-    const crearPaginacion = ({content, pageable,  totalPages}) => {
-        setterResponseData((prevState) => ({
-            ...prevState,
-            turnos: content,
-            actual: pageable.pageNumber+1,
-            total: totalPages,
-        }))
+  const { cargando, parametros, setParametros } = useGetConAuth({
+    path: `/turno/cliente`,
+    fdatos: crearPaginacion,
+  });
+
+  useEffect(() => {
+    setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
+    // eslint-disable-next-line
+  }, []);
+
+  const setFiltro = (filtro) =>
+    setParametros((prevState) => ({ ...prevState, ...filtro }));
+
+  const limpiarFiltro = (filtro) => {
+    if (filtro in parametros) {
+      // eslint-disable-next-line no-unused-vars
+      const { [filtro]: value, ...otrosFiltros } = parametros;
+      setParametros(otrosFiltros);
     }
+  };
 
-    const {cargando, parametros, setParametros} = useGetConAuth(`/turno/cliente`,crearPaginacion);
+  return { cargandoTurnos: cargando, setFiltro, limpiarFiltro };
+};
 
-    useEffect(() => {
-        setParametros({size: tamanioPagina, sort: 'fechaInicio,asc'});
-        // eslint-disable-next-line
-    }, [])
+export const usePostCancelarTurno = (fdatos) => {
+  const { cargando, setParametros } = usePostConAuth({
+    path: "/turno/cancelar",
+    fdatos,
+  });
 
-    const setFiltro = (filtro) => setParametros((prevState) => ({...prevState, ...filtro}));
+  const setIdTurnoInParamCancelarTurno = (id) => setParametros({ idTurno: id });
 
-    const limpiarFiltro = (filtro) => {
-        if (filtro in parametros) {
-            // eslint-disable-next-line no-unused-vars
-            const {[filtro]: value, ...otrosFiltros} = parametros;
-            setParametros(otrosFiltros);
-        }
-    }
-    
-    return {cargandoTurnos: cargando, setFiltro, limpiarFiltro}
-}
+  return { cargandoCancelarTurno: cargando, setIdTurnoInParamCancelarTurno };
+};
 
-export const usePostCancelarTurno = (setterResponseData) => {
-    const {cargando, setParametros} = usePostConAuth("/turno/cancelar", setterResponseData);
+export const usePostCalificarTurno = (fdatos) => {
+  const { cargando, setParametros } = usePostConAuth({
+    path: "/turno/calificar",
+    fdatos,
+  });
 
-    const setIdTurnoInParamCancelarTurno = (id) => setParametros({idTurno: id});
+  const setIdTurnoYCalificacionInParamCalificarTurno = (id, puntuacion) =>
+    setParametros({ idTurno: id, puntaje: puntuacion });
 
-    return {cargandoCancelarTurno: cargando, setIdTurnoInParamCancelarTurno};
-}
-
-export const usePostCalificarTurno = (setterResponseData) => {
-  const {cargando, setParametros} = usePostConAuth("/turno/calificar", setterResponseData);
-
-  const setIdTurnoYCalificacionInParamCalificarTurno = (id, puntuacion) => setParametros({idTurno: id, puntaje: puntuacion});
-
-  return {cargandoCalificarTurno: cargando, setIdTurnoYCalificacionInParamCalificarTurno};
-}
-
+  return {
+    cargandoCalificarTurno: cargando,
+    setIdTurnoYCalificacionInParamCalificarTurno,
+  };
+};

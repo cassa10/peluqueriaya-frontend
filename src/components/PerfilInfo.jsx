@@ -35,7 +35,7 @@ const PerfilInfo = ({
   titulo,
   textoSecundario1,
   textoSecundario2,
-  infoExtra: InfoExtra,
+  infoExtra,
 }) => {
   const classes = useStyles();
 
@@ -73,7 +73,7 @@ const PerfilInfo = ({
             {textoSecundario2}
           </Typography>
         )}
-        {InfoExtra && <InfoExtra />}
+        {infoExtra}
       </div>
       <Divider />
     </>

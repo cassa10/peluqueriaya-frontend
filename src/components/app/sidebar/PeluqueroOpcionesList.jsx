@@ -47,17 +47,17 @@ const PeluqueroOpcionesList = () => {
   return (
     <>
       {listItems.map((listItem, index) =>
-        listItem.primary === "Editar perfil" && estaDesconectado ? (
+        listItem.primary === "Editar perfil" && !estaDesconectado ? (
           <Tooltip
-            title="Debe estar conectado para editar su perfil!"
+            PopperProps={{ disablePortal: true }}
+            title="Debe estar desconectado para editar su perfil!"
             key={index}
-            appendToBody
           >
             <span>
               <ListItemLink
                 {...listItem}
                 location={pathname}
-                disabled={estaDesconectado}
+                disabled={!estaDesconectado}
               />
             </span>
           </Tooltip>

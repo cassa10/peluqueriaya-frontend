@@ -91,17 +91,10 @@ const PaginaContratacionPeluquero = () => {
   const precioTotal = () =>
     peluquero.corteMin + sumBy(serviciosSeleccionados, "precio");
 
-  const getUbicacion = () => {
-    const { latitude, longitude } = JSON.parse(
-      sessionStorage.getItem("ubicacion")
-    );
-    return { latitude, longitude };
-  };
-
   const handleCrearTurno = (value) => {
     if (value) {
       const body = {
-        ubicacion: getUbicacion(),
+        ubicacion: JSON.parse(sessionStorage.getItem("ubicacion")),
         idPeluquero: peluquero.id,
         serviciosSolicitadosId: serviciosSeleccionados.map((s) => s.id),
       };

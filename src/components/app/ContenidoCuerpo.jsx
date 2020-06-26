@@ -9,7 +9,7 @@ import {
 import PaginaRegistroCliente from "../../views/PaginaRegistroCliente";
 import PaginaRegistroPeluquero from "../../views/PaginaRegistroPeluquero";
 import { ClienteRoute, PeluqueroRoute } from "../../wrappers/RegistradoRoute";
-import PaginaGestionPeluquero from "../../views/PaginaGestionPeluquero";
+import PaginaTurnosPeluquero from "../../views/PaginaTurnosPeluquero";
 import PaginaBusquedaPeluqueros from "../../views/PaginaBusquedaPeluqueros";
 import PaginaContratacionPeluquero from "../../views/PaginaContratacionPeluquero";
 import { PaginaError404 } from "../../views/PaginaError";
@@ -18,6 +18,7 @@ import PaginaCrearServicio from "../../views/PaginaCrearServicio";
 import PaginaVerServicios from "../../views/PaginaVerServicios";
 import PaginaTurnosCliente from "../../views/PaginaTurnosCliente";
 import PaginaEdicionCliente from "../../views/PaginaEdicionCliente";
+import PaginaEdicionPeluquero from "../../views/PaginaEdicionPeluquero";
 
 const ContenidoCuerpo = () => {
   return (
@@ -36,8 +37,12 @@ const ContenidoCuerpo = () => {
           <ClienteRoute path="/turnos" component={PaginaTurnosCliente} />
           <ClienteRoute path="/perfil" component={PaginaEdicionCliente} />
           <PeluqueroRoute
+            path="/peluquero/perfil"
+            component={PaginaEdicionPeluquero}
+          />
+          <PeluqueroRoute
             path="/peluquero/turnos"
-            component={PaginaGestionPeluquero}
+            component={PaginaTurnosPeluquero}
           />
           <PeluqueroRoute
             path="/peluquero/servicio"

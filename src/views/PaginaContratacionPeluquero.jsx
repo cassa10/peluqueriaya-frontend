@@ -12,7 +12,7 @@ import Can, { Cliente, NoCliente } from "../wrappers/Can";
 import { CLIENTE } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
 import formatPrice from "../utils/formatters/formatPrice";
-import StyledRating from "../components/StyledRating";
+import StyledRating from "../components/PuntajePeluquero";
 
 const useStyles = makeStyles({
   gridInfoPeluquero: {
@@ -91,17 +91,10 @@ const PaginaContratacionPeluquero = () => {
   const precioTotal = () =>
     peluquero.corteMin + sumBy(serviciosSeleccionados, "precio");
 
-  const getUbicacion = () => {
-    const { latitude, longitude } = JSON.parse(
-      sessionStorage.getItem("ubicacion")
-    );
-    return { latitude, longitude };
-  };
-
   const handleCrearTurno = (value) => {
     if (value) {
       const body = {
-        ubicacion: getUbicacion(),
+        ubicacion: JSON.parse(sessionStorage.getItem("ubicacion")),
         idPeluquero: peluquero.id,
         serviciosSolicitadosId: serviciosSeleccionados.map((s) => s.id),
       };

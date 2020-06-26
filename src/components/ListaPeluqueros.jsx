@@ -13,7 +13,7 @@ import {
 import ModalServiciosPeluquero from "./ModalServiciosPeluquero";
 import Swal from "sweetalert2";
 import formatPrice from "../utils/formatters/formatPrice";
-import PuntajePeluquero from "./StyledRating";
+import PuntajePeluquero from "./PuntajePeluquero";
 
 const useStyles = makeStyles({
   root: {

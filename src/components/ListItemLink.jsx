@@ -1,10 +1,9 @@
 import React, { forwardRef, useMemo } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import PropTypes from "prop-types";
-
+import { Link as RouterLink } from "react-router-dom";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 
-const ListItemLink = ({ icon: Icon, primary, to, location }) => {
+const ListItemLink = ({ icon: Icon, primary, to, location, ...props }) => {
   const renderLink = useMemo(
     () =>
       forwardRef((itemProps, ref) => (
@@ -14,7 +13,12 @@ const ListItemLink = ({ icon: Icon, primary, to, location }) => {
   );
 
   return (
-    <ListItem button component={renderLink} selected={location === to}>
+    <ListItem
+      button
+      component={renderLink}
+      selected={location === to}
+      {...props}
+    >
       <ListItemIcon>
         <Icon />
       </ListItemIcon>

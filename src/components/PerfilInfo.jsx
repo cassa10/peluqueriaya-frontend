@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Typography, Divider } from "@material-ui/core";
 import AvatarValidado from "./AvatarValidado";
+import StyledRating from "./PuntajePeluquero";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -34,6 +35,7 @@ const PerfilInfo = ({
   titulo,
   textoSecundario1,
   textoSecundario2,
+  infoExtra,
 }) => {
   const classes = useStyles();
 
@@ -59,12 +61,19 @@ const PerfilInfo = ({
         <Typography variant="h6" noWrap>
           {titulo}
         </Typography>
-        <Typography color="textSecondary" noWrap>
+        <Typography
+          color="textSecondary"
+          noWrap
+          gutterBottom={!textoSecundario2}
+        >
           {textoSecundario1}
         </Typography>
-        <Typography color="textSecondary" noWrap gutterBottom>
-          {textoSecundario2}
-        </Typography>
+        {textoSecundario2 && (
+          <Typography color="textSecondary" noWrap gutterBottom>
+            {textoSecundario2}
+          </Typography>
+        )}
+        {infoExtra}
       </div>
       <Divider />
     </>
@@ -77,15 +86,20 @@ PerfilInfo.propTypes = {
   titulo: PropTypes.string,
   textoSecundario1: PropTypes.string,
   textoSecundario2: PropTypes.string,
+  infoExtra: PropTypes.element,
 };
 
-export const ClientePerfilInfo = ({ collapsed, email, perfil }) => {
-  const { fullName, imgPerfil, nroTelefono } = perfil;
+export const ClientePerfilInfo = ({ collapsed, email, perfil = {} }) => {
+  const {
+    fullName,
+    imgPerfil,
+    ubicacion: { direccion },
+  } = perfil;
   return (
     <PerfilInfo
       collapsed={collapsed}
       textoSecundario1={email}
-      textoSecundario2={nroTelefono}
+      textoSecundario2={direccion}
       titulo={fullName}
       imagenSrc={imgPerfil}
     />
@@ -98,13 +112,14 @@ ClientePerfilInfo.propTypes = {
   email: PropTypes.string,
 };
 
-export const PeluqueroPerfilInfo = ({ collapsed, email, perfil }) => {
-  const { nombre, logo, descripcion } = perfil;
+export const PeluqueroPerfilInfo = ({ collapsed, email, perfil = {} }) => {
+  const { nombre, logo, puntuacion } = perfil;
+
   return (
     <PerfilInfo
       collapsed={collapsed}
       textoSecundario1={email}
-      textoSecundario2={descripcion}
+      infoExtra={puntuacion && <StyledRating defaultValue={puntuacion} />}
       titulo={nombre}
       imagenSrc={logo}
     />

@@ -1,14 +1,25 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import PropTypes from "prop-types";
+import { Grid, Button } from "@material-ui/core";
 
-
-const BotonSubmit = ({...props}) => {
-    return <Grid container item xs={12} justify="center">
-        <Button type="submit" variant="contained" color="primary" size="large" {...props}>
-            Registrar
-        </Button>
+const BotonSubmit = ({ nombre = "Registrar", ...props }) => {
+  return (
+    <Grid container item xs={12} justify="center">
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        size="large"
+        {...props}
+      >
+        {nombre}
+      </Button>
     </Grid>
-}
+  );
+};
+
+BotonSubmit.propTypes = {
+  nombre: PropTypes.string,
+};
 
 export default BotonSubmit;

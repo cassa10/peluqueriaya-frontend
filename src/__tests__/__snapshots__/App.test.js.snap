@@ -7,50 +7,38 @@ exports[`App App levanta en loading 1`] = `
 `;
 
 exports[`App App levanta sin problemas 1`] = `
-<div>
-  <Barra />
-  <WithStyles(ForwardRef(Container))
-    maxWidth="lg"
+<Fragment>
+  <Header
+    color="primary"
   >
-    <NotificacionProvider>
-      <ManejadorDeErrores>
-        <Switch>
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/"
-          />
-          <Route
-            component={[Function]}
-            path="/registro"
-          />
-          <Route
-            component={[Function]}
-            path="/peluquero/registro"
-          />
-          <Component
-            component={[Function]}
-            path="/perfil"
-          />
-          <Component
-            component={[Function]}
-            path="/peluquero/turnos"
-          />
-          <Route
-            component={[Function]}
-            path="/search"
-          />
-          <Route
-            component={[Function]}
-            path="/contratar"
-          />
-          <Route
-            component={[Function]}
-            path="*"
-          />
-        </Switch>
-      </ManejadorDeErrores>
-    </NotificacionProvider>
-  </WithStyles(ForwardRef(Container))>
-</div>
+    <ContenidoHeader />
+  </Header>
+  <Can>
+    <Registrado>
+      <DrawerSidebar
+        sidebarId="primarySidebar"
+      >
+        <SidebarContent>
+          <ContenidoBarraLateral />
+        </SidebarContent>
+        <CollapseBtnStyled />
+      </DrawerSidebar>
+    </Registrado>
+  </Can>
+  <Content>
+    <ContenidoCuerpo />
+  </Content>
+  <div
+    className="makeStyles-footer-1"
+  >
+    <Footer>
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        variant="caption"
+      >
+        © 2020 - MIT License
+      </WithStyles(ForwardRef(Typography))>
+    </Footer>
+  </div>
+</Fragment>
 `;

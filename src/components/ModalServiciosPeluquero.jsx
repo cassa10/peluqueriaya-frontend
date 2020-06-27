@@ -1,24 +1,21 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import {Button, Modal, Backdrop, Fade, Typography} from '@material-ui/core';
-import formatPrice from '../formatters/formatPrice';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import { 
+  Button, DialogActions, 
+  DialogContent, DialogContentText, 
+  DialogTitle, Dialog 
+
+} from "@material-ui/core";
+import formatPrice from "../utils/formatters/formatPrice";
 
 const useStyles = makeStyles((theme) => ({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-  }));
+  text: {
+    color: "black",
+  },
+}));
 
-const ModalServiciosPeluquero = ({peluquero}) => {
+const ModalServiciosPeluquero = ({ peluquero }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -27,78 +24,61 @@ const ModalServiciosPeluquero = ({peluquero}) => {
   };
 
   const handleOpen = () => {
-      setOpen(true)
-  }
+    setOpen(true);
+  };
 
-  const createBody = (peluquero) => {
-    return(
-      <div className={classes.paper}>
-          <Typography variant="h4" align="center" gutterBottom >{peluquero.nombre}</Typography>
-          <h2 id="transition-modal-title">Servicios</h2>
-          {mostrarServicios(peluquero.servicios)}
-      </div>
-    );
-}
+  const createBody = (peluquero) => mostrarServicios(peluquero.corteMin, peluquero.servicios);
 
-  const mostrarServicios = (servicios) => {
-    if(servicios.length > 0){
-        return(
-        <div>
-            {
-            servicios.map( s => visualizarServicio(s))
-            }
-        </div>
-        );
+  const mostrarServicios = (corteMin, servicios) => {
+    if (servicios.length > 0) {
+      return servicios.map((s) => visualizarServicio(s));
     }
-    return(
-        mostrarSinServicios()
-    )
-  }
+    return mostrarSinServicios(corteMin);
+  };
 
-  const mostrarSinServicios = () => {
-      return(
-        <div>
-            Solo cuenta con el servicio de corte minimo.
-        </div>
-      );
-  }
-  
+  const mostrarSinServicios = (corteMin) => 
+    <DialogContentText className={classes.text}> 
+      Solo cuenta con el servicio de corte minimo ({formatPrice(corteMin)})
+    </DialogContentText>;
 
   const visualizarServicio = (servicio) => {
-    return(
-        <div key={servicio.id}>
-          <p>
-            - {servicio.nombre} ({formatPrice(servicio.precio)})
-          </p>
-        </div>
-    )
-  }
+    return (
+      <DialogContentText key={servicio.id} className={classes.text}>
+        - {servicio.nombre} ({formatPrice(servicio.precio)})
+      </DialogContentText>
+    );
+  };
 
   return (
-    <div>
-        <Button size="small" onClick={handleOpen}>Servicios</Button>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            {createBody(peluquero)}
-          </Fade>
-        </Modal>
-    </div>  
+    <>
+      <Button size="small" onClick={handleOpen}>
+        Servicios
+      </Button>
+      <Dialog
+        fullWidth={false}
+        maxWidth="sm"
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="max-width-dialog-title"
+      >
+        <DialogTitle id="max-width-dialog-title">
+          {`Servicios de "${peluquero.nombre}"`}
+        </DialogTitle>
+        <DialogContent dividers>
+          {createBody(peluquero)}
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleClose} color="default">
+                Cerrar
+            </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
-}
+};
 
 ModalServiciosPeluquero.propTypes = {
   peluquero: PropTypes.object,
-}
+};
 
 export default ModalServiciosPeluquero;

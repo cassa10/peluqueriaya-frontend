@@ -1,12 +1,28 @@
-import {usePostConAuth} from "./API";
+import { usePostConAuth, useGetConAuth, usePutConAuth } from "./API";
+import { useEffect } from "react";
 
 export const usePostCliente = (fdatos) => {
-    const {cargando, setParametros} = usePostConAuth("/cliente", fdatos);
+  const { cargando, setParametros } = usePostConAuth("/cliente", fdatos);
+  return { cargando, setCliente: setParametros };
+};
 
-    const setCliente = ({ubicacion: {position}, ...resto}) => {
-        const {lat: latitude, lng: longitude} = position;
-        setParametros({ubicacion: {latitude, longitude}, ...resto});
-    }
+export const useGetClienteLogeado = (setterDatos) => {
+  const { cargando, setParametros } = useGetConAuth("/cliente", (datos) =>
+    setterDatos(datos)
+  );
 
-    return {cargando, setCliente}
+  //Si no aplico el setParametros no se me setean los datos
+  useEffect(() => {
+    setParametros({});
+    // eslint-disable-next-line
+  }, []);
+
+  const refrescarCliente = () => setParametros({});
+
+  return { cargando, refrescarCliente };
+};
+
+export const usePutEditarCliente = (fdatos) => {
+  const { setParametros, cargando } = usePutConAuth("/cliente", fdatos);
+  return { cargando, setCliente: setParametros };
 };

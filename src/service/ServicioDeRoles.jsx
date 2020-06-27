@@ -2,11 +2,7 @@ import { useGetConAuth } from "./API";
 import { useCallback } from "react";
 
 export const useGetPerfil = (fdatos) => {
-  const { cargando, setParametros } = useGetConAuth({
-    path: "/perfil",
-    fdatos,
-    cargandoInicial: true,
-  });
+  const { cargando, setParametros } = useGetConAuth("/perfil", fdatos);
 
   const fetchPerfil = useCallback(() => {
     setParametros({});

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
 import PropTypes from "prop-types";
 import { URI_CASA } from "../utils/constants";
@@ -42,15 +48,22 @@ const Auth0Provider = ({ history, children, ...initOptions }) => {
     // eslint-disable-next-line
   }, []);
 
-  const login = (redirect_uri) => {
-    if (isAuthenticated) {
-      history.push(redirect_uri);
-    } else {
-      auth0Client.loginWithRedirect({ appState: { targetUrl: redirect_uri } });
-    }
-  };
+  const login = useCallback(
+    (redirect_uri) => {
+      if (isAuthenticated) {
+        history.push(redirect_uri);
+      } else {
+        auth0Client.loginWithRedirect({
+          appState: { targetUrl: redirect_uri },
+        });
+      }
+    },
+    [auth0Client, history, isAuthenticated]
+  );
 
-  const logout = () => auth0Client.logout({ returnTo: URI_CASA });
+  const logout = useCallback(() => auth0Client.logout({ returnTo: URI_CASA }), [
+    auth0Client,
+  ]);
 
   return (
     <Auth0Context.Provider

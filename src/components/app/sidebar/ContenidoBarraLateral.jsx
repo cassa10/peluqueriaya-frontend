@@ -29,7 +29,6 @@ const ContenidoBarraLateral = ({ collapsed }) => {
   const perfilInfoProps = (rol) => {
     const { email, ...perfiles } = perfil,
       perfilSegunRol = perfiles[rol];
-    console.log(perfilSegunRol);
     return { collapsed, email, perfilSegunRol };
   };
 

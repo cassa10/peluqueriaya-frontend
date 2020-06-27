@@ -45,11 +45,14 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
   return { cargando, setFiltro, limpiarFiltro };
 };
 
-export const useGetPeluqueroAContratar = (fdatos) => {
-  const { cargando, setParametros } = useGet({
-    path: `/peluquero/${sessionStorage.getItem("idPeluqueroAContratar")}`,
-    fdatos,
-  });
+export const useGetPeluqueroAContratar = (setterDatos) => {
+  const {
+    cargando,
+    setParametros,
+  } = useGet(
+    `/peluquero/${sessionStorage.getItem("idPeluqueroAContratar")}`,
+    (datos) => setterDatos(datos)
+  );
   const { push } = useHistory();
 
   //Si no aplico el setParametros no se me setean los datos
@@ -63,10 +66,7 @@ export const useGetPeluqueroAContratar = (fdatos) => {
 };
 
 export const usePostPeluquero = (fdatos) => {
-  const { setParametros, cargando } = usePostConAuth({
-    path: "/peluquero",
-    fdatos,
-  });
+  const { setParametros, cargando } = usePostConAuth("/peluquero", fdatos);
   return { cargando, setPeluquero: setParametros };
 };
 
@@ -102,27 +102,25 @@ export const usePutEditarPeluquero = (fdatos) => {
       puntuacion,
     });
   };
-  const { setParametros, cargando } = usePutConAuth({
-    path: "/peluquero",
-    fdatos: fdatosAPeluquero,
-  });
+  const { setParametros, cargando } = usePutConAuth(
+    "/peluquero",
+    fdatosAPeluquero
+  );
   return { cargando, setPeluquero: setParametros };
 };
 
 export const usePostPeluqueroDesconectar = (fdatos) => {
-  const { setParametros } = usePostConAuth({
-    path: "/peluquero/desconectar",
-    fdatos: fdatos,
-  });
+  const { setParametros } = usePostConAuth("/peluquero/desconectar", fdatos);
+
   const desconectarPeluquero = () => setParametros({});
+
   return { desconectarPeluquero };
 };
 
 export const usePostPeluqueroConectar = (fdatos) => {
-  const { setParametros } = usePostConAuth({
-    path: "/peluquero/conectar",
-    fdatos: fdatos,
-  });
+  const { setParametros } = usePostConAuth("/peluquero/conectar", fdatos);
+
   const conectarPeluquero = () => setParametros({});
+
   return { conectarPeluquero };
 };

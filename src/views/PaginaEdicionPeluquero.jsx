@@ -7,8 +7,8 @@ import { useUser } from "../contexts/UserProvider";
 
 const PaginaEdicionPeluquero = () => {
   const {
-    setUser,
-    user: {
+    setPerfil,
+    perfil: {
       peluquero: {
         estado,
         id,
@@ -25,7 +25,7 @@ const PaginaEdicionPeluquero = () => {
       mensaje: "Perfil editado exitosamente!",
       severidad: "success",
     });
-    setUser((prevState) => ({ ...prevState, peluquero: perfilNuevo }));
+    setPerfil((prevState) => ({ ...prevState, peluquero: perfilNuevo }));
   });
 
   if (!estaDesconectado) {

@@ -6,14 +6,13 @@ import { useError } from "../contexts/ErrorAPIProvider";
 // eslint-disable-next-line no-undef
 const server = process.env.REACT_APP_APIBACKEND || "http://localhost:8080";
 
-const usarAPI = (metodo) => ({
+const usarAPI = (metodo) => (
   path,
   fdatos = () => {},
-  parametrosIniciales = null,
-  cargandoInicial = false,
-}) => {
+  parametrosIniciales = null
+) => {
   const [parametros, setParametros] = useState(parametrosIniciales);
-  const [cargando, setCargando] = useState(cargandoInicial);
+  const [cargando, setCargando] = useState(false);
   const { setError } = useError();
   const { getTokenSilently } = useAuth0();
 

@@ -3,14 +3,11 @@ import intersectionWith from "lodash/intersectionWith";
 import map from "lodash/map";
 
 export const useGetTiposDeServicios = (fdatos) => {
-  useGet({ path: "/servicio/tipos", fdatos: fdatos, parametrosIniciales: {} });
+  useGet("/servicio/tipos", fdatos, {});
 };
 
 export const usePostServicio = (fdatos) => {
-  const { cargando, setParametros } = usePostConAuth({
-    path: "/servicio",
-    fdatos: fdatos,
-  });
+  const { cargando, setParametros } = usePostConAuth("/servicio", fdatos);
 
   const setServicio = ({ opcionesTipos, tipos, ...rest }) => {
     const tiposDto = map(
@@ -37,18 +34,13 @@ export const useGetServicios = (fdatos) => {
     );
     fdatos(servicios);
   };
-  const { cargando } = useGetConAuth({
-    path: "/peluquero/servicios",
-    fdatos: setServicios,
-    parametrosIniciales: {},
-  });
+
+  const { cargando } = useGetConAuth("/peluquero/servicios", setServicios, {});
+
   return { cargando };
 };
 
 export const useDeleteServicio = (fdatos) => {
-  const { cargando, setParametros } = useDeleteConAuth({
-    path: "/servicio",
-    fdatos: fdatos,
-  });
+  const { cargando, setParametros } = useDeleteConAuth("/servicio", fdatos);
   return { cargandoBorrado: cargando, setServicioABorrar: setParametros };
 };

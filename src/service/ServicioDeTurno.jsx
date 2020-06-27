@@ -2,10 +2,7 @@ import { useGetConAuth, usePostConAuth } from "./API";
 import { useEffect } from "react";
 
 export const usePostPedirTurno = (fdatos) => {
-  const { cargando, setParametros } = usePostConAuth({
-    path: "/turno/pedir",
-    fdatos,
-  });
+  const { cargando, setParametros } = usePostConAuth("/turno/pedir", fdatos);
 
   return { cargandoPedirTurno: cargando, setParametros };
 };
@@ -20,10 +17,10 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
     }));
   };
 
-  const { cargando, parametros, setParametros } = useGetConAuth({
-    path: `/turno/peluquero`,
-    fdatos: crearPaginacion,
-  });
+  const { cargando, parametros, setParametros } = useGetConAuth(
+    `/turno/peluquero`,
+    crearPaginacion
+  );
 
   useEffect(() => {
     setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
@@ -44,11 +41,11 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
   return { cargandoTurnos: cargando, setFiltro, limpiarFiltro };
 };
 
-export const usePostConfirmarTurno = (fdatos) => {
-  const { cargando, setParametros } = usePostConAuth({
-    path: "/turno/confirmar",
-    fdatos,
-  });
+export const usePostConfirmarTurno = (setterResponseData) => {
+  const { cargando, setParametros } = usePostConAuth(
+    "/turno/confirmar",
+    setterResponseData
+  );
 
   const setIdTurnoInParamConfirmarTurno = (id) =>
     setParametros({ idTurno: id });
@@ -56,11 +53,11 @@ export const usePostConfirmarTurno = (fdatos) => {
   return { cargandoConfirmarTurno: cargando, setIdTurnoInParamConfirmarTurno };
 };
 
-export const usePostFinalizarTurno = (fdatos) => {
-  const { cargando, setParametros } = usePostConAuth({
-    path: "/turno/finalizar",
-    fdatos,
-  });
+export const usePostFinalizarTurno = (setterResponseData) => {
+  const { cargando, setParametros } = usePostConAuth(
+    "/turno/finalizar",
+    setterResponseData
+  );
 
   const setIdTurnoInParamFinalizarTurno = (id) =>
     setParametros({ idTurno: id });
@@ -78,10 +75,10 @@ export const useGetTurnosCliente = (tamanioPagina, setterResponseData) => {
     }));
   };
 
-  const { cargando, parametros, setParametros } = useGetConAuth({
-    path: `/turno/cliente`,
-    fdatos: crearPaginacion,
-  });
+  const { cargando, parametros, setParametros } = useGetConAuth(
+    `/turno/cliente`,
+    crearPaginacion
+  );
 
   useEffect(() => {
     setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
@@ -102,22 +99,22 @@ export const useGetTurnosCliente = (tamanioPagina, setterResponseData) => {
   return { cargandoTurnos: cargando, setFiltro, limpiarFiltro };
 };
 
-export const usePostCancelarTurno = (fdatos) => {
-  const { cargando, setParametros } = usePostConAuth({
-    path: "/turno/cancelar",
-    fdatos,
-  });
+export const usePostCancelarTurno = (setterResponseData) => {
+  const { cargando, setParametros } = usePostConAuth(
+    "/turno/cancelar",
+    setterResponseData
+  );
 
   const setIdTurnoInParamCancelarTurno = (id) => setParametros({ idTurno: id });
 
   return { cargandoCancelarTurno: cargando, setIdTurnoInParamCancelarTurno };
 };
 
-export const usePostCalificarTurno = (fdatos) => {
-  const { cargando, setParametros } = usePostConAuth({
-    path: "/turno/calificar",
-    fdatos,
-  });
+export const usePostCalificarTurno = (setterResponseData) => {
+  const { cargando, setParametros } = usePostConAuth(
+    "/turno/calificar",
+    setterResponseData
+  );
 
   const setIdTurnoYCalificacionInParamCalificarTurno = (id, puntuacion) =>
     setParametros({ idTurno: id, puntaje: puntuacion });

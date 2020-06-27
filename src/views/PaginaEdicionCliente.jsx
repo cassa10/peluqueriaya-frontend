@@ -6,8 +6,8 @@ import { useUser } from "../contexts/UserProvider";
 
 const PaginaEdicionCliente = () => {
   const {
-    setUser,
-    user: {
+    setPerfil,
+    perfil: {
       cliente: { estado, id, fullName, ...clienteDatos },
     },
   } = useUser();
@@ -17,7 +17,7 @@ const PaginaEdicionCliente = () => {
       mensaje: "Perfil editado exitosamente!",
       severidad: "success",
     });
-    setUser((prevState) => ({ ...prevState, cliente: perfilNuevo }));
+    setPerfil((prevState) => ({ ...prevState, cliente: perfilNuevo }));
   });
 
   return (

@@ -1,10 +1,7 @@
 import { useGet } from "./API";
 
 export const useGetUbicacionConDireccion = (fDatos) => {
-  const { cargando, setParametros } = useGet({
-    path: "/mapas/geocoding",
-    fDatos,
-  });
+  const { cargando, setParametros } = useGet("/mapas/geocoding", fDatos);
 
   const setDireccion = (direccion) => setParametros({ direccion });
 
@@ -12,10 +9,6 @@ export const useGetUbicacionConDireccion = (fDatos) => {
 };
 
 export const useGetDireccionConCoords = (ubicacion, fDatos) => {
-  const { cargando } = useGet({
-    path: "/mapas/reversegeocoding",
-    fDatos,
-    parametrosIniciales: ubicacion,
-  });
+  const { cargando } = useGet("/mapas/reversegeocoding", fDatos, ubicacion);
   return { cargandoUDC: cargando };
 };

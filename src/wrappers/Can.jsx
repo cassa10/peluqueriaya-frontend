@@ -1,11 +1,5 @@
 import { Children, cloneElement, isValidElement } from "react";
-import {
-  CLIENTE,
-  PELUQUERO,
-  PENDIENTE,
-  REGISTRADO,
-  VISITANTE,
-} from "../utils/constants";
+import { CLIENTE, PELUQUERO, PENDIENTE, REGISTRADO } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
 
 export const Cliente = ({ children, roles }) =>
@@ -13,13 +7,13 @@ export const Cliente = ({ children, roles }) =>
 export const ClienteNoPeluquero = ({ children, roles }) =>
   roles[CLIENTE] === REGISTRADO && roles[PELUQUERO] !== REGISTRADO && children;
 export const NoCliente = ({ children, roles }) =>
-  roles[CLIENTE] === VISITANTE && children;
+  roles[CLIENTE] !== REGISTRADO && children;
 export const Peluquero = ({ children, roles }) =>
   roles[PELUQUERO] === REGISTRADO && children;
 export const PeluqueroNoCliente = ({ children, roles }) =>
   roles[PELUQUERO] === REGISTRADO && roles[CLIENTE] !== REGISTRADO && children;
 export const NoPeluquero = ({ children, roles }) =>
-  roles[PELUQUERO] === VISITANTE && children;
+  roles[PELUQUERO] !== REGISTRADO && children;
 export const Registrado = ({ children, roles }) =>
   (roles[CLIENTE] === REGISTRADO || roles[PELUQUERO] === REGISTRADO) &&
   children;

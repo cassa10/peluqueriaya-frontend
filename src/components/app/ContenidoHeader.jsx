@@ -2,16 +2,15 @@ import React from "react";
 import Toolbar from "@material-ui/core/Toolbar";
 import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { useUser } from "../../contexts/UserProvider";
 import Can, { NoCliente, NoPeluquero } from "../../wrappers/Can";
-import { CLIENTE, PELUQUERO } from "../../utils/constants";
+import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../../utils/constants";
 import { getSidebarTrigger } from "@mui-treasury/layout";
 import styled from "styled-components";
-import IconButton from "@material-ui/core/IconButton";
+import { IconButton, Tooltip } from "@material-ui/core";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import TijeraIcon from "../icons/TijeraIcon";
-import Tooltip from "@material-ui/core/Tooltip";
 import logo from "../../assets/images/peluqueriaya-logo.png";
+import { useAuth0 } from "../../contexts/Auth0Provider";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 
@@ -34,7 +33,7 @@ const useStyles = makeStyles(() => ({
 
 const ContenidoHeader = () => {
   const classes = useStyles();
-  const { login } = useUser();
+  const { login } = useAuth0();
   let { push } = useHistory();
   const { pathname } = useLocation();
 
@@ -52,7 +51,7 @@ const ContenidoHeader = () => {
       <Can>
         <NoCliente>
           <Tooltip title="Soy Cliente">
-            <IconButton edge="end" onClick={() => login(CLIENTE)}>
+            <IconButton edge="end" onClick={() => login(URI_LOGIN_CLIENTE)}>
               <PersonOutlineIcon
                 className={classes.customHoverFocus}
                 fontSize="large"
@@ -63,7 +62,7 @@ const ContenidoHeader = () => {
         </NoCliente>
         <NoPeluquero>
           <Tooltip title="Soy Peluquero">
-            <IconButton edge="end" onClick={() => login(PELUQUERO)}>
+            <IconButton edge="end" onClick={() => login(URI_LOGIN_PELUQUERO)}>
               <TijeraIcon
                 className={classes.customHoverFocus}
                 fontSize="large"

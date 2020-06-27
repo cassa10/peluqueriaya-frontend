@@ -7,6 +7,9 @@ import EstadoIcon from "./icons/EstadoIcon";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import MapIcon from "@material-ui/icons/Map";
+import Can, { Cliente } from "../wrappers/Can";
+import { useUser } from "../contexts/UserProvider";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 const AutocompletadoDeUbicacion = ({
   ubicacion,
@@ -19,6 +22,11 @@ const AutocompletadoDeUbicacion = ({
   const { cargando, setDireccion } = useGetUbicacionConDireccion(
     setUbicaciones
   );
+  const {
+    user: {
+      cliente: { ubicacion: ubicacionCliente },
+    },
+  } = useUser();
 
   const autocompletarUbicacionConDireccion = (value) => {
     if (!cargando && !valido && value.trim().length > 10) {
@@ -47,6 +55,16 @@ const AutocompletadoDeUbicacion = ({
         ...params.InputProps,
         startAdornment: (
           <InputAdornment position="start">
+            <Can>
+              <Cliente>
+                <IconButton
+                  color="secondary"
+                  onClick={() => setUbicacion(ubicacionCliente)}
+                >
+                  <LocationOnIcon />
+                </IconButton>
+              </Cliente>
+            </Can>
             {valido && (
               <Tooltip title="Verifique su dirección en GoogleMaps">
                 <IconButton

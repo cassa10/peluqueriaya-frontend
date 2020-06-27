@@ -11,7 +11,7 @@ const SwitchEstadoPeluquero = () => {
   const { desconectarPeluquero } = usePostPeluqueroDesconectar(() => {});
   const { conectarPeluquero } = usePostPeluqueroConectar(() => {});
   const {
-    user: {
+    perfil: {
       peluquero: { estaDesconectado, estaDisponible },
     },
   } = useUser();

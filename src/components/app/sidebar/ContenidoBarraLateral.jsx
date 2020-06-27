@@ -17,17 +17,20 @@ import ClienteOpcionesList from "./ClienteOpcionesList";
 import PeluqueroOpcionesList from "./PeluqueroOpcionesList";
 import { Divider, List } from "@material-ui/core";
 import Swal from "sweetalert2";
+import { useAuth0 } from "../../../contexts/Auth0Provider";
 
 const SidebarContent = getSidebarContent(styled);
 
 const ContenidoBarraLateral = ({ collapsed }) => {
   const [mostrarOpcCliente, setMostrarOpcCliente] = useState(true);
-  const { user, logout } = useUser();
+  const { perfil } = useUser();
+  const { logout } = useAuth0();
 
   const perfilInfoProps = (rol) => {
-    const { email, ...perfiles } = user;
-    const perfil = perfiles[rol];
-    return { collapsed, email, perfil };
+    const { email, ...perfiles } = perfil,
+      perfilSegunRol = perfiles[rol];
+    console.log(perfilSegunRol);
+    return { collapsed, email, perfilSegunRol };
   };
 
   const handleDialogLogout = () => {

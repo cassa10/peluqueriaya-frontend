@@ -89,12 +89,16 @@ PerfilInfo.propTypes = {
   infoExtra: PropTypes.element,
 };
 
-export const ClientePerfilInfo = ({ collapsed, email, perfil = {} }) => {
+export const ClientePerfilInfo = ({
+  collapsed,
+  email,
+  perfilSegunRol = {},
+}) => {
   const {
     fullName,
     imgPerfil,
     ubicacion: { direccion },
-  } = perfil;
+  } = perfilSegunRol;
   return (
     <PerfilInfo
       collapsed={collapsed}
@@ -108,12 +112,16 @@ export const ClientePerfilInfo = ({ collapsed, email, perfil = {} }) => {
 
 ClientePerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
-  perfil: PropTypes.object,
+  perfilSegunRol: PropTypes.object,
   email: PropTypes.string,
 };
 
-export const PeluqueroPerfilInfo = ({ collapsed, email, perfil = {} }) => {
-  const { nombre, logo, puntuacion } = perfil;
+export const PeluqueroPerfilInfo = ({
+  collapsed,
+  email,
+  perfilSegunRol = {},
+}) => {
+  const { nombre, logo, puntuacion } = perfilSegunRol;
 
   return (
     <PerfilInfo
@@ -128,6 +136,6 @@ export const PeluqueroPerfilInfo = ({ collapsed, email, perfil = {} }) => {
 
 PeluqueroPerfilInfo.propTypes = {
   collapsed: PropTypes.bool,
-  perfil: PropTypes.object,
+  perfilSegunRol: PropTypes.object,
   email: PropTypes.string,
 };

@@ -17,7 +17,7 @@ import SwitchEstadoPeluquero from "../../SwitchEstadoPeluquero";
 const PeluqueroOpcionesList = () => {
   const { pathname } = useLocation();
   const {
-    user: {
+    perfil: {
       peluquero: { estaDesconectado },
     },
   } = useUser();

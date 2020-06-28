@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import { ClientePerfilInfo, PeluqueroPerfilInfo } from "../../PerfilInfo";
 import { getSidebarContent } from "@mui-treasury/layout";
 import styled from "styled-components";
@@ -21,14 +22,33 @@ import Swal from "sweetalert2";
 const SidebarContent = getSidebarContent(styled);
 
 const ContenidoBarraLateral = ({ collapsed }) => {
-  const [mostrarOpcCliente, setMostrarOpcCliente] = useState(true);
+
+  let { push } = useHistory();
+
   const { user, logout } = useUser();
+
+  const esRutaPeluquero = (ruta) => {
+    //TODO | Agregar aca paths de peluquero cuando se agreguen
+    const rutasPeluquero = ["/peluquero/perfil",
+      "/peluquero/turnos","/peluquero/servicio", "/peluquero/servicios"];
+    return rutasPeluquero.includes(ruta);
+  }
+
+  const esNavPeluquero = () => {
+    const rutaActual = window.location.pathname;
+    return esRutaPeluquero(rutaActual);
+  } 
 
   const perfilInfoProps = (rol) => {
     const { email, ...perfiles } = user;
     const perfil = perfiles[rol];
     return { collapsed, email, perfil };
   };
+
+  const handleSwitchPath = () => {
+    esNavPeluquero()?push("/"):push("/peluquero/turnos")
+  }
+  
 
   const handleDialogLogout = () => {
     Swal.fire({
@@ -54,7 +74,7 @@ const ContenidoBarraLateral = ({ collapsed }) => {
           <PeluqueroPerfilInfo {...perfilInfoProps("peluquero")} />
         </PeluqueroNoCliente>
         <ClienteYPeluquero>
-          {mostrarOpcCliente ? (
+          { !esNavPeluquero() ? (
             <ClientePerfilInfo {...perfilInfoProps("cliente")} />
           ) : (
             <PeluqueroPerfilInfo {...perfilInfoProps("peluquero")} />
@@ -70,7 +90,7 @@ const ContenidoBarraLateral = ({ collapsed }) => {
             <PeluqueroOpcionesList />
           </PeluqueroNoCliente>
           <ClienteYPeluquero>
-            {mostrarOpcCliente ? (
+            { !esNavPeluquero() ? (
               <ClienteOpcionesList />
             ) : (
               <PeluqueroOpcionesList />
@@ -89,10 +109,10 @@ const ContenidoBarraLateral = ({ collapsed }) => {
         <Can>
           <ClienteYPeluquero>
             <ListItemIconText
-              icon={mostrarOpcCliente ? TijeraIcon : PersonOutlineIcon}
-              primary={mostrarOpcCliente ? "Peluquero" : "Cliente"}
+              icon={!esNavPeluquero() ? TijeraIcon : PersonOutlineIcon}
+              primary={!esNavPeluquero() ? "Peluquero" : "Cliente"}
               button
-              onClick={() => setMostrarOpcCliente((prevState) => !prevState)}
+              onClick={handleSwitchPath}
             />
           </ClienteYPeluquero>
         </Can>

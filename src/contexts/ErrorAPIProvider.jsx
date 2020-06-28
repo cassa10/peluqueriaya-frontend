@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import get from "lodash/get";
 import { useHistory } from "react-router-dom";
 import PaginaError from "../views/PaginaError";
-import { Auth0Context } from "./Auth0Provider";
 
 const ErrorAPIContext = createContext();
-export const useError = () => useContext(Auth0Context);
+export const useError = () => useContext(ErrorAPIContext);
 
 const ErrorAPIProvider = ({ children }) => {
   const history = useHistory();

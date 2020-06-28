@@ -18,13 +18,13 @@ import PaginaVerServicios from "../../views/PaginaVerServicios";
 import PaginaTurnosCliente from "../../views/PaginaTurnosCliente";
 import PaginaEdicionCliente from "../../views/PaginaEdicionCliente";
 import PaginaEdicionPeluquero from "../../views/PaginaEdicionPeluquero";
-import { useUser } from "../../contexts/UserProvider";
 import { useAuth0 } from "../../contexts/Auth0Provider";
 import { LinearProgress } from "@material-ui/core";
+import { useGetPerfil } from "../../service/ServicioDeRoles";
 
 const ContenidoCuerpo = () => {
-  const { cargando, fetchPerfil } = useUser();
   const { isAuthenticated, loading } = useAuth0();
+  const { cargando, fetchPerfil } = useGetPerfil();
 
   useEffect(() => {
     if (isAuthenticated && !loading) {

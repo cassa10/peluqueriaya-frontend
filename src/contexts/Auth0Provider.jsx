@@ -50,20 +50,16 @@ const Auth0Provider = ({ history, children, ...initOptions }) => {
 
   const login = useCallback(
     (redirect_uri) => {
-      if (isAuthenticated) {
-        history.push(redirect_uri);
-      } else {
-        auth0Client.loginWithRedirect({
-          appState: { targetUrl: redirect_uri },
-        });
-      }
+      auth0Client.loginWithRedirect({
+        appState: { targetUrl: redirect_uri },
+      });
     },
-    [auth0Client, history, isAuthenticated]
+    [auth0Client]
   );
 
-  const logout = useCallback(() => auth0Client.logout({ returnTo: URI_CASA }), [
-    auth0Client,
-  ]);
+  const logout = useCallback(() => {
+    auth0Client.logout({ returnTo: URI_CASA });
+  }, [auth0Client]);
 
   return (
     <Auth0Context.Provider

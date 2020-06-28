@@ -20,7 +20,7 @@ import PaginaEdicionCliente from "../../views/PaginaEdicionCliente";
 import PaginaEdicionPeluquero from "../../views/PaginaEdicionPeluquero";
 import { useUser } from "../../contexts/UserProvider";
 import { useAuth0 } from "../../contexts/Auth0Provider";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import { LinearProgress } from "@material-ui/core";
 
 const ContenidoCuerpo = () => {
   const { cargando, fetchPerfil } = useUser();
@@ -30,10 +30,9 @@ const ContenidoCuerpo = () => {
     if (isAuthenticated && !loading) {
       fetchPerfil();
     }
-    // eslint-disable-next-line
   }, [fetchPerfil, isAuthenticated, loading]);
 
-  if (loading || cargando) {
+  if (cargando || loading) {
     return <LinearProgress color="secondary" />;
   }
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useHistory } from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
 import {
   CLIENTE,
@@ -16,25 +16,31 @@ const pendienteRoute = (rol, redirect_uri, redirect_registrado) => ({
   ...rest
 }) => {
   const { roles } = useUser();
+  const { listen } = useHistory();
   const { isAuthenticated, login, logout } = useAuth0();
 
   useEffect(() => {
-    const registrarSiNecesario = () => {
+    const registrarSiNecesario = async () => {
       if (!isAuthenticated) {
-        login(redirect_uri);
+        console.log("me van a logear");
+        await login(redirect_uri);
       }
     };
     registrarSiNecesario();
-    return () => {
+  }, [isAuthenticated, login]);
+
+  useEffect(() => {
+    return listen(async () => {
       if (
         isAuthenticated &&
         roles[CLIENTE] !== REGISTRADO &&
         roles[PELUQUERO] !== REGISTRADO
       ) {
-        logout();
+        await logout();
       }
-    };
-  }, [isAuthenticated, roles, login, logout]);
+    });
+    // eslint-disable-next-line
+  }, []);
 
   const render = (props) =>
     roles[rol] === REGISTRADO ? (

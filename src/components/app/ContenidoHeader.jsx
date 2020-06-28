@@ -50,26 +50,30 @@ const ContenidoHeader = () => {
       )}
       <Can>
         <NoCliente>
-          <Tooltip title="Soy Cliente">
-            <IconButton edge="end" onClick={() => login(URI_LOGIN_CLIENTE)}>
-              <PersonOutlineIcon
-                className={classes.customHoverFocus}
-                fontSize="large"
-                color="secondary"
-              />
-            </IconButton>
-          </Tooltip>
+          {pathname !== URI_LOGIN_CLIENTE && (
+            <Tooltip title="Soy Cliente">
+              <IconButton edge="end" onClick={() => push(URI_LOGIN_CLIENTE)}>
+                <PersonOutlineIcon
+                  className={classes.customHoverFocus}
+                  fontSize="large"
+                  color="secondary"
+                />
+              </IconButton>
+            </Tooltip>
+          )}
         </NoCliente>
         <NoPeluquero>
-          <Tooltip title="Soy Peluquero">
-            <IconButton edge="end" onClick={() => login(URI_LOGIN_PELUQUERO)}>
-              <TijeraIcon
-                className={classes.customHoverFocus}
-                fontSize="large"
-                color="secondary"
-              />
-            </IconButton>
-          </Tooltip>
+          {pathname !== URI_LOGIN_PELUQUERO && (
+            <Tooltip title="Soy Peluquero">
+              <IconButton edge="end" onClick={() => login(URI_LOGIN_PELUQUERO)}>
+                <TijeraIcon
+                  className={classes.customHoverFocus}
+                  fontSize="large"
+                  color="secondary"
+                />
+              </IconButton>
+            </Tooltip>
+          )}
         </NoPeluquero>
       </Can>
     </Toolbar>

@@ -16,13 +16,12 @@ const pendienteRoute = (rol, redirect_uri, redirect_registrado) => ({
   ...rest
 }) => {
   const { roles } = useUser();
-  const { listen } = useHistory();
+  const history = useHistory();
   const { isAuthenticated, login, logout } = useAuth0();
 
   useEffect(() => {
     const registrarSiNecesario = async () => {
       if (!isAuthenticated) {
-        console.log("me van a logear");
         await login(redirect_uri);
       }
     };
@@ -30,7 +29,7 @@ const pendienteRoute = (rol, redirect_uri, redirect_registrado) => ({
   }, [isAuthenticated, login]);
 
   useEffect(() => {
-    return listen(async () => {
+    return history.listen(async () => {
       if (
         isAuthenticated &&
         roles[CLIENTE] !== REGISTRADO &&
@@ -39,8 +38,7 @@ const pendienteRoute = (rol, redirect_uri, redirect_registrado) => ({
         await logout();
       }
     });
-    // eslint-disable-next-line
-  }, []);
+  }, [history, isAuthenticated, roles, logout]);
 
   const render = (props) =>
     roles[rol] === REGISTRADO ? (

@@ -8,7 +8,7 @@ import {
     DialogContentText, DialogTitle, Grid,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import StarIcon from '@material-ui/icons/Star';
+import StarIcon from '@material-ui/icons/StarBorder';
 import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +57,10 @@ const ModalCalificarTurno = ({ turno, refreshTurnos }) => {
         <>
             <Tooltip title="Calificar turno">
                 <IconButton onClick={() => handleClickOpen(turno.id)}>
-                    <StarIcon style={{marginTop: "-5px", color: "#ffb400"}} />
+                    <StarIcon style={{ 
+                        fontSize: 30,
+                        color: "#ffb400"}} 
+                    />
                 </IconButton>
             </Tooltip>
             <Dialog

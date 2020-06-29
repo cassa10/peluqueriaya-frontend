@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  IconButton, Button, Typography,
-  Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Divider
+  IconButton, Button, Typography, 
+  Dialog, DialogContent, Tooltip,
+  DialogTitle, DialogActions
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import formatPrice from "../utils/formatters/formatPrice";
@@ -16,8 +16,11 @@ const useStyles = makeStyles((theme) => ({
     color: 'black',
   },
   precioTotalText: {
-    marginTop: "7px",
+    marginLeft: "7px",
     color: 'black'
+  },
+  serviciosText: {
+    color: 'black',
   },
   button: {
     color: "black",
@@ -50,7 +53,7 @@ const ModalServiciosInfoTurno = ({ turno }) => {
 
   const mostrarTotalContratado = (estaFinalizado, corteMin, servicios) => {
     return (
-      <div>
+      <div className={classes.finalPrice}>
         {mostrarMensajeTotal(estaFinalizado, corteMin, servicios)}
       </div>
     );
@@ -74,9 +77,9 @@ const ModalServiciosInfoTurno = ({ turno }) => {
     if (servicios.length > 0) {
       return (
         <>
-          <DialogContentText>
+          <Typography className={classes.serviciosText} gutterBottom>
             - El precio base contratado fue {formatPrice(corteMin)}
-          </DialogContentText>
+          </Typography>
           {servicios.map((s) => visualizarServicio(s))}
         </>
       );
@@ -87,29 +90,31 @@ const ModalServiciosInfoTurno = ({ turno }) => {
   const mostrarSinServicios = (estaFinalizado, corteMin) => {
     return (
       estaFinalizado ?
-      <DialogContentText>
+      <Typography className={classes.serviciosText} gutterBottom>
         Solo contrató el servicio básico con el precio {formatPrice(corteMin)}
-      </DialogContentText>
+      </Typography>
       :
-      <DialogContentText>
+      <Typography className={classes.serviciosText} gutterBottom>
         Solo cuenta con el servicio básico con el precio {formatPrice(corteMin)}
-      </DialogContentText>
+      </Typography>
     );
   };
 
   const visualizarServicio = (servicio) => {
     return (
-      <DialogContentText key={servicio.id}>
+      <Typography className={classes.serviciosText} gutterBottom key={servicio.id}>
         - {`"${servicio.nombre}"`} con el precio {formatPrice(servicio.precio)}
-      </DialogContentText>
+      </Typography>
     );
   };
 
   return (
     <>
+    <Tooltip title="Servicios Contratados" placement="top">
       <IconButton className={classes.button} onClick={handleOpen}>
-        <ShoppingCartIcon style={{ fontSize: 30 }} />
+        <ShoppingCartIcon style={{ fontSize: 30, color: "#0eacd4" }} />
       </IconButton>
+    </Tooltip>
       <Dialog
           fullWidth={true}
           maxWidth="sm"
@@ -121,17 +126,15 @@ const ModalServiciosInfoTurno = ({ turno }) => {
               Servicios Contratados
           </DialogTitle>
           <DialogContent dividers>
-              
                 {createBody()}
-                <Divider className={classes.divider}/>
-                {mostrarTotalContratado(
-                  turno.estaFinalizado,
-                  turno.corteMinInfo,
-                  turno.serviciosSolicitadosInfo)
-                }
-               
           </DialogContent>
           <DialogActions>
+              {mostrarTotalContratado(
+                turno.estaFinalizado,
+                turno.corteMinInfo,
+                turno.serviciosSolicitadosInfo)
+              }
+              <div style={{flex: '1 0 0'}} />
               <Button onClick={handleClose} color="default">
                   Cerrar 
               </Button>

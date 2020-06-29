@@ -1,31 +1,20 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
-  useGetTurnosPeluquero,
+  usePostCancelarTurno,
   usePostConfirmarTurno,
   usePostFinalizarTurno,
 } from "../service/ServicioDeTurno";
 import {
-  Button,
-  Table,
-  TableBody,
-  IconButton,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  LinearProgress,
-  ButtonGroup,
-  Grid,
-  Box,
-  Container,
-  Chip
+  Button, Table, TableBody, IconButton,TableCell,
+  TableContainer,TableHead, TableRow, Paper, Chip,
+  LinearProgress, ButtonGroup, Grid, Box, Container,
 } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
 import Pagination from "@material-ui/lab/Pagination";
-import ModalInfoClienteTurno from "../components/ModalInfoClienteTurno";
 import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
+import ModalCalificarTurno from "../components/ModalCalificarTurno";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import IconSvg from "../components/icons/IconSvg";
 import formatDate from "../utils/formatters/formatDate";
@@ -33,6 +22,9 @@ import formatTime from "../utils/formatters/formatTime";
 import Swal from "sweetalert2";
 import RoomIcon from "@material-ui/icons/Room";
 import StarIcon from "@material-ui/icons/Star";
+import CancelIcon from "@material-ui/icons/Cancel";
+import BlockIcon from "@material-ui/icons/Block";
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -46,7 +38,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    '&:nth-of-type(even)': {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -69,9 +61,15 @@ const useStyles = makeStyles({
   paginationBar: {
     justifyContent: "center",
   },
+  iconIsolate: {
+    marginTop: "6px",
+  },
+  iconBlock: {
+    color: "red",
+  },
 });
 
-const PaginaTurnosPeluquero = () => {
+const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
   const classes = useStyles();
   const [isTurnosSelected, setIsTurnosSelected] = useState(true);
   const [cargandoChangePage, setCargandoChangePage] = useState(false);
@@ -82,15 +80,23 @@ const PaginaTurnosPeluquero = () => {
     tamanio: 3,
     total: 1,
   });
-  const { cargandoTurnos, setFiltro } = useGetTurnosPeluquero(
+  
+  const { cargandoTurnos, setFiltro } = useGetTurnos(
     tamanio,
     setPaginacion
   );
+  
   const refreshTurnos = () => setFiltro();
+  
   const { setIdTurnoInParamConfirmarTurno } = usePostConfirmarTurno(
     refreshTurnos
   );
+  
   const { setIdTurnoInParamFinalizarTurno } = usePostFinalizarTurno(
+    refreshTurnos
+  );
+  
+  const { setIdTurnoInParamCancelarTurno } = usePostCancelarTurno(
     refreshTurnos
   );
 
@@ -105,8 +111,8 @@ const PaginaTurnosPeluquero = () => {
     switch (estado) {
       case "ESPERANDO":
         return <Chip 
-          style={{backgroundColor:'#ecf0f1', color: 'white'}} 
-          label="Esperando" 
+          style={{backgroundColor:'#ecf0f1', color: 'black'}} 
+          label="En espera" 
         />;
       case "CANCELADO":
         return <Chip 
@@ -136,26 +142,42 @@ const PaginaTurnosPeluquero = () => {
     }
   };
 
-  const displayPuntaje = (puntaje) => {
-    return `${puntaje}/5`;
-  };
-
-  const showPuntuacionData = (puntaje) => {
-    return puntaje > 0 ? (
-      <>
+  const displayPuntuacion = (puntaje) => 
+    <>
         <div>
-          <StarIcon />
+            <StarIcon style={{color: "#ffb400"}}/>
         </div>
-        {displayPuntaje(puntaje)}
-      </>
-    ) : (
-      "Sin puntuar aún"
-    );
-  };
+        {`${puntaje}/5`}
+    </>
 
-  const handleShowDataInRow = (isShow, data) => {
-    return isShow && <StyledTableCell align="center">{data}</StyledTableCell>;
-  };
+  const showPuntuacionDataPeluquero = (puntaje) => 
+    puntaje > 0 ?
+        displayPuntuacion(puntaje)
+        :
+        "Sin puntuar aún";
+
+  const showPuntuacionDataCliente = (turno) => 
+    turno.puntaje > 0 ? 
+        displayPuntuacion(turno.puntaje)
+        :
+        <ModalCalificarTurno turno={turno} refreshTurnos={refreshTurnos} />;
+  
+  const handleShowPuntuacionDataCliente = (turno) => 
+    turno.estaCancelado ?
+        <div className={classes.iconIsolate}>
+            <BlockIcon className={classes.iconBlock} />
+        </div>
+        : 
+        showPuntuacionDataCliente(turno);
+
+  const showPuntuacionData = (turno) =>
+    isPeluquero ?
+        showPuntuacionDataPeluquero(turno.puntaje)
+        :
+        handleShowPuntuacionDataCliente(turno);
+
+  const handleShowDataInRow = (isShow, data) =>
+    isShow && <StyledTableCell align="center">{data}</StyledTableCell>;
 
   const showDialogAction = (mensaje, idTurno, fAction) => {
     Swal.fire({
@@ -188,45 +210,85 @@ const PaginaTurnosPeluquero = () => {
     showDialogAction(dialogMessage, idTurno, setIdTurnoInParamFinalizarTurno);
   };
 
-  const showAppropiateActionButton = (turno) => {
-    return turno.estaPendiente ? (
-      <Tooltip title="Confirmar turno">
-        <IconButton 
-          onClick={() => handleActionConfirmar(turno.id)}
-          style={{ color: "black" }}  
+  const handleActionCancelar = (idTurno) => {
+    const dialogMessage =
+      "Esto quiere decir que el turno se cancelará y no se va a concretar.";
+    showDialogAction(dialogMessage, idTurno, setIdTurnoInParamCancelarTurno);
+  };
+
+  const getStyleCancel = (disabled) => 
+    !disabled?{ color: "red" }: {}
+  
+  const showCancelButton = (turno) => 
+    <Tooltip title="Cancelar turno">
+        <IconButton
+        disabled={!turno.estaEsperando}
+        style={getStyleCancel(!turno.estaEsperando)}
+        onClick={() => handleActionCancelar(turno.id)}
         >
-          <CheckCircleIcon />
+        <CancelIcon />
         </IconButton>
-      </Tooltip>
-    ) : (
-      <Tooltip title="Finalizar turno">
+    </Tooltip>
+  ;
+
+  const showAppropiateActionButtonPeluquero = (turno) => 
+    turno.estaPendiente ? (
+        <Tooltip title="Confirmar turno">
         <IconButton 
-          onClick={() => handleActionFinalizar(turno.id)}
-          style={{ color: "black" }}
+            onClick={() => handleActionConfirmar(turno.id)}
+            style={{ color: "#2ecc71" }}  
         >
-          <IconSvg
+            <CheckCircleIcon />
+        </IconButton>
+        </Tooltip>
+    ) : (
+        <Tooltip title="Finalizar turno">
+        <IconButton 
+            onClick={() => handleActionFinalizar(turno.id)}
+            style={{ color: "red" }}
+        >
+            <IconSvg
             idSvg="handshake"
             width="42px"
             height="36px"
-            style={{ marginTop: "6px" }}
-          />
+            style={{ marginTop: "6px", color: "red" }}
+            />
         </IconButton>
-      </Tooltip>
+        </Tooltip>
+    )
+  ;
+
+  const showAppropiateActionButtonCliente = showCancelButton
+
+  const showAppropiateActionButton = (turno) => 
+    isPeluquero?
+        showAppropiateActionButtonPeluquero(turno)
+        :
+        showAppropiateActionButtonCliente(turno)
+  ;
+
+  const mostrarRowInfoCliente = (turno) => {
+    return (
+        <StyledTableCell align="left">
+          <div>{turno.clienteFullName}</div>
+          <div>{turno.clienteEmail} </div>
+          <div>
+            {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)} 
+          </div>
+        </StyledTableCell>
     );
   };
 
-  const mostrarRowsInfoCliente = (turno) => {
+  const mostrarRowInfoPeluquero = (turno) => {
     return (
-      <>
         <StyledTableCell align="left">
-          <div>Nombre: {turno.clienteFullName}</div>
-          <div>Email: {turno.clienteEmail} </div>
+          <div>Nombre: {turno.peluqueroName}</div>
+          <div>Email: {turno.peluqueroEmailOpcional} </div>
           <div> 
             Ubicación: <br />
             {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)} 
           </div>
         </StyledTableCell>
-      </>
     );
   };
 
@@ -237,14 +299,16 @@ const PaginaTurnosPeluquero = () => {
 
   const displayUbicacion = (ubicacion) => {
     return (
+    <Tooltip title="Ver en google maps">
       <IconButton
         onClick={() => {
           handleClickUbicacion(ubicacion);
         }}
-        style={{ margin: 0, color: "black" }}
+        style={{ margin: 0, color: "#0eacd4" }}
       >
         <RoomIcon style={{ fontSize: 30 }} />
       </IconButton>
+    </Tooltip>
     );
   };
 
@@ -254,62 +318,67 @@ const PaginaTurnosPeluquero = () => {
     );
   };
 
-  const mostrarRowModalInfoCliente = (turno) => {
-    return (
-      <StyledTableCell align="center">
-        <ModalInfoClienteTurno
-          fullname={turno.clienteFullName}
-          email={turno.clienteEmail}
-          ubicacion={turno.ubicacionDelTurno}
-        />
-      </StyledTableCell>
-    );
-  };
-
-  const handleShowClientInfo = (sonTurnosActuales, turno) => {
-    return sonTurnosActuales
-      ? mostrarRowsInfoCliente(turno)
-      : mostrarRowModalInfoCliente(turno);
+  const handleShowClienteOPeluqueroInfo = (turno) => {
+    return isPeluquero
+      ? mostrarRowInfoCliente(turno)
+      : mostrarRowInfoPeluquero(turno);
   };
 
   const handleShowTurnos = () => !cargandoTurnos && showTurnos();
 
+  const handleShowFechasData = (turno) => 
+    isTurnosSelected ?
+        <StyledTableCell align="center">
+            {`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}
+        </StyledTableCell>
+        :
+        <StyledTableCell align="left">
+            <div>
+                Contratación: <br /> 
+                {`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}
+            </div>
+            <div>
+                Cierre: <br /> 
+                {`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`}
+            </div>
+        </StyledTableCell>
+      ;
+
+  const showAllTurnos = () => 
+    turnos.map((turno) => 
+        <StyledTableRow key={turno.id}>
+          <StyledTableCell align="center" component="th" scope="turno">
+            <div>
+            <ModalServiciosInfoTurno turno={turno} /> <br />
+            {estadoTurnoLabel(turno.estado)}
+            </div>
+            
+          </StyledTableCell>
+          {handleShowClienteOPeluqueroInfo(turno)}
+          {handleShowFechasData(turno)}
+          {handleShowDataInRow(
+            isTurnosSelected,
+            showAppropiateActionButton(turno)
+          )}
+          {handleShowDataInRow(
+            !isTurnosSelected,
+            showPuntuacionData(turno)
+          )}
+        </StyledTableRow>
+    );
+
+  const showEmptyTurnos = () => 
+    <TableRow style={{ height: 100, backgroundColor: '#fafbf5' }}>
+        <TableCell colSpan={6} align="center"> 
+            Sin turnos aún
+        </TableCell>
+    </TableRow>
+  ;
+
   const showTurnos = () => {
     return (
       <TableBody>
-        {turnos.map((turno) => (
-          <StyledTableRow
-            key={turno.id}
-          >
-            <StyledTableCell align="center" component="th" scope="turno">
-              {estadoTurnoLabel(turno.estado)}
-            </StyledTableCell>
-            {handleShowClientInfo(isTurnosSelected, turno)}
-            <StyledTableCell align="center">
-              <ModalServiciosInfoTurno turno={turno} />
-            </StyledTableCell>
-            <StyledTableCell align="center">{`${formatDate(
-              turno.fechaInicio
-            )} ${formatTime(turno.fechaInicio)}`}</StyledTableCell>
-            {handleShowDataInRow(
-              !isTurnosSelected,
-              `${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`
-            )}
-            {handleShowDataInRow(
-              isTurnosSelected,
-              showAppropiateActionButton(turno)
-            )}
-            {handleShowDataInRow(
-              !isTurnosSelected,
-              showPuntuacionData(turno.puntaje)
-            )}
-          </StyledTableRow>
-        ))}
-        {turnos.length === 0 && (
-          <TableRow style={{ height: 300 }}>
-            <TableCell colSpan={6} />
-          </TableRow>
-        )}
+        {turnos.length > 0?showAllTurnos():showEmptyTurnos()}
       </TableBody>
     );
   };
@@ -328,15 +397,11 @@ const PaginaTurnosPeluquero = () => {
     );
   };
 
-  const handleShowPaginationButtons = () => {
-    return !cargandoTurnos || cargandoChangePage
-      ? showPaginationButtons()
-      : null;
-  };
+  const handleShowPaginationButtons = () => 
+    (!cargandoTurnos || cargandoChangePage) && showPaginationButtons();
 
-  const handleShowTableDataLoading = () => {
-    return cargandoTurnos && <LinearProgress />;
-  };
+  const handleShowTableDataLoading = () => 
+    cargandoTurnos && <LinearProgress />;
 
   const handleTurnosRecientes = () => {
     setIsOrdRecientes(true);
@@ -386,9 +451,9 @@ const PaginaTurnosPeluquero = () => {
             disabled={!isTurnosSelected}
             onClick={handleTurnosHistoricosSelected}
           >
-            Turnos Historicos
+            Historial
           </Button>
-          <Button onClick={handleActualizarTurnos}>Actualizar</Button>
+          <Button onClick={handleActualizarTurnos}><RefreshIcon /></Button>
         </ButtonGroup>
         <ButtonGroup
           variant="text"
@@ -406,24 +471,19 @@ const PaginaTurnosPeluquero = () => {
     );
   };
 
-  const handleShowColumn = (isShow, columnName) => {
-    return isShow ? (
-      <StyledTableCell align="center">{columnName}</StyledTableCell>
-    ) : null;
-  };
+  const handleShowColumn = (isShow, columnName) => 
+        isShow && <StyledTableCell align="center">{columnName}</StyledTableCell>;
 
-  const handleShowInfoClientColumns = (sonTurnosActuales) => {
-    return sonTurnosActuales
-      ? showTodasLasColumnasInfoCliente()
-      : showModalInfoCliente();
-  };
+  const handleShowInfoClienteOPeluqueroColumn = () => 
+    isPeluquero ? 
+        <StyledTableCell align="center">Cliente</StyledTableCell>
+        : <StyledTableCell align="center">Peluquero</StyledTableCell>;
 
-  const showTodasLasColumnasInfoCliente = () => 
-    <StyledTableCell align="center">Cliente</StyledTableCell>
-
-  const showModalInfoCliente = () => (
-    <StyledTableCell align="center">Información del Cliente</StyledTableCell>
-  );
+  const handleShowFechas = () => 
+    isTurnosSelected ? 
+        <StyledTableCell align="center">Fecha Solicitud</StyledTableCell>
+        :
+        <StyledTableCell align="center">Fechas</StyledTableCell>;
 
   const createTableDataTurnos = () => {
     return (
@@ -433,13 +493,11 @@ const PaginaTurnosPeluquero = () => {
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Estado</StyledTableCell>
-              {handleShowInfoClientColumns(isTurnosSelected)}
               <StyledTableCell align="center">
-                Servicios Pedidos
+                Servicio
               </StyledTableCell>
-              <StyledTableCell align="center">Fecha Inicio</StyledTableCell>
-              {handleShowColumn(!isTurnosSelected, "Fecha Fin")}
+              {handleShowInfoClienteOPeluqueroColumn()}
+              {handleShowFechas()}
               {handleShowColumn(isTurnosSelected, "Acción")}
               {handleShowColumn(!isTurnosSelected, "Puntuación")}
             </TableRow>
@@ -460,4 +518,9 @@ const PaginaTurnosPeluquero = () => {
   );
 };
 
-export default PaginaTurnosPeluquero;
+PaginaTurnos.propTypes = {
+    isPeluquero: PropTypes.bool.isRequired, 
+    useGetTurnos: PropTypes.func.isRequired,
+};
+
+export default PaginaTurnos;

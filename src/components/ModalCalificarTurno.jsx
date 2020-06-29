@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { usePostCalificarTurno } from "../service/ServicioDeTurno";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import {Button, Dialog, DialogActions, DialogContent, 
-    DialogContentText, DialogTitle, Grid
+import {
+    IconButton, Dialog, DialogActions, 
+    DialogContent, Button, Tooltip,
+    DialogContentText, DialogTitle, Grid,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import StarIcon from '@material-ui/icons/Star';
@@ -15,9 +17,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 150,
         minHeight: 150,
         maxHeight: 150,
-        marginBottom: 5,
-        border: "solid 2px",
-        borderColor: "#0eacd4",
+        marginBottom: 5
     },
 }));
 
@@ -55,9 +55,11 @@ const ModalCalificarTurno = ({ turno, refreshTurnos }) => {
 
     return(
         <>
-            <Button onClick={() => handleClickOpen(turno.id)}>
-                Calificar <StarIcon style={{marginTop: "-5px"}} />
-            </Button>
+            <Tooltip title="Calificar turno">
+                <IconButton onClick={() => handleClickOpen(turno.id)}>
+                    <StarIcon style={{marginTop: "-5px", color: "#ffb400"}} />
+                </IconButton>
+            </Tooltip>
             <Dialog
                 fullWidth={false}
                 maxWidth="xs"

@@ -6,9 +6,10 @@ import {
   usePostFinalizarTurno,
 } from "../service/ServicioDeTurno";
 import {
-  Button, Table, TableBody, IconButton,TableCell,
-  TableContainer,TableHead, TableRow, Paper, Chip,
-  LinearProgress, ButtonGroup, Grid, Box, Container,
+  CircularProgress, Button, Table, TableBody, 
+  IconButton,TableCell, Container, Chip, Typography,
+  TableContainer,TableHead, TableRow, Paper,
+  LinearProgress, ButtonGroup, Grid, Box, 
 } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -45,6 +46,9 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const useStyles = makeStyles({
+  circularProgress: {
+    color: "#0eacd4",
+  },
   panelPeluquero: {
     marginTop: "45px",
     marginBottom: "20px",
@@ -324,8 +328,21 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
       : mostrarRowInfoPeluquero(turno);
   };
 
-  const handleShowTurnos = () => !cargandoTurnos && showTurnos();
+  const handleShowTurnos = () => cargandoTurnos ? showLoadingTurnos() : showTurnos()
 
+  const showLoadingTurnos = () => 
+    showMessageRowInTable(
+      280, '#fafbf5', <CircularProgress className={classes.circularProgress} />
+    );
+  
+  const showMessageRowInTable = (alturaRow, backgroundColor, message) => (
+    <TableRow style={{ height: alturaRow, backgroundColor: backgroundColor }}>
+      <TableCell colSpan={6} align="center"> 
+          {message}
+      </TableCell>
+    </TableRow>
+  )
+  
   const handleShowFechasData = (turno) => 
     isTurnosSelected ?
         <StyledTableCell align="center">
@@ -368,12 +385,7 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
     );
 
   const showEmptyTurnos = () => 
-    <TableRow style={{ height: 100, backgroundColor: '#fafbf5' }}>
-        <TableCell colSpan={6} align="center"> 
-            Sin turnos aún
-        </TableCell>
-    </TableRow>
-  ;
+    showMessageRowInTable(250,'#fafbf5',<Typography variant="h4">Sin turnos aún</Typography>);
 
   const showTurnos = () => {
     return (

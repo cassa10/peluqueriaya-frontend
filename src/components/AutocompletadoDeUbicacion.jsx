@@ -31,9 +31,7 @@ const AutocompletadoDeUbicacion = ({
     setUbicaciones
   );
   const {
-    user: {
-      cliente: { ubicacion: ubicacionCliente },
-    },
+    user
   } = useUser();
 
   const autocompletarUbicacionConDireccion = (value) => {
@@ -68,7 +66,7 @@ const AutocompletadoDeUbicacion = ({
                 <Tooltip title="Usar mi dirección">
                   <IconButton
                     color="secondary"
-                    onClick={() => setUbicacion(ubicacionCliente)}
+                    onClick={() => setUbicacion(user.cliente.ubicacion)}
                     className={classes.botonMiUbicacion}
                   >
                     <HomeIcon />

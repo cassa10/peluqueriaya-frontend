@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { usePostCalificarTurno } from "../service/ServicioDeTurno";
 import PropTypes from "prop-types";
 import { makeStyles } from '@material-ui/core/styles';
-import {Button, Dialog, DialogActions, DialogContent, 
-    DialogContentText, DialogTitle, Grid
+import {
+    IconButton, Dialog, DialogActions, 
+    DialogContent, Button, Tooltip,
+    DialogContentText, DialogTitle, Grid,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import StarIcon from '@material-ui/icons/Star';
+import getLogoOrDefault from '../utils/getLogoOrDefault';
+import StarIcon from '@material-ui/icons/StarBorder';
 import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,9 +18,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 150,
         minHeight: 150,
         maxHeight: 150,
-        marginBottom: 5,
-        border: "solid 2px",
-        borderColor: "#0eacd4",
+        marginBottom: 5
     },
 }));
 
@@ -46,18 +47,16 @@ const ModalCalificarTurno = ({ turno, refreshTurnos }) => {
         setPuntaje(event.target.value)
     }
 
-    const logoPredeterminado = (logoSrc) => {
-        if (logoSrc.length > 0) {
-          return logoSrc;
-        }
-        return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png";
-    };
-
     return(
         <>
-            <Button onClick={() => handleClickOpen(turno.id)}>
-                Calificar <StarIcon style={{marginTop: "-5px"}} />
-            </Button>
+            <Tooltip title="Calificar turno">
+                <IconButton onClick={() => handleClickOpen(turno.id)}>
+                    <StarIcon style={{ 
+                        fontSize: 30,
+                        color: "#ffb400"}} 
+                    />
+                </IconButton>
+            </Tooltip>
             <Dialog
                 fullWidth={false}
                 maxWidth="xs"
@@ -72,7 +71,7 @@ const ModalCalificarTurno = ({ turno, refreshTurnos }) => {
                     <Grid container justify="center">
                         <img
                             className={classes.logoImg}
-                            src={logoPredeterminado(turno.peluqueroLogo)}
+                            src={getLogoOrDefault(turno.peluqueroLogo)}
                             alt="logoPeluquero"
                         />
                     </Grid>

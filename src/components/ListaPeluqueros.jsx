@@ -14,6 +14,7 @@ import ModalServiciosPeluquero from "./ModalServiciosPeluquero";
 import Swal from "sweetalert2";
 import formatPrice from "../utils/formatters/formatPrice";
 import PuntajePeluquero from "./PuntajePeluquero";
+import getLogoOrDefault from "../utils/getLogoOrDefault";
 
 const useStyles = makeStyles({
   root: {
@@ -86,13 +87,6 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
     );
   };
 
-  const logoPredeterminado = (logoSrc) => {
-    if (logoSrc.length > 0) {
-      return logoSrc;
-    }
-    return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png";
-  };
-
   const costruirCardPeluquero = (peluquero) => {
     const handleDialogContratar = () => {
       Swal.fire({
@@ -130,7 +124,7 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
               {construirEstadoPeluquero(peluquero.estado)}
               <img
                 className={classes.logoImg}
-                src={logoPredeterminado(peluquero.logo)}
+                src={getLogoOrDefault(peluquero.logo)}
                 alt="logo"
               />
               <div>

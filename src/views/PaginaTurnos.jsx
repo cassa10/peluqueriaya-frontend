@@ -27,6 +27,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import BlockIcon from "@material-ui/icons/Block";
 import RefreshIcon from '@material-ui/icons/Refresh';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import getLogoOrDefault from "../utils/getLogoOrDefault";
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -72,6 +73,13 @@ const useStyles = makeStyles({
   },
   iconBlock: {
     color: "red",
+  },
+  logoImg: {
+    minWidth: 75,
+    maxWidth: 75,
+    minHeight: 75,
+    maxHeight: 75,
+    marginBottom: 5
   },
 });
 
@@ -283,10 +291,13 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
   const mostrarRowInfoPeluquero = (turno) => {
     return (
         <StyledTableCell align="left">
-            {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)}
+          <img
+            className={classes.logoImg}
+            src={getLogoOrDefault(turno.peluqueroLogo)}
+            alt="logoPeluquero"
+          />
           <div>{turno.peluqueroName}</div>
           <div>{turno.peluqueroEmailOpcional}</div>
-
         </StyledTableCell>
     );
   };

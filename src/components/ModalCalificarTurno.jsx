@@ -8,6 +8,7 @@ import {
     DialogContentText, DialogTitle, Grid,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
+import getLogoOrDefault from '../utils/getLogoOrDefault';
 import StarIcon from '@material-ui/icons/StarBorder';
 import SendIcon from '@material-ui/icons/Send';
 
@@ -46,13 +47,6 @@ const ModalCalificarTurno = ({ turno, refreshTurnos }) => {
         setPuntaje(event.target.value)
     }
 
-    const logoPredeterminado = (logoSrc) => {
-        if (logoSrc.length > 0) {
-          return logoSrc;
-        }
-        return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png";
-    };
-
     return(
         <>
             <Tooltip title="Calificar turno">
@@ -77,7 +71,7 @@ const ModalCalificarTurno = ({ turno, refreshTurnos }) => {
                     <Grid container justify="center">
                         <img
                             className={classes.logoImg}
-                            src={logoPredeterminado(turno.peluqueroLogo)}
+                            src={getLogoOrDefault(turno.peluqueroLogo)}
                             alt="logoPeluquero"
                         />
                     </Grid>

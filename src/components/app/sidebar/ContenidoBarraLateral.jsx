@@ -1,36 +1,63 @@
 import React, { useState } from "react";
-import { ClientePerfilInfo, PeluqueroPerfilInfo } from "../../PerfilInfo";
+import PropTypes from "prop-types";
 import { getSidebarContent } from "@mui-treasury/layout";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import ListItemIconText from "../../ListItemIconText";
-import Can, {
-  ClienteNoPeluquero,
-  ClienteYPeluquero,
-  PeluqueroNoCliente,
-} from "../../../wrappers/Can";
 import TijeraIcon from "../../icons/TijeraIcon";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import { useUser } from "../../../contexts/UserProvider";
-import ClienteOpcionesList from "./ClienteOpcionesList";
-import PeluqueroOpcionesList from "./PeluqueroOpcionesList";
 import { Divider, List } from "@material-ui/core";
 import Swal from "sweetalert2";
 import { useAuth0 } from "../../../contexts/Auth0Provider";
+import { withSegunUser1, withSegunUserN } from "../../../wrappers/OtroCan";
+import { listItemsCliente, listItemsPeluquero } from "../../../utils/constants";
+import ListItemIconText from "../../ListItemIconText";
+import PerfilInfo from "./PerfilInfo";
+import OpcionesList from "./OpcionesList";
+import StyledRating from "../../PuntajePeluquero";
 
 const SidebarContent = getSidebarContent(styled);
+const CanClienteYPeluquero = withSegunUser1(
+  ({ esCliente, esPeluquero }) => esCliente && esPeluquero
+);
 
 const ContenidoBarraLateral = ({ collapsed }) => {
   const [mostrarOpcCliente, setMostrarOpcCliente] = useState(true);
-  const { perfil } = useUser();
-  const { logout } = useAuth0();
+  const { peluquero, cliente } = useUser();
+  const { logout, email: textoSecundario1 } = useAuth0();
 
-  const perfilInfoProps = (rol) => {
-    const { email, ...perfiles } = perfil,
-      perfilSegunRol = perfiles[rol];
-    return { collapsed, email, perfilSegunRol };
-  };
+  const CanClienteXorPeluqueroXorClienteYPeluquero = withSegunUserN([
+    {
+      f: ({ esCliente, esPeluquero }) =>
+        (esCliente && !esPeluquero) ||
+        (esCliente && esPeluquero && mostrarOpcCliente),
+      fProps: {
+        listItems: listItemsCliente,
+        usuario: cliente,
+        estaDesconectado: () => false,
+        perfilInfo: ({
+          direccion: textoSecundario2,
+          fullName: titulo,
+          imgPerfil: imagenSrc,
+        }) => ({ textoSecundario2, titulo, imagenSrc }),
+      },
+    },
+    {
+      f: ({ esCliente, esPeluquero }) =>
+        (!esCliente && esPeluquero) ||
+        (esCliente && esPeluquero && !mostrarOpcCliente),
+      fProps: {
+        listItems: listItemsPeluquero,
+        usuario: peluquero,
+        estaDesconectado: ({ estaDesconectado }) => estaDesconectado,
+        perfilInfo: ({ puntuacion, nombre: titulo, logo: imagenSrc }) => ({
+          infoExtra: puntuacion && <StyledRating defaultValue={puntuacion} />,
+          titulo,
+          imagenSrc,
+        }),
+      },
+    },
+  ]);
 
   const handleDialogLogout = () => {
     Swal.fire({
@@ -48,38 +75,20 @@ const ContenidoBarraLateral = ({ collapsed }) => {
 
   return (
     <SidebarContent>
-      <Can>
-        <ClienteNoPeluquero>
-          <ClientePerfilInfo {...perfilInfoProps("cliente")} />
-        </ClienteNoPeluquero>
-        <PeluqueroNoCliente>
-          <PeluqueroPerfilInfo {...perfilInfoProps("peluquero")} />
-        </PeluqueroNoCliente>
-        <ClienteYPeluquero>
-          {mostrarOpcCliente ? (
-            <ClientePerfilInfo {...perfilInfoProps("cliente")} />
-          ) : (
-            <PeluqueroPerfilInfo {...perfilInfoProps("peluquero")} />
-          )}
-        </ClienteYPeluquero>
-      </Can>
-      <List>
-        <Can>
-          <ClienteNoPeluquero>
-            <ClienteOpcionesList />
-          </ClienteNoPeluquero>
-          <PeluqueroNoCliente>
-            <PeluqueroOpcionesList />
-          </PeluqueroNoCliente>
-          <ClienteYPeluquero>
-            {mostrarOpcCliente ? (
-              <ClienteOpcionesList />
-            ) : (
-              <PeluqueroOpcionesList />
-            )}
-          </ClienteYPeluquero>
-        </Can>
-      </List>
+      <CanClienteXorPeluqueroXorClienteYPeluquero>
+        {({ usuario, listItems, perfilInfo, estaDesconectado }) => (
+          <>
+            <PerfilInfo
+              {...{ collapsed, textoSecundario1, ...perfilInfo(usuario) }}
+            />
+            <List>
+              <OpcionesList
+                {...{ listItems, estaDesconectado: estaDesconectado(usuario) }}
+              />
+            </List>
+          </>
+        )}
+      </CanClienteXorPeluqueroXorClienteYPeluquero>
       <Divider />
       <List>
         <ListItemIconText
@@ -88,16 +97,16 @@ const ContenidoBarraLateral = ({ collapsed }) => {
           icon={ExitToAppIcon}
           primary="Cerrar Sesión"
         />
-        <Can>
-          <ClienteYPeluquero>
+        <CanClienteYPeluquero>
+          {() => (
             <ListItemIconText
               icon={mostrarOpcCliente ? TijeraIcon : PersonOutlineIcon}
               primary={mostrarOpcCliente ? "Peluquero" : "Cliente"}
               button
               onClick={() => setMostrarOpcCliente((prevState) => !prevState)}
             />
-          </ClienteYPeluquero>
-        </Can>
+          )}
+        </CanClienteYPeluquero>
       </List>
     </SidebarContent>
   );

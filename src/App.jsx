@@ -12,16 +12,19 @@ import ContenidoBarraLateral from "./components/app/sidebar/ContenidoBarraLatera
 import CollapseBtnStyled from "./components/app/sidebar/CollapseBtnStyled";
 import ContenidoHeader from "./components/app/ContenidoHeader";
 import ContenidoCuerpo from "./components/app/ContenidoCuerpo";
-import Can, { Registrado } from "./wrappers/Can";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorAPIProvider from "./contexts/ErrorAPIProvider";
+import { withSegunUser1 } from "./wrappers/OtroCan";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const SidebarContent = getSidebarContent(styled);
 const Content = getContent(styled);
 const Footer = getFooter(styled);
+const CanRegistrado = withSegunUser1(
+  ({ esCliente, esPeluquero }) => esCliente || esPeluquero
+);
 
 const useStyles = makeStyles(() => ({
   footer: {
@@ -40,16 +43,16 @@ const App = ({ collapsed }) => {
       <Header color="primary">
         <ContenidoHeader />
       </Header>
-      <Can>
-        <Registrado>
+      <CanRegistrado>
+        {() => (
           <DrawerSidebar sidebarId="primarySidebar">
             <SidebarContent>
               <ContenidoBarraLateral collapsed={collapsed} />
             </SidebarContent>
             <CollapseBtnStyled />
           </DrawerSidebar>
-        </Registrado>
-      </Can>
+        )}
+      </CanRegistrado>
       <Content>
         <ErrorAPIProvider>
           <ContenidoCuerpo />

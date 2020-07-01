@@ -3,8 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Typography, Divider } from "@material-ui/core";
-import AvatarValidado from "./AvatarValidado";
-import StyledRating from "./PuntajePeluquero";
+import AvatarValidado from "../../AvatarValidado";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -89,53 +88,4 @@ PerfilInfo.propTypes = {
   infoExtra: PropTypes.element,
 };
 
-export const ClientePerfilInfo = ({
-  collapsed,
-  email,
-  perfilSegunRol = {},
-}) => {
-  const {
-    fullName,
-    imgPerfil,
-    ubicacion: { direccion },
-  } = perfilSegunRol;
-  return (
-    <PerfilInfo
-      collapsed={collapsed}
-      textoSecundario1={email}
-      textoSecundario2={direccion}
-      titulo={fullName}
-      imagenSrc={imgPerfil}
-    />
-  );
-};
-
-ClientePerfilInfo.propTypes = {
-  collapsed: PropTypes.bool,
-  perfilSegunRol: PropTypes.object,
-  email: PropTypes.string,
-};
-
-export const PeluqueroPerfilInfo = ({
-  collapsed,
-  email,
-  perfilSegunRol = {},
-}) => {
-  const { nombre, logo, puntuacion } = perfilSegunRol;
-
-  return (
-    <PerfilInfo
-      collapsed={collapsed}
-      textoSecundario1={email}
-      infoExtra={puntuacion && <StyledRating defaultValue={puntuacion} />}
-      titulo={nombre}
-      imagenSrc={logo}
-    />
-  );
-};
-
-PeluqueroPerfilInfo.propTypes = {
-  collapsed: PropTypes.bool,
-  perfilSegunRol: PropTypes.object,
-  email: PropTypes.string,
-};
+export default PerfilInfo;

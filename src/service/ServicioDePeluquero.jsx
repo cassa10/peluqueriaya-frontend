@@ -1,6 +1,8 @@
 import { useGet, usePostConAuth, usePutConAuth } from "./API";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useUser } from "../contexts/UserProvider";
+import Swal from "sweetalert2";
 
 export const useGetPeluqueros = (tamanioPagina, fDatos) => {
   const crearPaginacion = ({ content, pageable, totalPages }) => {
@@ -109,18 +111,54 @@ export const usePutEditarPeluquero = (fdatos) => {
   return { cargando, setPeluquero: setParametros };
 };
 
-export const usePostPeluqueroDesconectar = (fdatos) => {
-  const { setParametros } = usePostConAuth("/peluquero/desconectar", fdatos);
+export const usePostDisponibilidad = () => {
+  const { disponibilidad, setDisponibilidad, setPeluquero } = useUser();
+  const { setParametros: setDesconectar } = usePostConAuth(
+    "/peluquero/desconectar",
+    () => {
+      setPeluquero((prevState) => ({ ...prevState, estaConectado: false }));
+      setDisponibilidad(null);
+    }
+  );
+  const { setParametros: setConectar } = usePostConAuth(
+    "/peluquero/conectar",
+    () => {
+      setPeluquero((prevState) => ({ ...prevState, estaConectado: true }));
+      setDisponibilidad(null);
+    }
+  );
 
-  const desconectarPeluquero = () => setParametros({});
-
-  return { desconectarPeluquero };
-};
-
-export const usePostPeluqueroConectar = (fdatos) => {
-  const { setParametros } = usePostConAuth("/peluquero/conectar", fdatos);
-
-  const conectarPeluquero = () => setParametros({});
-
-  return { conectarPeluquero };
+  useEffect(() => {
+    const cambiarDisponibilidad = async () => {
+      if (disponibilidad === "Desconectado") {
+        const { value } = await Swal.fire({
+          title: "¿Estás a un paso de abrir la peluqueria?",
+          html:
+            "Al aceptar, aparecerás en la búsquedas y podrás recibir turnos",
+          showCancelButton: true,
+          cancelButtonColor: "Red",
+          confirmButtonColor: "Green",
+          cancelButtonText: "Cancelar",
+          confirmButtonText: "De acuerdo",
+          reverseButtons: true,
+        });
+        if (value) setConectar({});
+      }
+      if (disponibilidad === "Disponible") {
+        const { value } = await Swal.fire({
+          title: "¿Estás seguro?",
+          html:
+            "Si cerras la peluqueria, dejarás de aparecer en las búsquedas. Además, todos los turnos pendientes y en espera se cancelarán!",
+          showCancelButton: true,
+          cancelButtonColor: "Red",
+          confirmButtonColor: "Green",
+          cancelButtonText: "Cancelar",
+          confirmButtonText: "De acuerdo",
+          reverseButtons: true,
+        });
+        if (value) setDesconectar({});
+      }
+    };
+    cambiarDisponibilidad();
+  }, [disponibilidad, setConectar, setDesconectar]);
 };

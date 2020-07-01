@@ -8,11 +8,11 @@ import SelectorDeServicios from "../components/SelectorDeServicios";
 import { makeStyles } from "@material-ui/core/styles";
 import { sumBy } from "lodash";
 import Swal from "sweetalert2";
-import Can, { Cliente, NoCliente } from "../wrappers/Can";
-import { CLIENTE } from "../utils/constants";
-import { useUser } from "../contexts/UserProvider";
 import formatPrice from "../utils/formatters/formatPrice";
 import StyledRating from "../components/PuntajePeluquero";
+import { withSegunUserN } from "../wrappers/OtroCan";
+import { useAuth0 } from "../contexts/Auth0Provider";
+import { URI_LOGIN_CLIENTE } from "../utils/constants";
 
 const useStyles = makeStyles({
   gridInfoPeluquero: {
@@ -68,7 +68,7 @@ const PaginaContratacionPeluquero = () => {
 
   const { cargando } = useGetPeluqueroAContratar(setPeluquero);
 
-  const { login } = useUser();
+  const { login } = useAuth0();
 
   const handleTurnoPedidoSuccess = (turno) => {
     if (turno.estado === "PENDIENTE") {
@@ -200,6 +200,20 @@ const PaginaContratacionPeluquero = () => {
     );
   };
 
+  const CanClienteNoCliente = withSegunUserN([
+    {
+      f: ({ esCliente }) => esCliente,
+      fProps: {
+        onClick: () => login(URI_LOGIN_CLIENTE),
+        nombre: "Registrate y pedí turno!",
+      },
+    },
+    {
+      f: ({ esCliente }) => !esCliente,
+      fProps: { onClick: handleDialogCrearTurno, nombre: "Pedir turno" },
+    },
+  ]);
+
   const createView = () => {
     return (
       <Grid container spacing={1}>
@@ -234,21 +248,13 @@ const PaginaContratacionPeluquero = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Can>
-                <Cliente>
-                  <Button color="default" onClick={handleDialogCrearTurno}>
-                    Pedir turno
+              <CanClienteNoCliente>
+                {({ onClick, nombre }) => (
+                  <Button color="default" onClick={onClick} key={nombre}>
+                    {nombre}
                   </Button>
-                </Cliente>
-                <NoCliente>
-                  <Button
-                    color="default"
-                    onClick={async () => await login(CLIENTE)}
-                  >
-                    Registrate y pedí turno!
-                  </Button>
-                </NoCliente>
-              </Can>
+                )}
+              </CanClienteNoCliente>
             </Grid>
           </Grid>
         </Grid>

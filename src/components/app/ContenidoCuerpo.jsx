@@ -21,10 +21,12 @@ import PaginaEdicionPeluquero from "../../views/PaginaEdicionPeluquero";
 import { useAuth0 } from "../../contexts/Auth0Provider";
 import { LinearProgress } from "@material-ui/core";
 import { useGetPerfil } from "../../service/ServicioDeRoles";
+import { usePostDisponibilidad } from "../../service/ServicioDePeluquero";
 
 const ContenidoCuerpo = () => {
   const { isAuthenticated, loading } = useAuth0();
   const { cargando, fetchPerfil } = useGetPerfil();
+  usePostDisponibilidad();
 
   useEffect(() => {
     if (isAuthenticated && !loading) {

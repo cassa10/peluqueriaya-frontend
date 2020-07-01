@@ -1,36 +1,46 @@
 import { Children, cloneElement, isValidElement } from "react";
-import { CLIENTE, PELUQUERO, PENDIENTE, REGISTRADO } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
 
-export const Cliente = ({ children, roles }) =>
-  roles[CLIENTE] === REGISTRADO && children;
-export const ClienteNoPeluquero = ({ children, roles }) =>
-  roles[CLIENTE] === REGISTRADO && roles[PELUQUERO] !== REGISTRADO && children;
-export const NoCliente = ({ children, roles }) =>
-  roles[CLIENTE] !== REGISTRADO && children;
-export const Peluquero = ({ children, roles }) =>
-  roles[PELUQUERO] === REGISTRADO && children;
-export const PeluqueroNoCliente = ({ children, roles }) =>
-  roles[PELUQUERO] === REGISTRADO && roles[CLIENTE] !== REGISTRADO && children;
-export const NoPeluquero = ({ children, roles }) =>
-  roles[PELUQUERO] !== REGISTRADO && children;
-export const Registrado = ({ children, roles }) =>
-  (roles[CLIENTE] === REGISTRADO || roles[PELUQUERO] === REGISTRADO) &&
-  children;
-export const Pendiente = ({ children, roles }) =>
-  (roles[CLIENTE] === PENDIENTE || roles[PELUQUERO] === PENDIENTE) && children;
-export const ClienteYPeluquero = ({ children, roles }) =>
-  roles[CLIENTE] === REGISTRADO && roles[PELUQUERO] === REGISTRADO && children;
-
-const Can = ({ children }) => {
-  const { roles } = useUser();
-
+const pasarProps = (children, props) => {
   return Children.map(children, (child) => {
     if (isValidElement(child)) {
-      return cloneElement(child, { roles });
+      return cloneElement(child, props);
     }
     return child;
   });
 };
+
+const crearCondicion = (children, condicion, ...props) =>
+  condicion && pasarProps(children, props);
+
+export const Can = ({ children, ...props }) => {
+  const { esPeluquero, esCliente } = useUser();
+
+  return pasarProps(children, { esPeluquero, esCliente, props });
+};
+
+export const CondicionCan = (f) => ({
+  children,
+  esCliente,
+  esPeluquero,
+  ...props
+}) => crearCondicion(children, f({ esCliente, esPeluquero }), props);
+
+export const Cliente = CondicionCan(({ esCliente }) => esCliente);
+export const Peluquero = CondicionCan(({ esPeluquero }) => esPeluquero);
+export const ClienteNoPeluquero = CondicionCan(
+  ({ esCliente, esPeluquero }) => esCliente && !esPeluquero
+);
+export const NoCliente = CondicionCan(({ esCliente }) => !esCliente);
+export const PeluqueroNoCliente = CondicionCan(
+  ({ esCliente, esPeluquero }) => !esCliente && esPeluquero
+);
+export const NoPeluquero = CondicionCan(({ esPeluquero }) => !esPeluquero);
+export const Registrado = CondicionCan(
+  ({ esCliente, esPeluquero }) => esCliente || esPeluquero
+);
+export const ClienteYPeluquero = CondicionCan(
+  ({ esCliente, esPeluquero }) => esCliente && !esPeluquero
+);
 
 export default Can;

@@ -7,18 +7,16 @@ exports[`App App levanta en loading 1`] = `
   >
     <ContenidoHeader />
   </Header>
-  <Can>
-    <Registrado>
-      <DrawerSidebar
-        sidebarId="primarySidebar"
-      >
-        <SidebarContent>
-          <ContenidoBarraLateral />
-        </SidebarContent>
-        <CollapseBtnStyled />
-      </DrawerSidebar>
-    </Registrado>
-  </Can>
+  <Component>
+    <DrawerSidebar
+      sidebarId="primarySidebar"
+    >
+      <SidebarContent>
+        <ContenidoBarraLateral />
+      </SidebarContent>
+      <CollapseBtnStyled />
+    </DrawerSidebar>
+  </Component>
   <Content>
     <ErrorAPIProvider>
       <ContenidoCuerpo />

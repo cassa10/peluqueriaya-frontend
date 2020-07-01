@@ -312,6 +312,7 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
         </StyledTableCell>
         <StyledTableCell align="left">
           <div>{turno.peluqueroName}</div>
+          <br />
           <div>{turno.peluqueroEmailOpcional}</div>
         </StyledTableCell>
       </>

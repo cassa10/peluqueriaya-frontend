@@ -34,7 +34,6 @@ const ContenidoBarraLateral = ({ collapsed }) => {
       fProps: {
         listItems: listItemsCliente,
         usuario: cliente,
-        estaDesconectado: () => false,
         perfilInfo: ({
           direccion: textoSecundario2,
           fullName: titulo,
@@ -49,7 +48,6 @@ const ContenidoBarraLateral = ({ collapsed }) => {
       fProps: {
         listItems: listItemsPeluquero,
         usuario: peluquero,
-        estaDesconectado: ({ estaDesconectado }) => estaDesconectado,
         perfilInfo: ({ puntuacion, nombre: titulo, logo: imagenSrc }) => ({
           infoExtra: puntuacion && <StyledRating defaultValue={puntuacion} />,
           titulo,
@@ -76,15 +74,13 @@ const ContenidoBarraLateral = ({ collapsed }) => {
   return (
     <SidebarContent>
       <CanClienteXorPeluqueroXorClienteYPeluquero>
-        {({ usuario, listItems, perfilInfo, estaDesconectado }) => (
+        {({ usuario, listItems, perfilInfo }) => (
           <>
             <PerfilInfo
               {...{ collapsed, textoSecundario1, ...perfilInfo(usuario) }}
             />
             <List>
-              <OpcionesList
-                {...{ listItems, estaDesconectado: estaDesconectado(usuario) }}
-              />
+              <OpcionesList {...{ listItems }} />
             </List>
           </>
         )}

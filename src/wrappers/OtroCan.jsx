@@ -6,9 +6,13 @@ export const withSegunUserN = (fls) => ({ children, ...props }) => {
 
   return (
     <Fragment>
-      {fls.map(({ f, fProps = {} }) => {
+      {fls.map(({ f, fProps = {} }, index) => {
         const childrenProps = { ...fProps, ...props };
-        return f({ esCliente, esPeluquero }) && children(childrenProps);
+        return (
+          f({ esCliente, esPeluquero }) && (
+            <Fragment key={index}>{children(childrenProps)}</Fragment>
+          )
+        );
       })}
     </Fragment>
   );

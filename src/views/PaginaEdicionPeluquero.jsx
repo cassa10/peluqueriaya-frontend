@@ -8,15 +8,15 @@ import { useUser } from "../contexts/UserProvider";
 const PaginaEdicionPeluquero = () => {
   const { peluquero, setPeluquero } = useUser();
   const { setNotificacion } = useNotificacion();
-  const { cargando, setPeluqueroEditado } = usePutEditarPeluquero(
-    (perfilNuevo) => {
+  const { cargando, setPeluqueroAEditar } = usePutEditarPeluquero(
+    (peluqueroEditado) => {
       setNotificacion({
         mensaje: "Perfil editado exitosamente!",
         severidad: "success",
       });
       setPeluquero((prevState) => ({
         ...prevState,
-        ...perfilNuevo,
+        ...peluqueroEditado,
       }));
     }
   );
@@ -31,7 +31,7 @@ const PaginaEdicionPeluquero = () => {
 
   return (
     <FormularioPeluquero
-      onSubmit={setPeluqueroEditado}
+      onSubmit={setPeluqueroAEditar}
       nombre="Registro Peluquero"
       peluqueroDatos={peluquero}
       botonProps={{ disabled: cargando, nombre: "Editar" }}

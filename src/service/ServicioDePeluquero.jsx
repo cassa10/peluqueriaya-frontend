@@ -73,42 +73,14 @@ export const usePostPeluquero = (fdatos) => {
 };
 
 export const usePutEditarPeluquero = (fdatos) => {
-  const fdatosAPeluquero = ({
-    id,
-    logo,
-    nombre,
-    corteMin,
-    distanciaMax,
-    emailOpcional,
-    ubicacion,
-    estado,
-    descripcion,
-    tipos,
-    estaDesconectado,
-    estaDisponible,
-    puntuacion,
-  }) => {
-    fdatos({
-      id,
-      logo,
-      nombre,
-      corteMin,
-      distanciaMax,
-      emailOpcional,
-      ubicacion,
-      estado,
-      descripcion,
-      tipos,
-      estaDesconectado,
-      estaDisponible,
-      puntuacion,
-    });
+  const fdatosAPeluquero = ({ puntuacion, ...peluqueroEditado }) => {
+    fdatos(peluqueroEditado);
   };
   const { setParametros, cargando } = usePutConAuth(
     "/peluquero",
     fdatosAPeluquero
   );
-  return { cargando, setPeluqueroEditado: setParametros };
+  return { cargando, setPeluqueroAEditar: setParametros };
 };
 
 export const usePostDisponibilidad = () => {

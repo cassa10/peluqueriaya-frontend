@@ -5,17 +5,20 @@ import { useNotificacion } from "../contexts/NotificacionProvider";
 import FormularioCliente from "../components/FormularioCliente";
 
 const PaginaRegistroCliente = () => {
-  const { fetchPerfil } = useUser();
+  const { setCliente } = useUser();
   const { setNotificacion } = useNotificacion();
-  const { cargando, setCliente } = usePostCliente(({ message: mensaje }) => {
-    setNotificacion({ mensaje, severidad: "success" });
-    fetchPerfil();
+  const { cargando, setClienteCreado } = usePostCliente((clienteNuevo) => {
+    setNotificacion({
+      mensaje: "Cuenta creada exitosamente!",
+      severidad: "success",
+    });
+    setCliente(clienteNuevo);
   });
 
   return (
     <FormularioCliente
-      onSubmit={setCliente}
-      nombre={"Registro"}
+      onSubmit={setClienteCreado}
+      nombre="Registro"
       botonProps={{ disabled: cargando }}
     />
   );

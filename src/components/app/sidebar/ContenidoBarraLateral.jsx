@@ -34,6 +34,7 @@ const ContenidoBarraLateral = ({ collapsed }) => {
       fProps: {
         listItems: listItemsCliente,
         usuario: cliente,
+        estaDesconectado: () => false,
         perfilInfo: ({
           direccion: textoSecundario2,
           fullName: titulo,

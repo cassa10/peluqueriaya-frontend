@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Route, Redirect, useHistory } from "react-router-dom";
-import { useUser } from "../contexts/UserProvider";
 import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
 import { useAuth0 } from "../contexts/Auth0Provider";
+import { useUser } from "../contexts/UserProvider";
 
 const pendienteRoute = (fuser, redirect_uri, redirect_registrado) => ({
   component: Component,

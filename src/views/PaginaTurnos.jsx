@@ -17,15 +17,17 @@ import Pagination from "@material-ui/lab/Pagination";
 import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
 import ModalCalificarTurno from "../components/ModalCalificarTurno";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import IconSvg from "../components/icons/IconSvg";
 import formatDate from "../utils/formatters/formatDate";
 import formatTime from "../utils/formatters/formatTime";
+import formatNroTelefono from "../utils/formatters/formatNroTelefono";
 import Swal from "sweetalert2";
 import RoomIcon from "@material-ui/icons/Room";
 import StarIcon from "@material-ui/icons/Star";
 import CancelIcon from "@material-ui/icons/Cancel";
 import BlockIcon from "@material-ui/icons/Block";
 import RefreshIcon from '@material-ui/icons/Refresh';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -226,11 +228,12 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
   const showCancelButton = (turno) => 
     <Tooltip title="Cancelar turno">
         <IconButton
-        disabled={!turno.estaEsperando}
-        style={getStyleCancel(!turno.estaEsperando)}
-        onClick={() => handleActionCancelar(turno.id)}
+          component="div"
+          disabled={!turno.estaEsperando}
+          style={getStyleCancel(!turno.estaEsperando)}
+          onClick={() => handleActionCancelar(turno.id)}
         >
-        <CancelIcon />
+        <CancelIcon style={{ fontSize: 30 }}/>
         </IconButton>
     </Tooltip>
   ;
@@ -242,21 +245,16 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
             onClick={() => handleActionConfirmar(turno.id)}
             style={{ color: "#2ecc71" }}  
         >
-            <CheckCircleIcon />
+            <CheckCircleIcon style={{ fontSize: 30 }}/>
         </IconButton>
         </Tooltip>
     ) : (
         <Tooltip title="Finalizar turno">
-        <IconButton 
-            onClick={() => handleActionFinalizar(turno.id)}
-            style={{ color: "red" }}
-        >
-            <IconSvg
-            idSvg="handshake"
-            width="42px"
-            height="36px"
-            style={{ marginTop: "6px", color: "red" }}
-            />
+          <IconButton 
+              onClick={() => handleActionFinalizar(turno.id)}
+              style={{ color: "#626253" }}
+          >
+            <AssignmentTurnedInIcon style={{ fontSize: 30 }}/>
         </IconButton>
         </Tooltip>
     )
@@ -274,11 +272,10 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
   const mostrarRowInfoCliente = (turno) => {
     return (
         <StyledTableCell align="left">
+          {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)}
           <div>{turno.clienteFullName}</div>
-          <div>{turno.clienteEmail} </div>
-          <div>
-            {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)} 
-          </div>
+          <div>{formatNroTelefono(turno.clienteNroTelefono)}</div>
+          <div>{turno.clienteEmail}</div>
         </StyledTableCell>
     );
   };
@@ -286,12 +283,10 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
   const mostrarRowInfoPeluquero = (turno) => {
     return (
         <StyledTableCell align="left">
-          <div>Nombre: {turno.peluqueroName}</div>
-          <div>Email: {turno.peluqueroEmailOpcional} </div>
-          <div> 
-            Ubicación: <br />
-            {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)} 
-          </div>
+            {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)}
+          <div>{turno.peluqueroName}</div>
+          <div>{turno.peluqueroEmailOpcional}</div>
+
         </StyledTableCell>
     );
   };
@@ -330,17 +325,20 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
 
   const handleShowTurnos = () => cargandoTurnos ? showLoadingTurnos() : showTurnos()
 
-  const showLoadingTurnos = () => 
-    showMessageRowInTable(
-      280, '#fafbf5', <CircularProgress className={classes.circularProgress} />
-    );
+  const showLoadingTurnos = () => (
+    <TableBody>
+      {showMessageRowInTable(
+        280, '#fafbf5',  <CircularProgress className={classes.circularProgress} />
+      )}
+    </TableBody>
+  );
   
   const showMessageRowInTable = (alturaRow, backgroundColor, message) => (
-    <TableRow style={{ height: alturaRow, backgroundColor: backgroundColor }}>
-      <TableCell colSpan={6} align="center"> 
+    <StyledTableRow style={{ height: alturaRow, backgroundColor: backgroundColor }}>
+      <StyledTableCell colSpan={6} align="center"> 
           {message}
-      </TableCell>
-    </TableRow>
+      </StyledTableCell>
+    </StyledTableRow>
   )
   
   const handleShowFechasData = (turno) => 
@@ -351,13 +349,15 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
         :
         <StyledTableCell align="left">
             <div>
-                Contratación: <br /> 
-                {`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}
+                Contratación
             </div>
+            {`${formatDate(turno.fechaInicio)} ${formatTime(turno.fechaInicio)}`}
+            <br />
+            <br />
             <div>
-                Cierre: <br /> 
-                {`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`}
+                Cierre
             </div>
+            {`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`}
         </StyledTableCell>
       ;
 
@@ -385,7 +385,11 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
     );
 
   const showEmptyTurnos = () => 
-    showMessageRowInTable(250,'#fafbf5',<Typography variant="h4">Sin turnos aún</Typography>);
+    showMessageRowInTable(
+      250,
+      '#fafbf5',
+      <Typography variant="h4">{isTurnosSelected?"Sin turnos aún":"Sin turnos historicos aún"}</Typography>
+    );
 
   const showTurnos = () => {
     return (

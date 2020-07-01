@@ -81,6 +81,9 @@ const useStyles = makeStyles({
     maxHeight: 75,
     marginBottom: 5
   },
+  direccionInServicio: {
+    marginTop: "7px",
+  },
 });
 
 const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
@@ -279,26 +282,39 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
 
   const mostrarRowInfoCliente = (turno) => {
     return (
+      <>
+        <StyledTableCell align="center">
+          <img
+            className={classes.logoImg}
+            src={getLogoOrDefault(turno.clienteImgPerfil)}
+            alt="imgPerfilCliente"
+          />
+        </StyledTableCell>
         <StyledTableCell align="left">
           {formatDireccion(turno.direccionDelTurno)}{displayUbicacion(turno.ubicacionDelTurno)}
           <div>{turno.clienteFullName}</div>
           <div>{formatNroTelefono(turno.clienteNroTelefono)}</div>
           <div>{turno.clienteEmail}</div>
         </StyledTableCell>
+      </>
     );
   };
 
   const mostrarRowInfoPeluquero = (turno) => {
     return (
-        <StyledTableCell align="left">
+      <>
+        <StyledTableCell align="center">
           <img
             className={classes.logoImg}
             src={getLogoOrDefault(turno.peluqueroLogo)}
             alt="logoPeluquero"
           />
+        </StyledTableCell>
+        <StyledTableCell align="left">
           <div>{turno.peluqueroName}</div>
           <div>{turno.peluqueroEmailOpcional}</div>
         </StyledTableCell>
+      </>
     );
   };
 
@@ -371,17 +387,25 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
             {`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`}
         </StyledTableCell>
       ;
+    
+  const showServicioDataInRow = (turno) => (
+    <StyledTableCell align="center" component="th" scope="turno">
+      <div>
+      <ModalServiciosInfoTurno turno={turno} /> <br />
+      {estadoTurnoLabel(turno.estado)} <br />
+      </div>
+      <div className={classes.direccionInServicio}>
+        {!isPeluquero && formatDireccion(turno.direccionDelTurno)}
+      </div>
+      
+    </StyledTableCell>
+  );
+  
 
   const showAllTurnos = () => 
     turnos.map((turno) => 
         <StyledTableRow key={turno.id}>
-          <StyledTableCell align="center" component="th" scope="turno">
-            <div>
-            <ModalServiciosInfoTurno turno={turno} /> <br />
-            {estadoTurnoLabel(turno.estado)}
-            </div>
-            
-          </StyledTableCell>
+          {showServicioDataInRow(turno)}
           {handleShowClienteOPeluqueroInfo(turno)}
           {handleShowFechasData(turno)}
           {handleShowDataInRow(
@@ -501,10 +525,14 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos}) => {
   const handleShowColumn = (isShow, columnName) => 
         isShow && <StyledTableCell align="center">{columnName}</StyledTableCell>;
 
-  const handleShowInfoClienteOPeluqueroColumn = () => 
-    isPeluquero ? 
-        <StyledTableCell align="center">Cliente</StyledTableCell>
-        : <StyledTableCell align="center">Peluquero</StyledTableCell>;
+  const handleShowInfoClienteOPeluqueroColumn = () => (
+        <>
+          <StyledTableCell />
+          <StyledTableCell align="left">
+            {isPeluquero ? "Cliente" :"Peluquero"}
+          </StyledTableCell>
+        </>
+  );
 
   const handleShowFechas = () => 
     isTurnosSelected ? 

@@ -4,7 +4,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ListItemLink from "../../ListItemLink";
 
 const ListItemEditarPerfil = ({ estaDesconectado, ...props }) => {
-  return estaDesconectado ? (
+  return !estaDesconectado ? (
     <Tooltip
       PopperProps={{ disablePortal: true }}
       title="Debe estar desconectado para editar su perfil!"

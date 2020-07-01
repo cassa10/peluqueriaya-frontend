@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 
-const ListItemLink = ({ icon: Icon, primary, to, pathname }) => {
+const ListItemLink = ({ icon: Icon, primary, to, pathname, disabled }) => {
   const renderLink = useMemo(
     () =>
       forwardRef((itemProps, ref) => (
@@ -13,7 +13,12 @@ const ListItemLink = ({ icon: Icon, primary, to, pathname }) => {
   );
 
   return (
-    <ListItem button component={renderLink} selected={pathname === to}>
+    <ListItem
+      button
+      component={renderLink}
+      selected={pathname === to}
+      disabled={disabled}
+    >
       <ListItemIcon>
         <Icon />
       </ListItemIcon>
@@ -30,6 +35,7 @@ ListItemLink.propTypes = {
   primary: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
   pathname: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default ListItemLink;

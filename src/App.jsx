@@ -44,14 +44,12 @@ const App = ({ collapsed }) => {
         <ContenidoHeader />
       </Header>
       <CanRegistrado>
-        {() => (
-          <DrawerSidebar sidebarId="primarySidebar">
-            <SidebarContent>
-              <ContenidoBarraLateral collapsed={collapsed} />
-            </SidebarContent>
-            <CollapseBtnStyled />
-          </DrawerSidebar>
-        )}
+        <DrawerSidebar sidebarId="primarySidebar">
+          <SidebarContent>
+            <ContenidoBarraLateral collapsed={collapsed} />
+          </SidebarContent>
+          <CollapseBtnStyled />
+        </DrawerSidebar>
       </CanRegistrado>
       <Content>
         <ErrorAPIProvider>

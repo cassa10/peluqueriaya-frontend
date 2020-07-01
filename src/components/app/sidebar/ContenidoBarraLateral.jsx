@@ -48,6 +48,7 @@ const ContenidoBarraLateral = ({ collapsed }) => {
       fProps: {
         listItems: listItemsPeluquero,
         usuario: peluquero,
+        estaDesconectado: ({ estaDesconectado }) => estaDesconectado,
         perfilInfo: ({ puntuacion, nombre: titulo, logo: imagenSrc }) => ({
           infoExtra: puntuacion && <StyledRating defaultValue={puntuacion} />,
           titulo,
@@ -74,15 +75,20 @@ const ContenidoBarraLateral = ({ collapsed }) => {
   return (
     <SidebarContent>
       <CanClienteXorPeluqueroXorClienteYPeluquero>
-        {({ usuario, listItems, perfilInfo }) => (
-          <>
+        {({ usuario, listItems, perfilInfo, estaDesconectado, index }) => (
+          <div key={index}>
             <PerfilInfo
               {...{ collapsed, textoSecundario1, ...perfilInfo(usuario) }}
             />
             <List>
-              <OpcionesList {...{ listItems }} />
+              <OpcionesList
+                {...{
+                  estaDesconectado: estaDesconectado(usuario),
+                  listItems,
+                }}
+              />
             </List>
-          </>
+          </div>
         )}
       </CanClienteXorPeluqueroXorClienteYPeluquero>
       <Divider />
@@ -94,14 +100,12 @@ const ContenidoBarraLateral = ({ collapsed }) => {
           primary="Cerrar Sesión"
         />
         <CanClienteYPeluquero>
-          {() => (
-            <ListItemIconText
-              icon={mostrarOpcCliente ? TijeraIcon : PersonOutlineIcon}
-              primary={mostrarOpcCliente ? "Peluquero" : "Cliente"}
-              button
-              onClick={() => setMostrarOpcCliente((prevState) => !prevState)}
-            />
-          )}
+          <ListItemIconText
+            icon={mostrarOpcCliente ? TijeraIcon : PersonOutlineIcon}
+            primary={mostrarOpcCliente ? "Peluquero" : "Cliente"}
+            button
+            onClick={() => setMostrarOpcCliente((prevState) => !prevState)}
+          />
         </CanClienteYPeluquero>
       </List>
     </SidebarContent>

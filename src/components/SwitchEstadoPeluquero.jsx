@@ -1,12 +1,10 @@
 import React from "react";
 import { Switch } from "@material-ui/core";
 import { useUser } from "../contexts/UserProvider";
+import PropTypes from "prop-types";
 
-const SwitchEstadoPeluquero = () => {
-  const {
-    setDisponibilidad,
-    peluquero: { estaDesconectado },
-  } = useUser();
+const SwitchEstadoPeluquero = ({ estaDesconectado }) => {
+  const { setDisponibilidad } = useUser();
 
   return (
     <Switch
@@ -17,6 +15,10 @@ const SwitchEstadoPeluquero = () => {
       }
     />
   );
+};
+
+SwitchEstadoPeluquero.propTypes = {
+  estaDesconectado: PropTypes.bool,
 };
 
 export default SwitchEstadoPeluquero;

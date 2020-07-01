@@ -32,7 +32,7 @@ const PaginaEdicionPeluquero = () => {
   return (
     <FormularioPeluquero
       onSubmit={setPeluqueroEditado}
-      nombre={"Registro Peluquero"}
+      nombre="Registro Peluquero"
       peluqueroDatos={peluquero}
       botonProps={{ disabled: cargando, nombre: "Editar" }}
     />

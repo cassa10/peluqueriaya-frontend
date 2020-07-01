@@ -6,29 +6,22 @@ import { usePutEditarPeluquero } from "../service/ServicioDePeluquero";
 import { useUser } from "../contexts/UserProvider";
 
 const PaginaEdicionPeluquero = () => {
-  const {
-    setPerfil,
-    perfil: {
-      peluquero: {
-        estado,
-        id,
-        estaDesconectado,
-        estaDisponible,
-        puntuacion,
-        ...peluqueroDatos
-      },
-    },
-  } = useUser();
+  const { peluquero, setPeluquero } = useUser();
   const { setNotificacion } = useNotificacion();
-  const { cargando, setPeluquero } = usePutEditarPeluquero((perfilNuevo) => {
-    setNotificacion({
-      mensaje: "Perfil editado exitosamente!",
-      severidad: "success",
-    });
-    setPerfil((prevState) => ({ ...prevState, peluquero: perfilNuevo }));
-  });
+  const { cargando, setPeluqueroEditado } = usePutEditarPeluquero(
+    (perfilNuevo) => {
+      setNotificacion({
+        mensaje: "Perfil editado exitosamente!",
+        severidad: "success",
+      });
+      setPeluquero((prevState) => ({
+        ...prevState,
+        ...perfilNuevo,
+      }));
+    }
+  );
 
-  if (!estaDesconectado) {
+  if (!peluquero.estaDesconectado) {
     setNotificacion({
       mensaje: "Debe estar desconectado para editar su perfil!",
       severidad: "warning",
@@ -38,9 +31,9 @@ const PaginaEdicionPeluquero = () => {
 
   return (
     <FormularioPeluquero
-      onSubmit={setPeluquero}
+      onSubmit={setPeluqueroEditado}
       nombre={"Registro Peluquero"}
-      peluqueroDatos={peluqueroDatos}
+      peluqueroDatos={peluquero}
       botonProps={{ disabled: cargando, nombre: "Editar" }}
     />
   );

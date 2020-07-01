@@ -108,7 +108,7 @@ export const usePutEditarPeluquero = (fdatos) => {
     "/peluquero",
     fdatosAPeluquero
   );
-  return { cargando, setPeluquero: setParametros };
+  return { cargando, setPeluqueroEditado: setParametros };
 };
 
 export const usePostDisponibilidad = () => {

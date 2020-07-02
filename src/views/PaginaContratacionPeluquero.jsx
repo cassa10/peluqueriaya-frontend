@@ -10,7 +10,7 @@ import { sumBy } from "lodash";
 import Swal from "sweetalert2";
 import formatPrice from "../utils/formatters/formatPrice";
 import StyledRating from "../components/PuntajePeluquero";
-import { withSegunUserN } from "../wrappers/OtroCan";
+import { withSegunUserN } from "../wrappers/withSegunUser";
 import { useAuth0 } from "../contexts/Auth0Provider";
 import { URI_LOGIN_CLIENTE } from "../utils/constants";
 import getLogoOrDefault from "../utils/getLogoOrDefault";
@@ -197,14 +197,14 @@ const PaginaContratacionPeluquero = () => {
   const CanClienteNoCliente = withSegunUserN([
     {
       f: ({ esCliente }) => esCliente,
+      fProps: { onClick: handleDialogCrearTurno, nombre: "Pedir turno" },
+    },
+    {
+      f: ({ esCliente }) => !esCliente,
       fProps: {
         onClick: () => login(URI_LOGIN_CLIENTE),
         nombre: "Registrate y pedí turno!",
       },
-    },
-    {
-      f: ({ esCliente }) => !esCliente,
-      fProps: { onClick: handleDialogCrearTurno, nombre: "Pedir turno" },
     },
   ]);
 

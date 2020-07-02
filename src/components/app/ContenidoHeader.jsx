@@ -9,7 +9,7 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 import TijeraIcon from "../icons/TijeraIcon";
 import logo from "../../assets/images/peluqueriaya-logo.png";
-import { withSegunUserN } from "../../wrappers/OtroCan";
+import { withSegunUserN } from "../../wrappers/withSegunUser";
 
 const SidebarTrigger = getSidebarTrigger(styled);
 const CanNoClienteNoPeluquero = withSegunUserN([

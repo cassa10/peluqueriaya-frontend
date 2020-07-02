@@ -9,7 +9,10 @@ import { useUser } from "../../../contexts/UserProvider";
 import { Divider, List } from "@material-ui/core";
 import Swal from "sweetalert2";
 import { useAuth0 } from "../../../contexts/Auth0Provider";
-import { withSegunUser1, withSegunUserN } from "../../../wrappers/OtroCan";
+import {
+  withSegunUser1,
+  withSegunUserN,
+} from "../../../wrappers/withSegunUser";
 import { listItemsCliente, listItemsPeluquero } from "../../../utils/constants";
 import ListItemIconText from "../../ListItemIconText";
 import PerfilInfo from "./PerfilInfo";
@@ -33,12 +36,13 @@ const ContenidoBarraLateral = ({ collapsed }) => {
         (esCliente && esPeluquero && mostrarOpcCliente),
       fProps: {
         listItems: listItemsCliente,
-        usuario: cliente,
         estaDesconectado: () => false,
-        perfilInfo: ({
-          direccion: textoSecundario2,
-          fullName: titulo,
-          imgPerfil: imagenSrc,
+        fperfilInfo: ({
+          cliente: {
+            ubicacion: { direccion: textoSecundario2 },
+            fullName: titulo,
+            imgPerfil: imagenSrc,
+          },
         }) => ({ textoSecundario2, titulo, imagenSrc }),
       },
     },
@@ -48,9 +52,10 @@ const ContenidoBarraLateral = ({ collapsed }) => {
         (esCliente && esPeluquero && !mostrarOpcCliente),
       fProps: {
         listItems: listItemsPeluquero,
-        usuario: peluquero,
         estaDesconectado: ({ estaDesconectado }) => estaDesconectado,
-        perfilInfo: ({ puntuacion, nombre: titulo, logo: imagenSrc }) => ({
+        fperfilInfo: ({
+          peluquero: { puntuacion, nombre: titulo, logo: imagenSrc },
+        }) => ({
           infoExtra: puntuacion && <StyledRating defaultValue={puntuacion} />,
           titulo,
           imagenSrc,
@@ -76,16 +81,16 @@ const ContenidoBarraLateral = ({ collapsed }) => {
   return (
     <SidebarContent>
       <CanClienteXorPeluqueroXorClienteYPeluquero>
-        {({ usuario, listItems, perfilInfo, estaDesconectado, index }) => (
+        {({ listItems, fperfilInfo, estaDesconectado, index }) => (
           <div key={index}>
             <PerfilInfo
               textoSecundario1={email}
-              {...{ collapsed, ...perfilInfo(usuario) }}
+              {...{ collapsed, ...fperfilInfo({ cliente, peluquero }) }}
             />
             <List>
               <OpcionesList
                 listItems={listItems}
-                estaDesconectado={estaDesconectado(usuario)}
+                estaDesconectado={estaDesconectado(peluquero)}
               />
             </List>
           </div>

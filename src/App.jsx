@@ -15,7 +15,7 @@ import ContenidoCuerpo from "./components/app/ContenidoCuerpo";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorAPIProvider from "./contexts/ErrorAPIProvider";
-import { withSegunUser1 } from "./wrappers/OtroCan";
+import { withSegunUser1 } from "./wrappers/withSegunUser";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);

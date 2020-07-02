@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Redirect, useHistory } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
 import { useAuth0 } from "../contexts/Auth0Provider";
 import { useUser } from "../contexts/UserProvider";
@@ -10,8 +10,7 @@ const pendienteRoute = (fuser, redirect_uri, redirect_registrado) => ({
   ...rest
 }) => {
   const { esCliente, esPeluquero } = useUser();
-  const history = useHistory();
-  const { isAuthenticated, login, logout } = useAuth0();
+  const { isAuthenticated, login } = useAuth0();
 
   useEffect(() => {
     const registrarSiNecesario = async () => {
@@ -21,14 +20,6 @@ const pendienteRoute = (fuser, redirect_uri, redirect_registrado) => ({
     };
     registrarSiNecesario();
   }, [isAuthenticated, login]);
-
-  useEffect(() => {
-    return history.listen(async () => {
-      if (isAuthenticated && !esCliente && !esPeluquero) {
-        await logout();
-      }
-    });
-  }, [history, isAuthenticated, esPeluquero, esCliente, logout]);
 
   const render = (props) =>
     fuser({ esCliente, esPeluquero }) ? (

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
   getHeader,
@@ -10,54 +11,58 @@ import {
 import ContenidoBarraLateral from "./components/app/sidebar/ContenidoBarraLateral";
 import CollapseBtnStyled from "./components/app/sidebar/CollapseBtnStyled";
 import ContenidoHeader from "./components/app/ContenidoHeader";
-import { useUser } from "./contexts/UserProvider";
 import ContenidoCuerpo from "./components/app/ContenidoCuerpo";
-import PropTypes from "prop-types";
-import Can, { Registrado } from "./wrappers/Can";
-import { LinearProgress } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import ErrorAPIProvider from "./contexts/ErrorAPIProvider";
+import { withSegunUser1 } from "./wrappers/withSegunUser";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const SidebarContent = getSidebarContent(styled);
 const Content = getContent(styled);
 const Footer = getFooter(styled);
+const CanRegistrado = withSegunUser1(
+  ({ esCliente, esPeluquero }) => esCliente || esPeluquero
+);
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  },
+  content: {
+    flex: 1,
+  },
   footer: {
     maxWidth: 700,
     margin: "auto",
     textAlign: "center",
-    paddingTop: "5%",
+    paddingBottom: theme.spacing(3),
   },
 }));
 
 const App = ({ collapsed }) => {
   const classes = useStyles();
-  const { loading } = useUser();
-
-  if (loading) {
-    return <LinearProgress color="secondary" />;
-  }
 
   return (
-    <>
+    <div className={classes.root}>
       <Header color="primary">
         <ContenidoHeader />
       </Header>
-      <Can>
-        <Registrado>
-          <DrawerSidebar sidebarId="primarySidebar">
-            <SidebarContent>
-              <ContenidoBarraLateral collapsed={collapsed} />
-            </SidebarContent>
-            <CollapseBtnStyled />
-          </DrawerSidebar>
-        </Registrado>
-      </Can>
-      <Content>
-        <ContenidoCuerpo />
+      <CanRegistrado>
+        <DrawerSidebar sidebarId="primarySidebar">
+          <SidebarContent>
+            <ContenidoBarraLateral collapsed={collapsed} />
+          </SidebarContent>
+          <CollapseBtnStyled />
+        </DrawerSidebar>
+      </CanRegistrado>
+      <Content className={classes.content}>
+        <ErrorAPIProvider>
+          <ContenidoCuerpo />
+        </ErrorAPIProvider>
       </Content>
       <div className={classes.footer}>
         <Footer>
@@ -66,7 +71,7 @@ const App = ({ collapsed }) => {
           </Typography>
         </Footer>
       </div>
-    </>
+    </div>
   );
 };
 

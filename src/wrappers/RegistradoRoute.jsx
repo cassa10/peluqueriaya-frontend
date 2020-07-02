@@ -1,36 +1,30 @@
-import React, { useEffect } from "react";
-import { Route } from "react-router-dom";
-import { CLIENTE, PELUQUERO, REGISTRADO } from "../utils/constants";
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
-import Can, { Cliente, Peluquero } from "./Can";
 
-const registradoRoute = (componenteCan, rol) => ({
+const registradoRoute = (fuser, redirect_uri) => ({
   component: Component,
   path,
   ...rest
 }) => {
-  const ComponenteCan = componenteCan;
-  const { loading, roles, login } = useUser();
+  const { esCliente, esPeluquero } = useUser();
 
-  useEffect(() => {
-    const loginSiNoEstaRegistrado = () => {
-      if (!loading && roles[rol] !== REGISTRADO) {
-        login(rol);
-      }
-    };
-    loginSiNoEstaRegistrado();
-  }, [loading, roles, login, path]);
-
-  const render = (props) => (
-    <Can>
-      <ComponenteCan>
-        <Component {...props} />
-      </ComponenteCan>
-    </Can>
-  );
+  const render = (props) =>
+    fuser({ esCliente, esPeluquero }) ? (
+      <Component {...props} />
+    ) : (
+      <Redirect to={redirect_uri} />
+    );
 
   return <Route path={path} render={render} {...rest} />;
 };
 
-export const PeluqueroRoute = registradoRoute(Peluquero, PELUQUERO);
-export const ClienteRoute = registradoRoute(Cliente, CLIENTE);
+export const PeluqueroRoute = registradoRoute(
+  ({ esPeluquero }) => esPeluquero,
+  URI_LOGIN_PELUQUERO
+);
+export const ClienteRoute = registradoRoute(
+  ({ esCliente }) => esCliente,
+  URI_LOGIN_CLIENTE
+);

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App App levanta en loading 1`] = `
-<Fragment>
+<div
+  className="makeStyles-root-1"
+>
   <Header
     color="primary"
   >
@@ -17,13 +19,15 @@ exports[`App App levanta en loading 1`] = `
       <CollapseBtnStyled />
     </DrawerSidebar>
   </Component>
-  <Content>
+  <Content
+    className="makeStyles-content-2"
+  >
     <ErrorAPIProvider>
       <ContenidoCuerpo />
     </ErrorAPIProvider>
   </Content>
   <div
-    className="makeStyles-footer-1"
+    className="makeStyles-footer-3"
   >
     <Footer>
       <WithStyles(ForwardRef(Typography))
@@ -34,11 +38,13 @@ exports[`App App levanta en loading 1`] = `
       </WithStyles(ForwardRef(Typography))>
     </Footer>
   </div>
-</Fragment>
+</div>
 `;
 
 exports[`App App levanta sin problemas 1`] = `
-<Fragment>
+<div
+  className="makeStyles-root-1"
+>
   <Header
     color="primary"
   >
@@ -54,13 +60,15 @@ exports[`App App levanta sin problemas 1`] = `
       <CollapseBtnStyled />
     </DrawerSidebar>
   </Component>
-  <Content>
+  <Content
+    className="makeStyles-content-2"
+  >
     <ErrorAPIProvider>
       <ContenidoCuerpo />
     </ErrorAPIProvider>
   </Content>
   <div
-    className="makeStyles-footer-1"
+    className="makeStyles-footer-3"
   >
     <Footer>
       <WithStyles(ForwardRef(Typography))
@@ -71,5 +79,5 @@ exports[`App App levanta sin problemas 1`] = `
       </WithStyles(ForwardRef(Typography))>
     </Footer>
   </div>
-</Fragment>
+</div>
 `;

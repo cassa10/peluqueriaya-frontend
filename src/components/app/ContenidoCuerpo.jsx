@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import PaginaPrincipal from "../../views/PaginaPrincipal";
 import {
@@ -19,23 +19,17 @@ import PaginaTurnosCliente from "../../views/PaginaTurnosCliente";
 import PaginaEdicionCliente from "../../views/PaginaEdicionCliente";
 import PaginaEdicionPeluquero from "../../views/PaginaEdicionPeluquero";
 import { useAuth0 } from "../../contexts/Auth0Provider";
-import { LinearProgress } from "@material-ui/core";
 import { useGetPerfil } from "../../service/ServicioDeRoles";
 import { usePostDisponibilidad } from "../../service/ServicioDePeluquero";
+import PaginaCargando from "../PaginaCargando";
 
 const ContenidoCuerpo = () => {
-  const { isAuthenticated, loading } = useAuth0();
-  const { cargando, fetchPerfil } = useGetPerfil();
+  const { loading } = useAuth0();
+  const { cargando } = useGetPerfil();
   usePostDisponibilidad();
 
-  useEffect(() => {
-    if (isAuthenticated && !loading) {
-      fetchPerfil();
-    }
-  }, [fetchPerfil, isAuthenticated, loading]);
-
   if (cargando || loading) {
-    return <LinearProgress color="secondary" />;
+    return <PaginaCargando />;
   }
 
   return (

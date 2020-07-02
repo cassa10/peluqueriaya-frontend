@@ -3,6 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
 import { useAuth0 } from "../contexts/Auth0Provider";
 import { useUser } from "../contexts/UserProvider";
+import PaginaCargando from "../components/PaginaCargando";
 
 const pendienteRoute = (fuser, redirect_uri, redirect_registrado) => ({
   component: Component,
@@ -26,7 +27,9 @@ const pendienteRoute = (fuser, redirect_uri, redirect_registrado) => ({
       <Redirect to={redirect_registrado} />
     ) : isAuthenticated ? (
       <Component {...props} />
-    ) : null;
+    ) : (
+      <PaginaCargando />
+    );
 
   return <Route path={path} render={render} {...rest} />;
 };

@@ -26,12 +26,20 @@ const CanRegistrado = withSegunUser1(
   ({ esCliente, esPeluquero }) => esCliente || esPeluquero
 );
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+  },
+  content: {
+    flex: 1,
+  },
   footer: {
     maxWidth: 700,
     margin: "auto",
     textAlign: "center",
-    paddingTop: "5%",
+    paddingBottom: theme.spacing(3),
   },
 }));
 
@@ -39,7 +47,7 @@ const App = ({ collapsed }) => {
   const classes = useStyles();
 
   return (
-    <>
+    <div className={classes.root}>
       <Header color="primary">
         <ContenidoHeader />
       </Header>
@@ -51,7 +59,7 @@ const App = ({ collapsed }) => {
           <CollapseBtnStyled />
         </DrawerSidebar>
       </CanRegistrado>
-      <Content>
+      <Content className={classes.content}>
         <ErrorAPIProvider>
           <ContenidoCuerpo />
         </ErrorAPIProvider>
@@ -63,7 +71,7 @@ const App = ({ collapsed }) => {
           </Typography>
         </Footer>
       </div>
-    </>
+    </div>
   );
 };
 

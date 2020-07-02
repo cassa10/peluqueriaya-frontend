@@ -13,6 +13,7 @@ import StyledRating from "../components/PuntajePeluquero";
 import { withSegunUserN } from "../wrappers/OtroCan";
 import { useAuth0 } from "../contexts/Auth0Provider";
 import { URI_LOGIN_CLIENTE } from "../utils/constants";
+import getLogoOrDefault from "../utils/getLogoOrDefault";
 
 const useStyles = makeStyles({
   gridInfoPeluquero: {
@@ -144,13 +145,6 @@ const PaginaContratacionPeluquero = () => {
     }).then((target) => handleCrearTurno(target.value));
   };
 
-  const logoPredeterminado = (logoSrc) => {
-    if (logoSrc.length > 0) {
-      return logoSrc;
-    }
-    return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png";
-  };
-
   const handleMostrarDemora = (peluquero) => {
     if (peluquero.estado === "OCUPADO") {
       return (
@@ -179,7 +173,7 @@ const PaginaContratacionPeluquero = () => {
         <Grid item className={classes.gridLogoItem}>
           <img
             className={classes.logoImg}
-            src={logoPredeterminado(peluquero.logo)}
+            src={getLogoOrDefault(peluquero.logo)}
             alt="logo"
           />
         </Grid>

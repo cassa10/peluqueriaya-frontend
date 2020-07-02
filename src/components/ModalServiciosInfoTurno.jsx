@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  IconButton, Button, Typography,
-  Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Divider
+  IconButton,
+  Button,
+  Typography,
+  Dialog,
+  DialogContent,
+  Tooltip,
+  DialogTitle,
+  DialogActions,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import formatPrice from "../utils/formatters/formatPrice";
@@ -12,12 +17,15 @@ import { sumBy } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   divider: {
-    backgroundColor: 'black',
-    color: 'black',
+    backgroundColor: "black",
+    color: "black",
   },
   precioTotalText: {
-    marginTop: "7px",
-    color: 'black'
+    marginLeft: "7px",
+    color: "black",
+  },
+  serviciosText: {
+    color: "black",
   },
   button: {
     color: "black",
@@ -50,33 +58,36 @@ const ModalServiciosInfoTurno = ({ turno }) => {
 
   const mostrarTotalContratado = (estaFinalizado, corteMin, servicios) => {
     return (
-      <div>
+      <div className={classes.finalPrice}>
         {mostrarMensajeTotal(estaFinalizado, corteMin, servicios)}
       </div>
     );
   };
 
   const mostrarMensajeTotal = (estaFinalizado, corteMin, servicios) => {
-    return( estaFinalizado ? 
+    return estaFinalizado ? (
       <Typography className={classes.precioTotalText} gutterBottom>
-        El precio total fue de {formatPrice(calcularPrecioTotal(corteMin, servicios))}
+        El precio total fue de{" "}
+        {formatPrice(calcularPrecioTotal(corteMin, servicios))}
       </Typography>
-     : 
+    ) : (
       <Typography className={classes.precioTotalText} gutterBottom>
-        El precio total que se espera es de {formatPrice(calcularPrecioTotal(corteMin, servicios))}
+        El precio total que se espera es de{" "}
+        {formatPrice(calcularPrecioTotal(corteMin, servicios))}
       </Typography>
     );
   };
 
-  const calcularPrecioTotal = (corteMin, servicios) => corteMin + sumBy(servicios, (s) => s.precio)
+  const calcularPrecioTotal = (corteMin, servicios) =>
+    corteMin + sumBy(servicios, (s) => s.precio);
 
   const mostrarCorteMinYServicios = (estaFinalizado, corteMin, servicios) => {
     if (servicios.length > 0) {
       return (
         <>
-          <DialogContentText>
+          <Typography className={classes.serviciosText} gutterBottom>
             - El precio base contratado fue {formatPrice(corteMin)}
-          </DialogContentText>
+          </Typography>
           {servicios.map((s) => visualizarServicio(s))}
         </>
       );
@@ -85,57 +96,58 @@ const ModalServiciosInfoTurno = ({ turno }) => {
   };
 
   const mostrarSinServicios = (estaFinalizado, corteMin) => {
-    return (
-      estaFinalizado ?
-      <DialogContentText>
+    return estaFinalizado ? (
+      <Typography className={classes.serviciosText} gutterBottom>
         Solo contrató el servicio básico con el precio {formatPrice(corteMin)}
-      </DialogContentText>
-      :
-      <DialogContentText>
+      </Typography>
+    ) : (
+      <Typography className={classes.serviciosText} gutterBottom>
         Solo cuenta con el servicio básico con el precio {formatPrice(corteMin)}
-      </DialogContentText>
+      </Typography>
     );
   };
 
   const visualizarServicio = (servicio) => {
     return (
-      <DialogContentText key={servicio.id}>
+      <Typography
+        className={classes.serviciosText}
+        gutterBottom
+        key={servicio.id}
+      >
         - {`"${servicio.nombre}"`} con el precio {formatPrice(servicio.precio)}
-      </DialogContentText>
+      </Typography>
     );
   };
 
   return (
     <>
-      <IconButton className={classes.button} onClick={handleOpen}>
-        <ShoppingCartIcon style={{ fontSize: 30 }} />
-      </IconButton>
+      <Tooltip title="Servicios Contratados" placement="top">
+        <IconButton className={classes.button} onClick={handleOpen}>
+          <ShoppingCartIcon style={{ fontSize: 30, color: "#0eacd4" }} />
+        </IconButton>
+      </Tooltip>
       <Dialog
-          fullWidth={true}
-          maxWidth="sm"
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="max-width-dialog-title"
+        fullWidth={true}
+        maxWidth="sm"
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="max-width-dialog-title"
       >
-          <DialogTitle id="max-width-dialog-title">
-              Servicios Contratados
-          </DialogTitle>
-          <DialogContent dividers>
-              
-                {createBody()}
-                <Divider className={classes.divider}/>
-                {mostrarTotalContratado(
-                  turno.estaFinalizado,
-                  turno.corteMinInfo,
-                  turno.serviciosSolicitadosInfo)
-                }
-               
-          </DialogContent>
-          <DialogActions>
-              <Button onClick={handleClose} color="default">
-                  Cerrar 
-              </Button>
-          </DialogActions>
+        <DialogTitle id="max-width-dialog-title">
+          Servicios Contratados
+        </DialogTitle>
+        <DialogContent dividers>{createBody()}</DialogContent>
+        <DialogActions>
+          {mostrarTotalContratado(
+            turno.estaFinalizado,
+            turno.corteMinInfo,
+            turno.serviciosSolicitadosInfo
+          )}
+          <div style={{ flex: "1 0 0" }} />
+          <Button onClick={handleClose} color="default">
+            Cerrar
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );

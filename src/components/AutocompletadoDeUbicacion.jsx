@@ -7,6 +7,16 @@ import EstadoIcon from "./icons/EstadoIcon";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import MapIcon from "@material-ui/icons/Map";
+import Can, { Cliente } from "../wrappers/Can";
+import { useUser } from "../contexts/UserProvider";
+import HomeIcon from "@material-ui/icons/Home";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  botonMiUbicacion: {
+    padding: "4px",
+  },
+}));
 
 const AutocompletadoDeUbicacion = ({
   ubicacion,
@@ -15,10 +25,12 @@ const AutocompletadoDeUbicacion = ({
   setValido,
   ...props
 }) => {
+  const classes = useStyles();
   const [ubicaciones, setUbicaciones] = useState([]);
   const { cargando, setDireccion } = useGetUbicacionConDireccion(
     setUbicaciones
   );
+  const { user } = useUser();
 
   const autocompletarUbicacionConDireccion = (value) => {
     if (!cargando && !valido && value.trim().length > 10) {
@@ -47,10 +59,24 @@ const AutocompletadoDeUbicacion = ({
         ...params.InputProps,
         startAdornment: (
           <InputAdornment position="start">
+            <Can>
+              <Cliente>
+                <Tooltip title="Usar mi dirección">
+                  <IconButton
+                    color="secondary"
+                    onClick={() => setUbicacion(user.cliente.ubicacion)}
+                    className={classes.botonMiUbicacion}
+                  >
+                    <HomeIcon />
+                  </IconButton>
+                </Tooltip>
+              </Cliente>
+            </Can>
             {valido && (
               <Tooltip title="Verifique su dirección en GoogleMaps">
                 <IconButton
                   color="secondary"
+                  className={classes.botonMiUbicacion}
                   onClick={() =>
                     window.open(
                       `https://maps.google.com/?q=${ubicacion.latitude},${ubicacion.longitude}`

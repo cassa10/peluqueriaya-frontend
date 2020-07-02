@@ -8,16 +8,19 @@ import {
 import PaginaRegistroCliente from "../../views/PaginaRegistroCliente";
 import PaginaRegistroPeluquero from "../../views/PaginaRegistroPeluquero";
 import { ClienteRoute, PeluqueroRoute } from "../../wrappers/RegistradoRoute";
-import PaginaTurnosPeluquero from "../../views/PaginaTurnosPeluquero";
 import PaginaBusquedaPeluqueros from "../../views/PaginaBusquedaPeluqueros";
+import PaginaTurnos from "../../views/PaginaTurnos";
 import PaginaContratacionPeluquero from "../../views/PaginaContratacionPeluquero";
 import { PaginaError404 } from "../../views/PaginaError";
 import NotificacionProvider from "../../contexts/NotificacionProvider";
 import PaginaCrearServicio from "../../views/PaginaCrearServicio";
 import PaginaVerServicios from "../../views/PaginaVerServicios";
-import PaginaTurnosCliente from "../../views/PaginaTurnosCliente";
 import PaginaEdicionCliente from "../../views/PaginaEdicionCliente";
 import PaginaEdicionPeluquero from "../../views/PaginaEdicionPeluquero";
+import {
+  useGetTurnosPeluquero,
+  useGetTurnosCliente,
+} from "../../service/ServicioDeTurno";
 import { useAuth0 } from "../../contexts/Auth0Provider";
 import { useGetPerfil } from "../../service/ServicioDeRoles";
 import { usePostDisponibilidad } from "../../service/ServicioDePeluquero";
@@ -44,7 +47,15 @@ const ContenidoCuerpo = () => {
           path="/peluquero/registro"
           component={PaginaRegistroPeluquero}
         />
-        <ClienteRoute path="/turnos" component={PaginaTurnosCliente} />
+        <ClienteRoute
+          path="/turnos"
+          render={() => (
+            <PaginaTurnos
+              isPeluquero={false}
+              useGetTurnos={useGetTurnosCliente}
+            />
+          )}
+        />
         <ClienteRoute path="/perfil" component={PaginaEdicionCliente} />
         <PeluqueroRoute
           path="/peluquero/perfil"
@@ -52,7 +63,12 @@ const ContenidoCuerpo = () => {
         />
         <PeluqueroRoute
           path="/peluquero/turnos"
-          component={PaginaTurnosPeluquero}
+          render={() => (
+            <PaginaTurnos
+              isPeluquero={true}
+              useGetTurnos={useGetTurnosPeluquero}
+            />
+          )}
         />
         <PeluqueroRoute
           path="/peluquero/servicio"

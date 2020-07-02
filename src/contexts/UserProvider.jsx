@@ -9,6 +9,7 @@ const UserProvider = ({ children }) => {
   const [peluquero, setPeluquero] = useState();
   const [error, setError] = useState();
   const [disponibilidad, setDisponibilidad] = useState();
+  const [fetchPerfil, setFetchPerfil] = useState(true);
 
   const esCliente = useMemo(() => !!cliente, [cliente]);
 
@@ -27,6 +28,8 @@ const UserProvider = ({ children }) => {
         setError,
         disponibilidad,
         setDisponibilidad,
+        fetchPerfil,
+        setFetchPerfil,
       }}
     >
       {children}

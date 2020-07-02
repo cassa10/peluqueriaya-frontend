@@ -4,10 +4,14 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Typography, Divider } from "@material-ui/core";
 import AvatarValidado from "../../AvatarValidado";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import { useUser } from "../../../contexts/UserProvider";
 
 const useStyles = makeStyles(() => ({
   root: {
-    padding: 16,
+    padding: 10,
   },
   rootCollapsed: {
     padding: 8,
@@ -26,6 +30,9 @@ const useStyles = makeStyles(() => ({
   avatarPadding: {
     paddingBottom: 16,
   },
+  refresh: {
+    padding: "0 0 0 5px",
+  },
 }));
 
 const PerfilInfo = ({
@@ -37,6 +44,7 @@ const PerfilInfo = ({
   infoExtra,
 }) => {
   const classes = useStyles();
+  const { setFetchPerfil } = useUser();
 
   const rootStyles = clsx(
     classes.divTransition,
@@ -56,19 +64,23 @@ const PerfilInfo = ({
         <AvatarValidado className={avatarStyles} src={imagenSrc}>
           P
         </AvatarValidado>
-        <div className={classes.avatarPadding} />
         <Typography variant="h6" noWrap>
           {titulo}
         </Typography>
-        <Typography
-          color="textSecondary"
-          noWrap
-          gutterBottom={!textoSecundario2}
-        >
+        <Typography color="textSecondary" noWrap>
           {textoSecundario1}
+          <Tooltip title="Actualizar perfil">
+            <IconButton
+              color="secondary"
+              onClick={() => setFetchPerfil(true)}
+              className={classes.refresh}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
         </Typography>
         {textoSecundario2 && (
-          <Typography color="textSecondary" noWrap gutterBottom>
+          <Typography color="textSecondary" noWrap>
             {textoSecundario2}
           </Typography>
         )}

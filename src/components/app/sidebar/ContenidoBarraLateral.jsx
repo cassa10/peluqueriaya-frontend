@@ -24,7 +24,7 @@ const CanClienteYPeluquero = withSegunUser1(
 const ContenidoBarraLateral = ({ collapsed }) => {
   const [mostrarOpcCliente, setMostrarOpcCliente] = useState(true);
   const { peluquero, cliente } = useUser();
-  const { logout, email: textoSecundario1 } = useAuth0();
+  const { logout, email } = useAuth0();
 
   const CanClienteXorPeluqueroXorClienteYPeluquero = withSegunUserN([
     {
@@ -79,14 +79,13 @@ const ContenidoBarraLateral = ({ collapsed }) => {
         {({ usuario, listItems, perfilInfo, estaDesconectado, index }) => (
           <div key={index}>
             <PerfilInfo
-              {...{ collapsed, textoSecundario1, ...perfilInfo(usuario) }}
+              textoSecundario1={email}
+              {...{ collapsed, ...perfilInfo(usuario) }}
             />
             <List>
               <OpcionesList
-                {...{
-                  estaDesconectado: estaDesconectado(usuario),
-                  listItems,
-                }}
+                listItems={listItems}
+                estaDesconectado={estaDesconectado(usuario)}
               />
             </List>
           </div>

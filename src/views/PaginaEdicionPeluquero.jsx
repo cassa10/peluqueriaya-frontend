@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import FormularioPeluquero from "../components/FormularioPeluquero";
 import { useNotificacion } from "../contexts/NotificacionProvider";
@@ -21,11 +21,17 @@ const PaginaEdicionPeluquero = () => {
     }
   );
 
+  useEffect(() => {
+    console.log("corri");
+    if (!peluquero.estaDesconectado) {
+      setNotificacion({
+        mensaje: "Debe estar desconectado para editar su perfil!",
+        severidad: "warning",
+      });
+    }
+  }, [peluquero.estaDesconectado, setNotificacion]);
+
   if (!peluquero.estaDesconectado) {
-    setNotificacion({
-      mensaje: "Debe estar desconectado para editar su perfil!",
-      severidad: "warning",
-    });
     return <Redirect to="/peluquero/turnos" />;
   }
 

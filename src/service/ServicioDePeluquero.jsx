@@ -88,14 +88,22 @@ export const usePostDisponibilidad = () => {
   const { setParametros: setDesconectar } = usePostConAuth(
     "/peluquero/desconectar",
     () => {
-      setPeluquero((prevState) => ({ ...prevState, estaDesconectado: true }));
+      setPeluquero((prevState) => ({
+        ...prevState,
+        estaDesconectado: true,
+        estaDisponible: false,
+      }));
       setDisponibilidad(null);
     }
   );
   const { setParametros: setConectar } = usePostConAuth(
     "/peluquero/conectar",
     () => {
-      setPeluquero((prevState) => ({ ...prevState, estaDesconectado: false }));
+      setPeluquero((prevState) => ({
+        ...prevState,
+        estaDesconectado: false,
+        estaDisponible: true,
+      }));
       setDisponibilidad(null);
     }
   );

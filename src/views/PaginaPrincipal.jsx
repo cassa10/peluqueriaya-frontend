@@ -1,10 +1,10 @@
-/* eslint-disable no-undef */
 import React, { useState } from "react";
 import { Typography, Box, Grid, Paper, Button } from "@material-ui/core";
 import AutocompletadoDeUbicacion from "../components/AutocompletadoDeUbicacion";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
+import logo from "../assets/images/peluqueriaya-logo.png";
 
 const useStyles = makeStyles(() => ({
   img: {
@@ -37,11 +37,7 @@ const PaginaPrincipal = () => {
       m={6}
     >
       <Grid container justify="center">
-        <img
-          className={clases.img}
-          src={require("../assets/images/peluqueriaya-logo.png")}
-          alt="logo"
-        />
+        <img className={clases.img} src={logo} alt="logo" />
       </Grid>
       <Typography variant="h6" gutterBottom>
         Plataforma que permite a cualquier peluquero/a brindar sus servicios a

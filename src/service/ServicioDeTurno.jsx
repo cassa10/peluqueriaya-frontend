@@ -1,5 +1,6 @@
 import { useGetConAuth, usePostConAuth } from "./API";
 import { useEffect } from "react";
+import { useUser } from "../contexts/UserProvider";
 
 export const usePostPedirTurno = (fdatos) => {
   const { cargando, setParametros } = usePostConAuth("/turno/pedir", fdatos);
@@ -19,13 +20,20 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
 
   const { cargando, parametros, setParametros } = useGetConAuth(
     `/turno/peluquero`,
-    crearPaginacion
+    crearPaginacion,
+    {
+      size: tamanioPagina,
+      sort: "fechaInicio,asc",
+    }
   );
+  const { peluquero } = useUser();
 
   useEffect(() => {
-    setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
+    if (peluquero && (peluquero.estaDesconectado || peluquero.estaDisponible)) {
+      setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [peluquero, setParametros]);
 
   const setFiltro = (filtro) =>
     setParametros((prevState) => ({ ...prevState, ...filtro }));
@@ -42,9 +50,13 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
 };
 
 export const usePostConfirmarTurno = (setterResponseData) => {
+  const { setPeluquero } = useUser();
   const { cargando, setParametros } = usePostConAuth(
     "/turno/confirmar",
-    setterResponseData
+    (datos) => {
+      setPeluquero((prevState) => ({ ...prevState, estaDisponible: false }));
+      setterResponseData(datos);
+    }
   );
 
   const setIdTurnoInParamConfirmarTurno = (id) =>
@@ -54,9 +66,13 @@ export const usePostConfirmarTurno = (setterResponseData) => {
 };
 
 export const usePostFinalizarTurno = (setterResponseData) => {
+  const { setPeluquero } = useUser();
   const { cargando, setParametros } = usePostConAuth(
     "/turno/finalizar",
-    setterResponseData
+    (estaDisponible) => {
+      setPeluquero((prevState) => ({ ...prevState, estaDisponible }));
+      setterResponseData();
+    }
   );
 
   const setIdTurnoInParamFinalizarTurno = (id) =>

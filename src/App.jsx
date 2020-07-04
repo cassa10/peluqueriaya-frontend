@@ -16,6 +16,7 @@ import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorAPIProvider from "./contexts/ErrorAPIProvider";
 import { withSegunUser1 } from "./wrappers/withSegunUser";
+import NotificacionProvider from "./contexts/NotificacionProvider";
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -47,31 +48,33 @@ const App = ({ collapsed }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Header color="primary">
-        <ContenidoHeader />
-      </Header>
-      <CanRegistrado>
-        <DrawerSidebar sidebarId="primarySidebar">
-          <SidebarContent>
-            <ContenidoBarraLateral collapsed={collapsed} />
-          </SidebarContent>
-          <CollapseBtnStyled />
-        </DrawerSidebar>
-      </CanRegistrado>
-      <Content className={classes.content}>
-        <ErrorAPIProvider>
-          <ContenidoCuerpo />
-        </ErrorAPIProvider>
-      </Content>
-      <div className={classes.footer}>
-        <Footer>
-          <Typography variant="caption" align="center">
-            © 2020 - MIT License
-          </Typography>
-        </Footer>
+    <NotificacionProvider>
+      <div className={classes.root}>
+        <Header color="primary">
+          <ContenidoHeader />
+        </Header>
+        <CanRegistrado>
+          <DrawerSidebar sidebarId="primarySidebar">
+            <SidebarContent>
+              <ContenidoBarraLateral collapsed={collapsed} />
+            </SidebarContent>
+            <CollapseBtnStyled />
+          </DrawerSidebar>
+        </CanRegistrado>
+        <Content className={classes.content}>
+          <ErrorAPIProvider>
+            <ContenidoCuerpo />
+          </ErrorAPIProvider>
+        </Content>
+        <div className={classes.footer}>
+          <Footer>
+            <Typography variant="caption" align="center">
+              © 2020 - MIT License
+            </Typography>
+          </Footer>
+        </div>
       </div>
-    </div>
+    </NotificacionProvider>
   );
 };
 

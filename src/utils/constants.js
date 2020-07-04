@@ -4,19 +4,12 @@ import SearchIcon from "@material-ui/icons/Search";
 import NotesIcon from "@material-ui/icons/Notes";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import ListItemLink from "../components/ListItemLink";
-import ListItemEditarPerfil from "../components/app/sidebar/ListItemEditarPerfil";
 import SwitchEstadoPeluquero from "../components/SwitchEstadoPeluquero";
 import ListItemCambiarDisponibilidad from "../components/app/sidebar/ListItemCambiarDisponibilidad";
 
 export const URI_LOGIN_CLIENTE = "/registro";
 export const URI_LOGIN_PELUQUERO = "/peluquero/registro";
 export const URI_CASA = "http://localhost:3000/";
-
-export const CLIENTE = "cliente";
-export const PELUQUERO = "peluquero";
-export const VISITANTE = "VISITANTE";
-export const PENDIENTE = "PENDIENTE";
-export const REGISTRADO = "REGISTRADO";
 
 export const listItemsCliente = [
   {
@@ -50,7 +43,7 @@ export const listItemsPeluquero = [
     primary: "Editar perfil",
     to: "/peluquero/perfil",
     icon: EditIcon,
-    listItemWrapper: ListItemEditarPerfil,
+    listItemWrapper: ListItemLink,
   },
   {
     primary: "Mis servicios",

@@ -88,15 +88,21 @@ export const usePostDisponibilidad = () => {
   const { setParametros: setDesconectar } = usePostConAuth(
     "/peluquero/desconectar",
     () => {
-      setPeluquero((prevState) => ({ ...prevState, estaDesconectado: true }));
-      setDisponibilidad(null);
+      setPeluquero((prevState) => ({
+        ...prevState,
+        estaDesconectado: true,
+        estaDisponible: false,
+      }));
     }
   );
   const { setParametros: setConectar } = usePostConAuth(
     "/peluquero/conectar",
     () => {
-      setPeluquero((prevState) => ({ ...prevState, estaDesconectado: false }));
-      setDisponibilidad(null);
+      setPeluquero((prevState) => ({
+        ...prevState,
+        estaDesconectado: false,
+        estaDisponible: true,
+      }));
     }
   );
 
@@ -130,7 +136,13 @@ export const usePostDisponibilidad = () => {
         });
         if (value) setDesconectar({});
       }
+      if (
+        disponibilidad === "Desconectado" ||
+        disponibilidad === "Disponible"
+      ) {
+        setDisponibilidad(null);
+      }
     };
     cambiarDisponibilidad();
-  }, [disponibilidad, setConectar, setDesconectar]);
+  }, [disponibilidad, setConectar, setDesconectar, setDisponibilidad]);
 };

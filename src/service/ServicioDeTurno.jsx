@@ -18,18 +18,18 @@ export const useGetTurnosPeluquero = (tamanioPagina, setterResponseData) => {
     }));
   };
 
-  const {
-    cargando,
-    parametros,
-    setParametros,
-  } = useGetConAuth(`/turno/peluquero`, crearPaginacion, {
-    size: tamanioPagina,
-    sort: "fechaInicio,asc",
-  });
+  const { cargando, parametros, setParametros } = useGetConAuth(
+    `/turno/peluquero`,
+    crearPaginacion,
+    {
+      size: tamanioPagina,
+      sort: "fechaInicio,asc",
+    }
+  );
   const { peluquero } = useUser();
 
   useEffect(() => {
-    if (peluquero && peluquero.estaDisponible) {
+    if (peluquero && (peluquero.estaDesconectado || peluquero.estaDisponible)) {
       setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
     }
     // eslint-disable-next-line

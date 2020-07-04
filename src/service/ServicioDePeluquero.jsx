@@ -93,7 +93,6 @@ export const usePostDisponibilidad = () => {
         estaDesconectado: true,
         estaDisponible: false,
       }));
-      setDisponibilidad(null);
     }
   );
   const { setParametros: setConectar } = usePostConAuth(
@@ -104,7 +103,6 @@ export const usePostDisponibilidad = () => {
         estaDesconectado: false,
         estaDisponible: true,
       }));
-      setDisponibilidad(null);
     }
   );
 
@@ -138,7 +136,13 @@ export const usePostDisponibilidad = () => {
         });
         if (value) setDesconectar({});
       }
+      if (
+        disponibilidad === "Desconectado" ||
+        disponibilidad === "Disponible"
+      ) {
+        setDisponibilidad(null);
+      }
     };
     cambiarDisponibilidad();
-  }, [disponibilidad, setConectar, setDesconectar]);
+  }, [disponibilidad, setConectar, setDesconectar, setDisponibilidad]);
 };

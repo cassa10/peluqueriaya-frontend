@@ -22,7 +22,6 @@ const PaginaEdicionPeluquero = () => {
   );
 
   useEffect(() => {
-    console.log("corri");
     if (!peluquero.estaDesconectado) {
       setNotificacion({
         mensaje: "Debe estar desconectado para editar su perfil!",

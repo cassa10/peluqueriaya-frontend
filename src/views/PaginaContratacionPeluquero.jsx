@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useGetPeluqueroAContratar } from "../service/ServicioDePeluquero";
 import { usePostPedirTurno } from "../service/ServicioDeTurno";
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography, Chip } from "@material-ui/core";
 import CirculitoCargando from "../components/CirculoCargando";
 import SelectorDeServicios from "../components/SelectorDeServicios";
 import { makeStyles } from "@material-ui/core/styles";
@@ -40,15 +40,9 @@ const useStyles = makeStyles({
   selectorServicios: {
     marginTop: "100px",
   },
-  demoradoBox: {
+  statusPeluqueroBox: {
     marginTop: "7px",
     marginBottom: "-15px",
-    color: "#6f0000",
-  },
-  disponibleBox: {
-    marginTop: "7px",
-    marginBottom: "-15px",
-    color: "#ffffff",
   },
   peluqueroNombre: {
     color: "#ffffff",
@@ -157,17 +151,24 @@ const PaginaContratacionPeluquero = () => {
     }).then((target) => handleCrearTurno(target.value));
   };
 
+  const showAppropiateDemora = () => (
+    peluquero.estaOcupado?
+      <Chip
+        style={{ backgroundColor: "#cd5c5c", color: "white" }}
+        label="Ocupado"
+      />
+      :
+      <Chip
+        style={{ backgroundColor: "#2ecc71", color: "white" }}
+        label="Disponible"
+      />
+  );
+  
   const handleMostrarDemora = (peluquero) => (
       <Grid container direction="column" justify="center" alignItems="center">
-        {peluquero.estaOcupado?
-            <Typography className={classes.demoradoBox} textalign="center">
-              Ocupado
-            </Typography>
-            :
-            <Typography className={classes.disponibleBox} textalign="center">
-              Disponible
-            </Typography>
-        }
+        <div className={classes.statusPeluqueroBox}>
+          {showAppropiateDemora()}
+        </div>
       </Grid>
   );
 

@@ -35,8 +35,9 @@ const useStyles = makeStyles(() => ({
   img: {
     margin: "auto",
     display: "block",
-    width: "350px",
+    width: "293px",
     minWidth: "150px",
+    maxWidth: "293px",
     cursor: "pointer",
   },
   customHoverFocus: {
@@ -53,16 +54,22 @@ const ContenidoHeader = () => {
   let { push } = useHistory();
   const { pathname } = useLocation();
 
+  const isNotHomeRoute = (pathname) => pathname !== "/"
+  
+  const goHomeRoute = () => {
+    push("/")
+  }
+  
   return (
     <Toolbar>
       <SidebarTrigger sidebarId="primarySidebar" />
-      {pathname !== "/" && (
-        <img
-          className={classes.img}
-          src={logo}
-          alt="logo"
-          onClick={() => push("/")}
-        />
+      { isNotHomeRoute(pathname) && (
+          <img
+            className={classes.img}
+            src={logo}
+            alt="logo"
+            onClick={goHomeRoute}
+          />
       )}
       <CanNoClienteNoPeluquero>
         {({ redirect_login, title, icon }) => {

@@ -30,6 +30,20 @@ const ContenidoCuerpo = () => {
   const { cargando } = useGetPerfil();
   usePostDisponibilidad();
 
+  const ComponentTurnoCliente = () => (
+    <PaginaTurnos
+      isPeluquero={false}
+      useGetTurnos={useGetTurnosCliente}
+    />
+  )
+
+  const ComponentTurnoPeluquero = () => (
+    <PaginaTurnos
+      isPeluquero={true}
+      useGetTurnos={useGetTurnosPeluquero}
+    />
+  )
+  
   if (cargando || loading) {
     return <PaginaCargando />;
   }
@@ -47,12 +61,7 @@ const ContenidoCuerpo = () => {
       />
       <ClienteRoute
         path="/turnos"
-        render={() => (
-          <PaginaTurnos
-            isPeluquero={false}
-            useGetTurnos={useGetTurnosCliente}
-          />
-        )}
+        component={ComponentTurnoCliente}
       />
       <ClienteRoute path="/perfil" component={PaginaEdicionCliente} />
       <PeluqueroRoute
@@ -61,12 +70,7 @@ const ContenidoCuerpo = () => {
       />
       <PeluqueroRoute
         path="/peluquero/turnos"
-        render={() => (
-          <PaginaTurnos
-            isPeluquero={true}
-            useGetTurnos={useGetTurnosPeluquero}
-          />
-        )}
+        component={ComponentTurnoPeluquero}
       />
       <PeluqueroRoute
         path="/peluquero/servicio"

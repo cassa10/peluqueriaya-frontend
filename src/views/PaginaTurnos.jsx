@@ -102,7 +102,7 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos }) => {
   const classes = useStyles();
   const [isTurnosSelected, setIsTurnosSelected] = useState(true);
   const [cargandoChangePage, setCargandoChangePage] = useState(false);
-  const [isOrdRecientes, setIsOrdRecientes] = useState(false);
+  const [isOrdRecientes, setIsOrdRecientes] = useState(!isPeluquero);
   const [{ turnos, actual, tamanio, total }, setPaginacion] = useState({
     turnos: [],
     actual: 1,

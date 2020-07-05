@@ -97,7 +97,7 @@ export const useGetTurnosCliente = (tamanioPagina, setterResponseData) => {
   );
 
   useEffect(() => {
-    setParametros({ size: tamanioPagina, sort: "fechaInicio,asc" });
+    setParametros({ size: tamanioPagina, sort: "fechaInicio,desc" });
     // eslint-disable-next-line
   }, []);
 

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getSidebarContent } from "@mui-treasury/layout";
 import styled from "styled-components";
@@ -18,6 +19,7 @@ import ListItemIconText from "../../ListItemIconText";
 import PerfilInfo from "./PerfilInfo";
 import OpcionesList from "./OpcionesList";
 import StyledRating from "../../PuntajePeluquero";
+import { startsWith } from "lodash";
 
 const SidebarContent = getSidebarContent(styled);
 const CanClienteYPeluquero = withSegunUser1(
@@ -25,15 +27,28 @@ const CanClienteYPeluquero = withSegunUser1(
 );
 
 const ContenidoBarraLateral = ({ collapsed }) => {
-  const [mostrarOpcCliente, setMostrarOpcCliente] = useState(true);
+  const { pathname } = useLocation();
+  const { push } = useHistory();
   const { peluquero, cliente } = useUser();
   const { logout, email } = useAuth0();
 
+  const isPeluqueroRoute = () => {
+    //TODO 
+    //  Agregar paths del peluquero que no empiecen con '/peluquero'
+    const extraPeluqueroRoutes = []
+
+    return startsWith(pathname, '/peluquero') || extraPeluqueroRoutes.includes(pathname)
+  };
+
+  const getSwitchRolRoute = isPeluqueroRoute()?"/turnos":"/peluquero/turnos"
+  
+  const handleSwitchRol = () => push(getSwitchRolRoute)
+  
   const CanClienteXorPeluqueroXorClienteYPeluquero = withSegunUserN([
     {
       f: ({ esCliente, esPeluquero }) =>
         (esCliente && !esPeluquero) ||
-        (esCliente && esPeluquero && mostrarOpcCliente),
+        (esCliente && esPeluquero && !isPeluqueroRoute()),
       fProps: {
         listItems: listItemsCliente,
         estaDesconectado: () => false,
@@ -49,7 +64,7 @@ const ContenidoBarraLateral = ({ collapsed }) => {
     {
       f: ({ esCliente, esPeluquero }) =>
         (!esCliente && esPeluquero) ||
-        (esCliente && esPeluquero && !mostrarOpcCliente),
+        (esCliente && esPeluquero && isPeluqueroRoute()),
       fProps: {
         listItems: listItemsPeluquero,
         estaDesconectado: ({ estaDesconectado }) => estaDesconectado,
@@ -106,10 +121,10 @@ const ContenidoBarraLateral = ({ collapsed }) => {
         />
         <CanClienteYPeluquero>
           <ListItemIconText
-            icon={mostrarOpcCliente ? TijeraIcon : PersonOutlineIcon}
-            primary={mostrarOpcCliente ? "Peluquero" : "Cliente"}
+            icon={isPeluqueroRoute() ? PersonOutlineIcon : TijeraIcon }
+            primary={isPeluqueroRoute() ? "Cliente" : "Peluquero"}
             button
-            onClick={() => setMostrarOpcCliente((prevState) => !prevState)}
+            onClick={handleSwitchRol}
           />
         </CanClienteYPeluquero>
       </List>

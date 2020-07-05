@@ -16,6 +16,9 @@ import { URI_LOGIN_CLIENTE } from "../utils/constants";
 import getLogoOrDefault from "../utils/getLogoOrDefault";
 
 const useStyles = makeStyles({
+  mainContainer: {
+    marginBottom: "14px"
+  },
   gridInfoPeluquero: {
     marginTop: "45px",
     backgroundColor: "#0eacd4",
@@ -38,9 +41,14 @@ const useStyles = makeStyles({
     marginTop: "100px",
   },
   demoradoBox: {
-    marginTop: "2px",
+    marginTop: "7px",
     marginBottom: "-15px",
     color: "#6f0000",
+  },
+  disponibleBox: {
+    marginTop: "7px",
+    marginBottom: "-15px",
+    color: "#ffffff",
   },
   peluqueroNombre: {
     color: "#ffffff",
@@ -77,15 +85,19 @@ const PaginaContratacionPeluquero = () => {
         "Turno solicitado!",
         "En unos minutos, se recibirá un email cuando el peluquero confirme el turno.",
         "success"
-      ).then(() => push("/search"));
+      ).then(handleIrAPaginaTurnos);
     } else {
       Swal.fire(
         "Turno en espera",
         "Su turno fue agregado en la cola de espera del peluquero, puede demorar mucho. Igualmente puede cancelar el turno mientras este se encuentre en espera.",
         "success"
-      ).then(() => push("/search"));
+      ).then(handleIrAPaginaTurnos);
     }
   };
+
+  const handleIrAPaginaTurnos = () => {
+    push("/turnos")
+  }
 
   const { setParametros } = usePostPedirTurno(handleTurnoPedidoSuccess);
 
@@ -145,18 +157,19 @@ const PaginaContratacionPeluquero = () => {
     }).then((target) => handleCrearTurno(target.value));
   };
 
-  const handleMostrarDemora = (peluquero) => {
-    if (peluquero.estado === "OCUPADO") {
-      return (
-        <Grid container direction="column" justify="center" alignItems="center">
-          <Typography className={classes.demoradoBox} textalign="center">
-            OCUPADO
-          </Typography>
-        </Grid>
-      );
-    }
-    return <div />;
-  };
+  const handleMostrarDemora = (peluquero) => (
+      <Grid container direction="column" justify="center" alignItems="center">
+        {peluquero.estaOcupado?
+            <Typography className={classes.demoradoBox} textalign="center">
+              Ocupado
+            </Typography>
+            :
+            <Typography className={classes.disponibleBox} textalign="center">
+              Disponible
+            </Typography>
+        }
+      </Grid>
+  );
 
   const mostrarDatosPeluquero = (peluquero) => {
     return (
@@ -208,59 +221,58 @@ const PaginaContratacionPeluquero = () => {
     },
   ]);
 
-  const createView = () => {
-    return (
-      <Grid container spacing={1}>
-        <Grid item xs />
-        <Grid item xs={6}>
-          {mostrarDatosPeluquero(peluquero)}
-          <Grid
-            container
-            className={classes.gridSelectorServices}
-            direction="row"
-            justify="center"
-            alignItems="center"
-            spacing={4}
-          >
-            <SelectorDeServicios
-              servicios={peluquero.servicios}
-              handleChecked={setServiciosSeleccionados}
-              corteMin={peluquero.corteMin}
-            />
+  const createView = () => (
+    <Grid container spacing={1} className={classes.mainContainer}>
+      <Grid item xs />
+      <Grid item xs={6}>
+        {mostrarDatosPeluquero(peluquero)}
+        <Grid
+          container
+          className={classes.gridSelectorServices}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={4}
+        >
+          <SelectorDeServicios
+            servicios={peluquero.servicios}
+            handleChecked={setServiciosSeleccionados}
+            corteMin={peluquero.corteMin}
+          />
+        </Grid>
+        <Grid
+          container
+          className={classes.botonesNav}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={4}
+        >
+          <Grid item>
+            <Button color="default" onClick={handleIrAlSearch}>
+              Volver atrás
+            </Button>
           </Grid>
-          <Grid
-            container
-            className={classes.botonesNav}
-            direction="row"
-            justify="center"
-            alignItems="center"
-            spacing={4}
-          >
-            <Grid item>
-              <Button color="default" onClick={handleIrAlSearch}>
-                Volver atrás
-              </Button>
-            </Grid>
-            <Grid item>
-              <CanClienteNoCliente>
-                {({ onClick, nombre }) => (
-                  <Button color="default" onClick={onClick} key={nombre}>
-                    {nombre}
-                  </Button>
-                )}
-              </CanClienteNoCliente>
-            </Grid>
+          <Grid item>
+            <CanClienteNoCliente>
+              {({ onClick, nombre }) => (
+                <Button color="default" onClick={onClick} key={nombre}>
+                  {nombre}
+                </Button>
+              )}
+            </CanClienteNoCliente>
           </Grid>
         </Grid>
-        <Grid item xs />
       </Grid>
-    );
-  };
+      <Grid item xs />
+    </Grid>
+  );
+
 
   return (
-    <div>
+    <>
       {cargando || !peluquero.id ? <CirculitoCargando /> : createView()}
-    </div>
+    </>
   );
 };
 

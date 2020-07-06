@@ -93,7 +93,7 @@ const AutocompletadoDeUbicacion = ({
               }
             </CanClienteXorPeluquero>
             {valido && (
-              <Tooltip title="Verifique su dirección en GoogleMaps">
+              <Tooltip title="Verifique su dirección en Google Maps">
                 <IconButton
                   color="secondary"
                   className={classes.botonMiUbicacion}

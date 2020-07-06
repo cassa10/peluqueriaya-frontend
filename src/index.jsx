@@ -7,7 +7,11 @@ import UserProvider from "./contexts/UserProvider";
 import Auth0Provider from "./contexts/Auth0Provider";
 import withRoot from "./wrappers/withRoot";
 
-const Auth0ProviderWithRouter = withRouter(Auth0Provider);
+const Auth0ProviderWithRouter = withRouter(
+  ({ history, location, match, ...props }) => {
+    return <Auth0Provider {...{ history, ...props }} />;
+  }
+);
 const AppWithRoot = withRoot(App);
 
 ReactDOM.render(

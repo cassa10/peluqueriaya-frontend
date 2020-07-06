@@ -40,7 +40,7 @@ const CampoDeBusqueda = ({ onClick, clear }) => {
         value={nombre}
         size="small"
         onChange={handleChange}
-        placeholder={"Buscar por nombre"}
+        placeholder="Buscar por nombre"
         variant="outlined"
         InputProps={{
           className: clases.input,
@@ -52,13 +52,13 @@ const CampoDeBusqueda = ({ onClick, clear }) => {
                     onClick={() => onClick({ nombre: nombre })}
                     disabled={tieneNombreMenosDeCuatroDigitos()}
                   >
-                    <SearchIcon fontSize="inherit" color="primary" />
+                    <SearchIcon fontSize="inherit" color="secondary" />
                   </IconButton>
                 </div>
               </Tooltip>
               <Tooltip title="Borrar búsqueda por nombre">
                 <IconButton onClick={handleClear}>
-                  <ClearIcon fontSize="inherit" color="primary" />
+                  <ClearIcon fontSize="inherit" color="secondary" />
                 </IconButton>
               </Tooltip>
             </InputAdornment>

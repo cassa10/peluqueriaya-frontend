@@ -8,7 +8,7 @@ const BotonSubmit = ({ nombre = "Registrar", ...props }) => {
       <Button
         type="submit"
         variant="contained"
-        color="primary"
+        color="secondary"
         size="large"
         {...props}
       >

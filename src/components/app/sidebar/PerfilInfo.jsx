@@ -1,12 +1,16 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Typography, Divider } from "@material-ui/core";
-import AvatarValidado from "../../AvatarValidado";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Typography,
+  Divider,
+  Badge,
+  IconButton,
+  Tooltip,
+} from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import AvatarValidado from "../../AvatarValidado";
 import { useUser } from "../../../contexts/UserProvider";
 
 const useStyles = makeStyles(() => ({
@@ -61,23 +65,33 @@ const PerfilInfo = ({
   return (
     <>
       <div className={rootStyles}>
-        <AvatarValidado className={avatarStyles} src={imagenSrc}>
-          P
-        </AvatarValidado>
+        <Badge
+          overlap="circle"
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          badgeContent={
+            <Tooltip title="Actualizar perfil">
+              <IconButton
+                color="secondary"
+                onClick={() => setFetchPerfil(true)}
+                className={classes.refresh}
+              >
+                <RefreshIcon fontSize={collapsed ? "default" : "large"} />
+              </IconButton>
+            </Tooltip>
+          }
+        >
+          <AvatarValidado className={avatarStyles} src={imagenSrc}>
+            P
+          </AvatarValidado>
+        </Badge>
         <Typography variant="h6" noWrap>
           {titulo}
         </Typography>
         <Typography color="textSecondary" noWrap>
           {textoSecundario1}
-          <Tooltip title="Actualizar perfil">
-            <IconButton
-              color="secondary"
-              onClick={() => setFetchPerfil(true)}
-              className={classes.refresh}
-            >
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
         </Typography>
         {textoSecundario2 && (
           <Typography color="textSecondary" noWrap>

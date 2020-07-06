@@ -54,22 +54,16 @@ const ContenidoHeader = () => {
   let { push } = useHistory();
   const { pathname } = useLocation();
 
-  const isNotHomeRoute = (pathname) => pathname !== "/"
-  
-  const goHomeRoute = () => {
-    push("/")
-  }
-  
   return (
     <Toolbar>
       <SidebarTrigger sidebarId="primarySidebar" />
-      { isNotHomeRoute(pathname) && (
-          <img
-            className={classes.img}
-            src={logo}
-            alt="logo"
-            onClick={goHomeRoute}
-          />
+      {pathname !== "/" && (
+        <img
+          className={classes.img}
+          src={logo}
+          alt="logo"
+          onClick={() => push("/")}
+        />
       )}
       <CanNoClienteNoPeluquero>
         {({ redirect_login, title, icon }) => {

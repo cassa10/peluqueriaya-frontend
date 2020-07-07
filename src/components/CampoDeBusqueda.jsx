@@ -15,6 +15,9 @@ const useStyles = makeStyles(() => ({
   input: {
     padding: 0,
   },
+  boton: {
+    padding: "4px",
+  },
 }));
 
 const CampoDeBusqueda = ({ onClick, clear }) => {
@@ -47,14 +50,13 @@ const CampoDeBusqueda = ({ onClick, clear }) => {
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip title="Buscar">
-                <div>
-                  <IconButton
-                    onClick={() => onClick({ nombre: nombre })}
-                    disabled={tieneNombreMenosDeCuatroDigitos()}
-                  >
-                    <SearchIcon fontSize="inherit" color="secondary" />
-                  </IconButton>
-                </div>
+                <IconButton
+                  onClick={() => onClick({ nombre: nombre })}
+                  disabled={tieneNombreMenosDeCuatroDigitos()}
+                  className={clases.boton}
+                >
+                  <SearchIcon fontSize="inherit" color="secondary" />
+                </IconButton>
               </Tooltip>
               <Tooltip title="Borrar búsqueda por nombre">
                 <IconButton onClick={handleClear}>

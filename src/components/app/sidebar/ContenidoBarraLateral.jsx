@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getSidebarContent } from "@mui-treasury/layout";
 import styled from "styled-components";
@@ -19,7 +19,8 @@ import ListItemIconText from "../../ListItemIconText";
 import PerfilInfo from "./PerfilInfo";
 import OpcionesList from "./OpcionesList";
 import StyledRating from "../../PuntajePeluquero";
-import { startsWith } from "lodash";
+import startsWith from "lodash/startsWith";
+import ListItemLink from "../../ListItemLink";
 
 const SidebarContent = getSidebarContent(styled);
 const CanClienteYPeluquero = withSegunUser1(
@@ -28,22 +29,20 @@ const CanClienteYPeluquero = withSegunUser1(
 
 const ContenidoBarraLateral = ({ collapsed }) => {
   const { pathname } = useLocation();
-  const { push } = useHistory();
   const { peluquero, cliente } = useUser();
   const { logout, email } = useAuth0();
 
   const isPeluqueroRoute = () => {
-    //TODO 
+    //TODO
     //  Agregar paths del peluquero que no empiecen con '/peluquero'
-    const extraPeluqueroRoutes = []
+    const extraPeluqueroRoutes = [];
 
-    return startsWith(pathname, '/peluquero') || extraPeluqueroRoutes.includes(pathname)
+    return (
+      startsWith(pathname, "/peluquero") ||
+      extraPeluqueroRoutes.includes(pathname)
+    );
   };
 
-  const getSwitchRolRoute = isPeluqueroRoute()?"/turnos":"/peluquero/turnos"
-  
-  const handleSwitchRol = () => push(getSwitchRolRoute)
-  
   const CanClienteXorPeluqueroXorClienteYPeluquero = withSegunUserN([
     {
       f: ({ esCliente, esPeluquero }) =>
@@ -120,11 +119,10 @@ const ContenidoBarraLateral = ({ collapsed }) => {
           primary="Cerrar Sesión"
         />
         <CanClienteYPeluquero>
-          <ListItemIconText
-            icon={isPeluqueroRoute() ? PersonOutlineIcon : TijeraIcon }
+          <ListItemLink
+            icon={isPeluqueroRoute() ? PersonOutlineIcon : TijeraIcon}
             primary={isPeluqueroRoute() ? "Cliente" : "Peluquero"}
-            button
-            onClick={handleSwitchRol}
+            to={isPeluqueroRoute() ? "/" : "/peluquero/turnos"}
           />
         </CanClienteYPeluquero>
       </List>

@@ -6,6 +6,7 @@ import AutocompletadoDeUbicacion from "./AutocompletadoDeUbicacion";
 import BotonSubmit from "./form/BotonSubmit";
 import RegistroForm from "./form/RegistroForm";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers";
 import clienteSchema from "../utils/validations/clienteSchema";
 
 const FormularioCliente = ({
@@ -20,7 +21,7 @@ const FormularioCliente = ({
   const [valido, setValido] = useState(!!otraUbicacion);
   const { register, handleSubmit, watch, errors } = useForm({
     reValidateMode: "onChange",
-    validationSchema: clienteSchema,
+    resolver: yupResolver(clienteSchema),
     defaultValues: defaultValues,
   });
 

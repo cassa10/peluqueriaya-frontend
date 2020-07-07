@@ -25,25 +25,18 @@ import { useGetPerfil } from "../../service/ServicioDeRoles";
 import { usePostDisponibilidad } from "../../service/ServicioDePeluquero";
 import PaginaCargando from "../PaginaCargando";
 
+const PaginaTurnosCliente = () => (
+  <PaginaTurnos isPeluquero={false} useGetTurnos={useGetTurnosCliente} />
+);
+const PaginaTurnosPeluquero = () => (
+  <PaginaTurnos isPeluquero={true} useGetTurnos={useGetTurnosPeluquero} />
+);
+
 const ContenidoCuerpo = () => {
   const { loading } = useAuth0();
   const { cargando } = useGetPerfil();
   usePostDisponibilidad();
 
-  const ComponentTurnoCliente = () => (
-    <PaginaTurnos
-      isPeluquero={false}
-      useGetTurnos={useGetTurnosCliente}
-    />
-  )
-
-  const ComponentTurnoPeluquero = () => (
-    <PaginaTurnos
-      isPeluquero={true}
-      useGetTurnos={useGetTurnosPeluquero}
-    />
-  )
-  
   if (cargando || loading) {
     return <PaginaCargando />;
   }
@@ -59,10 +52,7 @@ const ContenidoCuerpo = () => {
         path="/peluquero/registro"
         component={PaginaRegistroPeluquero}
       />
-      <ClienteRoute
-        path="/turnos"
-        component={ComponentTurnoCliente}
-      />
+      <ClienteRoute path="/turnos" component={PaginaTurnosCliente} />
       <ClienteRoute path="/perfil" component={PaginaEdicionCliente} />
       <PeluqueroRoute
         path="/peluquero/perfil"
@@ -70,7 +60,7 @@ const ContenidoCuerpo = () => {
       />
       <PeluqueroRoute
         path="/peluquero/turnos"
-        component={ComponentTurnoPeluquero}
+        component={PaginaTurnosPeluquero}
       />
       <PeluqueroRoute
         path="/peluquero/servicio"

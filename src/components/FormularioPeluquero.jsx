@@ -1,14 +1,15 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers";
 import { Grid } from "@material-ui/core";
 import Campo from "./form/Campo";
 import AutocompletadoDeUbicacion from "./AutocompletadoDeUbicacion";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import CampoTiposDePeluquero from "./form/CampoTiposDePeluquero";
 import BotonSubmit from "./form/BotonSubmit";
 import RegistroForm from "./form/RegistroForm";
-import { useForm } from "react-hook-form";
 import peluqueroSchema from "../utils/validations/peluqueroSchema";
-import PropTypes from "prop-types";
+import CampoNumerico from "./form/CampoNumerico";
 
 const FormularioPeluquero = ({
   nombre,
@@ -31,9 +32,10 @@ const FormularioPeluquero = ({
     errors,
     unregister,
     setValue,
+    control,
   } = useForm({
     reValidateMode: "onChange",
-    validationSchema: peluqueroSchema,
+    resolver: yupResolver(peluqueroSchema),
     defaultValues: defaultValues,
   });
 
@@ -72,26 +74,22 @@ const FormularioPeluquero = ({
         </Grid>
       </Grid>
       <Grid container item xs={12} sm={6} spacing={2}>
-        <Campo
+        <CampoNumerico
           sm={6}
-          type="number"
           name="corteMin"
           label="Precio fijo por trabajo"
-          InputProps={{
-            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-          }}
-          {...formProps}
+          prefix="$"
+          errores={errors}
+          control={control}
         />
-        <Campo
+        <CampoNumerico
           sm={6}
-          type="number"
-          InputProps={{
-            endAdornment: <InputAdornment position="end">Km</InputAdornment>,
-          }}
           name="distanciaMax"
           label="Distancia max a recorrer por cliente"
+          suffix=" Km"
           InputLabelProps={{ shrink: true }}
-          {...formProps}
+          errores={errors}
+          control={control}
         />
         <Campo
           name="descripcion"

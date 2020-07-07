@@ -105,7 +105,7 @@ const ModalCalificarTurno = ({ turno, refreshTurnos }) => {
           <Button onClick={handleClose} color="default">
             Cerrar
           </Button>
-          <Button onClick={handleCalificarTurno} color="primary">
+          <Button onClick={handleCalificarTurno} color="secondary">
             Enviar <SendIcon />
           </Button>
         </DialogActions>

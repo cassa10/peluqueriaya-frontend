@@ -69,7 +69,7 @@ export const useGetPeluqueroAContratar = (setterDatos) => {
 
 export const usePostPeluquero = (fdatos) => {
   const { setParametros, cargando } = usePostConAuth("/peluquero", fdatos);
-  return { cargando, setPeluquero: setParametros };
+  return { cargando, setPeluqueroCreado: setParametros };
 };
 
 export const usePutEditarPeluquero = (fdatos) => {

@@ -15,6 +15,9 @@ const useStyles = makeStyles(() => ({
   input: {
     padding: 0,
   },
+  boton: {
+    padding: "4px",
+  },
 }));
 
 const CampoDeBusqueda = ({ onClick, clear }) => {
@@ -40,25 +43,24 @@ const CampoDeBusqueda = ({ onClick, clear }) => {
         value={nombre}
         size="small"
         onChange={handleChange}
-        placeholder={"Buscar por nombre"}
+        placeholder="Buscar por nombre"
         variant="outlined"
         InputProps={{
           className: clases.input,
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip title="Buscar">
-                <div>
-                  <IconButton
-                    onClick={() => onClick({ nombre: nombre })}
-                    disabled={tieneNombreMenosDeCuatroDigitos()}
-                  >
-                    <SearchIcon fontSize="inherit" color="primary" />
-                  </IconButton>
-                </div>
+                <IconButton
+                  onClick={() => onClick({ nombre: nombre })}
+                  disabled={tieneNombreMenosDeCuatroDigitos()}
+                  className={clases.boton}
+                >
+                  <SearchIcon fontSize="inherit" color="secondary" />
+                </IconButton>
               </Tooltip>
               <Tooltip title="Borrar búsqueda por nombre">
                 <IconButton onClick={handleClear}>
-                  <ClearIcon fontSize="inherit" color="primary" />
+                  <ClearIcon fontSize="inherit" color="secondary" />
                 </IconButton>
               </Tooltip>
             </InputAdornment>

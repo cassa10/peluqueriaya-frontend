@@ -53,7 +53,7 @@ const ModalInfoClienteTurno = ({ fullname, email, ubicacion }) => {
           <Button
             className={classes.ubicacionButton}
             variant="contained"
-            color="primary"
+            color="secondary"
             onClick={handleClickUbicacion}
           >
             Ubicación <RoomIcon />

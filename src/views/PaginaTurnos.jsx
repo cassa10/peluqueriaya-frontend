@@ -23,9 +23,9 @@ import {
   ButtonGroup,
   Grid,
   Box,
+  Tooltip,
 } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
 import Pagination from "@material-ui/lab/Pagination";
 import ModalServiciosInfoTurno from "../components/ModalServiciosInfoTurno";
 import ModalCalificarTurno from "../components/ModalCalificarTurno";
@@ -340,12 +340,13 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos }) => {
 
   const displayUbicacion = (ubicacion) => {
     return (
-      <Tooltip title="Ver en google maps">
+      <Tooltip title="Ver en Google Maps">
         <IconButton
+          color="secondary"
           onClick={() => {
             handleClickUbicacion(ubicacion);
           }}
-          style={{ margin: 0, color: "#0eacd4" }}
+          style={{ margin: 0 }}
         >
           <RoomIcon style={{ fontSize: 30 }} />
         </IconButton>

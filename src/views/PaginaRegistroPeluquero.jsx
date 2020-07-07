@@ -6,17 +6,20 @@ import { useUser } from "../contexts/UserProvider";
 
 const PaginaRegistroPeluquero = () => {
   const { setNotificacion } = useNotificacion();
-  const { fetchPerfil } = useUser();
-  const { setPeluquero, cargando } = usePostPeluquero(
-    ({ message: mensaje }) => {
-      setNotificacion({ mensaje, severidad: "success" });
-      fetchPerfil();
+  const { setPeluquero } = useUser();
+  const { setPeluqueroCreado, cargando } = usePostPeluquero(
+    (peluqueroNuevo) => {
+      setNotificacion({
+        mensaje: "Cuenta de peluquero creada exitosamente!",
+        severidad: "success",
+      });
+      setPeluquero(peluqueroNuevo);
     }
   );
 
   return (
     <FormularioPeluquero
-      onSubmit={setPeluquero}
+      onSubmit={setPeluqueroCreado}
       nombre={"Registro Peluquero"}
       botonProps={{ disabled: cargando }}
     />

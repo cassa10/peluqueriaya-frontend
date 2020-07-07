@@ -31,10 +31,10 @@ const ListItemLink = ({ icon: Icon, primary, to, pathname, disabled }) => {
 };
 
 ListItemLink.propTypes = {
-  icon: PropTypes.object.isRequired,
+  icon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
   primary: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
-  pathname: PropTypes.string.isRequired,
+  pathname: PropTypes.string,
   disabled: PropTypes.bool,
 };
 

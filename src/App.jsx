@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     textAlign: "center",
     paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
   },
 }));
 

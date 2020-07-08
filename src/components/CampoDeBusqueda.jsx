@@ -50,13 +50,15 @@ const CampoDeBusqueda = ({ onClick, clear }) => {
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip title="Buscar">
-                <IconButton
-                  onClick={() => onClick({ nombre: nombre })}
-                  disabled={tieneNombreMenosDeCuatroDigitos()}
-                  className={clases.boton}
-                >
-                  <SearchIcon fontSize="inherit" color="secondary" />
-                </IconButton>
+                <span>
+                  <IconButton
+                    onClick={() => onClick({ nombre: nombre })}
+                    disabled={tieneNombreMenosDeCuatroDigitos()}
+                    className={clases.boton}
+                  >
+                    <SearchIcon fontSize="inherit" color="secondary" />
+                  </IconButton>
+                </span>
               </Tooltip>
               <Tooltip title="Borrar búsqueda por nombre">
                 <IconButton onClick={handleClear}>

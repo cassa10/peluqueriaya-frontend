@@ -48,6 +48,7 @@ const PaginaCrearServicio = () => {
 
   return (
     <RegistroForm nombre="Crear servicio" onSubmit={handleSubmit(onSubmit)}>
+      <Campo sm={6} name="nombre" label="Nombre" {...formProps} />
       <CampoNumerico
         sm={6}
         name="precio"
@@ -56,10 +57,9 @@ const PaginaCrearServicio = () => {
         errores={errors}
         control={control}
       />
-      <Campo sm={6} name="nombre" label="Nombre" {...formProps} />
       <Grid item xs={12}>
         <Typography gutterBottom>
-          ¿Que tipo de servicio esta ofreciendo? Elijá al menos uno
+          ¿Que tipo de servicio está ofreciendo? Elija al menos uno
         </Typography>
         <Controller
           as={

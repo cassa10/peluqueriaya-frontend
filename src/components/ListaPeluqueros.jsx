@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import formatPrice from "../utils/formatters/formatPrice";
 import PuntajePeluquero from "./PuntajePeluquero";
 import getLogoOrDefault from "../utils/getLogoOrDefault";
+import TypographyWithToolTip from "./TypographyWithToolTip";
 
 const useStyles = makeStyles({
   root: {
@@ -136,9 +137,9 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
                   <br />
                 )}
               </div>
-              <Typography variant="h5" component="h2">
+              <TypographyWithToolTip variant="h5" component="h2">
                 {peluquero.nombre}
-              </Typography>
+              </TypographyWithToolTip>
               <hr />
               <Typography variant="body2" component="p">
                 Corte minimo | {formatPrice(peluquero.corteMin)}

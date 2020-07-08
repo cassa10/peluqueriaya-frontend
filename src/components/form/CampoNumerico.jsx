@@ -22,7 +22,7 @@ const CampoNumerico = ({ sm, name, control, errores, ...props }) => {
               onChange(floatValue);
             }}
             customInput={TextField}
-            decimalScale={3}
+            decimalScale={2}
             decimalSeparator=","
             thousandSeparator="."
             allowNegative={false}
@@ -30,8 +30,8 @@ const CampoNumerico = ({ sm, name, control, errores, ...props }) => {
             color="secondary"
             fullWidth
             id={name}
-            {...errorProps()}
             {...props}
+            {...errorProps()}
             {...renderProps}
           />
         )}

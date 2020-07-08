@@ -2,16 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Typography,
-  Divider,
-  Badge,
-  IconButton,
-  Tooltip,
-} from "@material-ui/core";
+import { Divider, Badge, IconButton, Tooltip } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import AvatarValidado from "../../AvatarValidado";
 import { useUser } from "../../../contexts/UserProvider";
+import TypographyWithToolTip from "../../TypographyWithToolTip";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -87,16 +82,14 @@ const PerfilInfo = ({
             P
           </AvatarValidado>
         </Badge>
-        <Typography variant="h6" noWrap>
-          {titulo}
-        </Typography>
-        <Typography color="textSecondary" noWrap>
+        <TypographyWithToolTip variant="h6">{titulo}</TypographyWithToolTip>
+        <TypographyWithToolTip color="textSecondary">
           {textoSecundario1}
-        </Typography>
+        </TypographyWithToolTip>
         {textoSecundario2 && (
-          <Typography color="textSecondary" noWrap>
+          <TypographyWithToolTip color="textSecondary">
             {textoSecundario2}
-          </Typography>
+          </TypographyWithToolTip>
         )}
         {infoExtra}
       </div>

@@ -388,7 +388,13 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos }) => {
       </StyledTableCell>
     </StyledTableRow>
   );
-
+  const showFechaCierre = (turno) => (
+    turno.estaCancelado ?
+    `${formatDate(turno.fechaCancelacion)} ${formatTime(turno.fechaCancelacion)}`
+    :
+    `${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`
+  )
+  
   const handleShowFechasData = (turno) =>
     isTurnosSelected ? (
       <StyledTableCell align="center">
@@ -401,7 +407,7 @@ const PaginaTurnos = ({ isPeluquero, useGetTurnos }) => {
         <br />
         <br />
         <div>Cierre</div>
-        {`${formatDate(turno.fechaFin)} ${formatTime(turno.fechaFin)}`}
+        {showFechaCierre(turno)}
       </StyledTableCell>
     );
   const showServicioDataInRow = (turno) => (

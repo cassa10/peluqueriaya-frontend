@@ -9,6 +9,7 @@ import {
   CardActions,
   CardContent,
   Button,
+  Chip,
 } from "@material-ui/core";
 import ModalServiciosPeluquero from "./ModalServiciosPeluquero";
 import Swal from "sweetalert2";
@@ -49,6 +50,9 @@ const useStyles = makeStyles({
   buttonPedir: {
     color: "#57a99a",
   },
+  statusPeluqueroBox: {
+    marginBottom: "7px",
+  }
 });
 
 const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
@@ -73,20 +77,26 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
     );
   };
 
-  const construirEstadoPeluquero = (status) => {
-    if (status === "DISPONIBLE") {
-      return (
-        <Typography className={classes.title} gutterBottom>
-          {status}
-        </Typography>
-      );
-    }
-    return (
-      <Typography className={classes.ocupadoTitle} gutterBottom>
-        {status}
-      </Typography>
-    );
-  };
+  const mostrarEstadoPeluquero = (estaDisponible) => (
+    estaDisponible?
+      <Chip
+        style={{ backgroundColor: "#2ecc71", color: "white" }}
+        label="Disponible"
+      />
+    :
+      <Chip
+        style={{ backgroundColor: "#cd5c5c", color: "white" }}
+        label="Ocupado"
+      />
+  )
+  
+  const construirEstadoPeluquero = (estaDisponible) => (
+      <Grid container direction="column" justify="center" alignItems="center">
+        <div className={classes.statusPeluqueroBox}>
+          {mostrarEstadoPeluquero(estaDisponible)}
+        </div>
+      </Grid>
+  );
 
   const costruirCardPeluquero = (peluquero) => {
     const handleDialogContratar = () => {
@@ -122,7 +132,7 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
             md={2}
           >
             <CardContent>
-              {construirEstadoPeluquero(peluquero.estado)}
+              {construirEstadoPeluquero(peluquero.estaDisponible)}
               <img
                 className={classes.logoImg}
                 src={getLogoOrDefault(peluquero.logo)}

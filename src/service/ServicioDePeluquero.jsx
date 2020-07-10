@@ -36,15 +36,18 @@ export const useGetPeluqueros = (tamanioPagina, fDatos) => {
   const setFiltro = (filtro) =>
     setParametros((prevState) => ({ ...prevState, ...filtro }));
 
+  const setFiltroConPrimerPagina = (filtro) =>
+    setParametros((prevState) => ({ ...prevState, ...filtro, page: 0 }));
+
   const limpiarFiltro = (filtro) => {
     if (filtro in parametros) {
       // eslint-disable-next-line no-unused-vars
       const { [filtro]: value, ...otrosFiltros } = parametros;
-      setParametros(otrosFiltros);
+      setParametros({ ...otrosFiltros, page: 0 });
     }
   };
 
-  return { cargando, setFiltro, limpiarFiltro };
+  return { cargando, setFiltro, limpiarFiltro, setFiltroConPrimerPagina };
 };
 
 export const useGetPeluqueroAContratar = (setterDatos) => {

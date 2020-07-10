@@ -20,8 +20,8 @@ const SeleccionOrdenarPor = ({ setFiltro }) => {
           Ordenar por
         </MenuItem>
         <MenuItem value={"Ninguno"}>Ninguno</MenuItem>
-        <MenuItem value={"corteMin,asc"}>Menor Corte Minimo</MenuItem>
-        <MenuItem value={"corteMin,desc"}>Mayor Corte Minimo</MenuItem>
+        <MenuItem value={"corteMin,asc"}>Menor Servicio Básico</MenuItem>
+        <MenuItem value={"corteMin,desc"}>Mayor Servicio Básico</MenuItem>
       </Select>
     </FormControl>
   );

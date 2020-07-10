@@ -77,7 +77,7 @@ const FormularioPeluquero = ({
         <CampoNumerico
           sm={6}
           name="corteMin"
-          label="Precio fijo por trabajo"
+          label="Precio servicio básico"
           helperText="Opcional - $70 por defecto"
           prefix="$"
           errores={errors}

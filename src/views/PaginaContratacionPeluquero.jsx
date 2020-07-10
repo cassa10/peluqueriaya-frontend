@@ -120,7 +120,7 @@ const PaginaContratacionPeluquero = () => {
   };
 
   const showDialogServicios = (serviciosSeleccionados) => {
-    let servicioBasicoItem = `- Servicio basico: ${formatPrice(
+    let servicioBasicoItem = `- Servicio básico: ${formatPrice(
       peluquero.corteMin
     )}`;
     if (serviciosSeleccionados.length > 0) {

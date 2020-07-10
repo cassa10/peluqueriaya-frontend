@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
   statusPeluqueroBox: {
     marginBottom: "7px",
-  }
+  },
 });
 
 const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
@@ -77,25 +77,25 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
     );
   };
 
-  const mostrarEstadoPeluquero = (estaDisponible) => (
-    estaDisponible?
+  const mostrarEstadoPeluquero = (estaDisponible) =>
+    estaDisponible ? (
       <Chip
         style={{ backgroundColor: "#2ecc71", color: "white" }}
         label="Disponible"
       />
-    :
+    ) : (
       <Chip
         style={{ backgroundColor: "#cd5c5c", color: "white" }}
         label="Ocupado"
       />
-  )
-  
+    );
+
   const construirEstadoPeluquero = (estaDisponible) => (
-      <Grid container direction="column" justify="center" alignItems="center">
-        <div className={classes.statusPeluqueroBox}>
-          {mostrarEstadoPeluquero(estaDisponible)}
-        </div>
-      </Grid>
+    <Grid container direction="column" justify="center" alignItems="center">
+      <div className={classes.statusPeluqueroBox}>
+        {mostrarEstadoPeluquero(estaDisponible)}
+      </div>
+    </Grid>
   );
 
   const costruirCardPeluquero = (peluquero) => {
@@ -155,7 +155,7 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
               </TypographyWithToolTip>
               <hr />
               <Typography variant="body2" component="p">
-                Corte minimo | {formatPrice(peluquero.corteMin)}
+                Servicio Básico | {formatPrice(peluquero.corteMin)}
               </Typography>
             </CardContent>
             <CardActions>

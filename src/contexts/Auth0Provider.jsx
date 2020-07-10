@@ -8,6 +8,7 @@ import React, {
 import createAuth0Client from "@auth0/auth0-spa-js";
 import PropTypes from "prop-types";
 import { URI_CASA } from "../utils/constants";
+import flocation from "../utils/flocation";
 
 export const Auth0Context = createContext();
 export const useAuth0 = () => useContext(Auth0Context);
@@ -19,11 +20,9 @@ const Auth0Provider = ({ history, children, ...initOptions }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const onRedirectCallback = (appState) => {
-    history.push(
-      appState && appState.targetUrl
-        ? appState.targetUrl
-        : window.location.pathname
-    );
+    appState && appState.targetUrl
+      ? history.push(flocation(appState.targetUrl, appState.afterLoginUrl))
+      : history.push(window.location.pathname);
   };
 
   useEffect(() => {
@@ -49,10 +48,12 @@ const Auth0Provider = ({ history, children, ...initOptions }) => {
   }, []);
 
   const login = useCallback(
-    (redirect_uri) => {
-      auth0Client.loginWithRedirect({
-        appState: { targetUrl: redirect_uri },
-      });
+    ({ targetUrl, afterLoginUrl }) => {
+      auth0Client.loginWithRedirect(
+        afterLoginUrl
+          ? { appState: { targetUrl, afterLoginUrl } }
+          : { appState: { targetUrl } }
+      );
     },
     [auth0Client]
   );

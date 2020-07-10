@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
 import { useUser } from "../contexts/UserProvider";
+import flocation from "../utils/flocation";
 
 const registradoRoute = (fuser, redirect_uri) => ({
   component: Component,
@@ -14,7 +15,7 @@ const registradoRoute = (fuser, redirect_uri) => ({
     fuser({ esCliente, esPeluquero }) ? (
       <Component {...props} />
     ) : (
-      <Redirect to={redirect_uri} />
+      <Redirect to={flocation(redirect_uri, path)} />
     );
 
   return <Route path={path} render={render} {...rest} />;

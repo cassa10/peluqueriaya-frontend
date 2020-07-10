@@ -150,6 +150,9 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
               <TypographyWithToolTip variant="h5" component="h2">
                 {peluquero.nombre}
               </TypographyWithToolTip>
+              <TypographyWithToolTip variant="body2" component="p">
+                {peluquero.descripcion}
+              </TypographyWithToolTip>
               <hr />
               <Typography variant="body2" component="p">
                 Corte minimo | {formatPrice(peluquero.corteMin)}

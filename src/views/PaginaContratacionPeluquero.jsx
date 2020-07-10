@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useGetPeluqueroAContratar } from "../service/ServicioDePeluquero";
 import { usePostPedirTurno } from "../service/ServicioDeTurno";
 import { Button, Grid, Typography, Chip } from "@material-ui/core";
@@ -17,7 +17,7 @@ import getLogoOrDefault from "../utils/getLogoOrDefault";
 
 const useStyles = makeStyles({
   mainContainer: {
-    marginBottom: "14px"
+    marginBottom: "14px",
   },
   gridInfoPeluquero: {
     marginTop: "45px",
@@ -65,6 +65,8 @@ const PaginaContratacionPeluquero = () => {
 
   const { push } = useHistory();
 
+  const { pathname } = useLocation();
+
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
 
   const [peluquero, setPeluquero] = useState({ id: 0, nombre: "" });
@@ -90,8 +92,8 @@ const PaginaContratacionPeluquero = () => {
   };
 
   const handleIrAPaginaTurnos = () => {
-    push("/turnos")
-  }
+    push("/turnos");
+  };
 
   const { setParametros } = usePostPedirTurno(handleTurnoPedidoSuccess);
 
@@ -151,25 +153,23 @@ const PaginaContratacionPeluquero = () => {
     }).then((target) => handleCrearTurno(target.value));
   };
 
-  const showAppropiateDemora = () => (
-    peluquero.estaOcupado?
+  const showAppropiateDemora = () =>
+    peluquero.estaOcupado ? (
       <Chip
         style={{ backgroundColor: "#cd5c5c", color: "white" }}
         label="Ocupado"
       />
-      :
+    ) : (
       <Chip
         style={{ backgroundColor: "#2ecc71", color: "white" }}
         label="Disponible"
       />
-  );
-  
+    );
+
   const handleMostrarDemora = (peluquero) => (
-      <Grid container direction="column" justify="center" alignItems="center">
-        <div className={classes.statusPeluqueroBox}>
-          {showAppropiateDemora()}
-        </div>
-      </Grid>
+    <Grid container direction="column" justify="center" alignItems="center">
+      <div className={classes.statusPeluqueroBox}>{showAppropiateDemora()}</div>
+    </Grid>
   );
 
   const mostrarDatosPeluquero = (peluquero) => {
@@ -216,7 +216,8 @@ const PaginaContratacionPeluquero = () => {
     {
       f: ({ esCliente }) => !esCliente,
       fProps: {
-        onClick: () => login(URI_LOGIN_CLIENTE),
+        onClick: () =>
+          login({ targetUrl: URI_LOGIN_CLIENTE, afterLoginUrl: pathname }),
         nombre: "Registrate y pedí turno!",
       },
     },
@@ -269,11 +270,8 @@ const PaginaContratacionPeluquero = () => {
     </Grid>
   );
 
-
   return (
-    <>
-      {cargando || !peluquero.id ? <CirculitoCargando /> : createView()}
-    </>
+    <>{cargando || !peluquero.id ? <CirculitoCargando /> : createView()}</>
   );
 };
 

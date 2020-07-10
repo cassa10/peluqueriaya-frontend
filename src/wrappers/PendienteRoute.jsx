@@ -4,27 +4,29 @@ import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
 import { useAuth0 } from "../contexts/Auth0Provider";
 import { useUser } from "../contexts/UserProvider";
 import PaginaCargando from "../components/PaginaCargando";
+import get from "lodash/get";
 
-const pendienteRoute = (fuser, redirect_uri, redirect_registrado) => ({
+const pendienteRoute = (fuser, targetUrl, redirect_registrado) => ({
   component: Component,
   path,
   ...rest
 }) => {
   const { esCliente, esPeluquero } = useUser();
   const { isAuthenticated, login } = useAuth0();
+  const afterLoginUrl = get(rest, "location.state.afterLoginUrl");
 
   useEffect(() => {
     const registrarSiNecesario = async () => {
       if (!isAuthenticated) {
-        await login(redirect_uri);
+        await login({ targetUrl, afterLoginUrl });
       }
     };
     registrarSiNecesario();
-  }, [isAuthenticated, login]);
+  }, [afterLoginUrl, isAuthenticated, login]);
 
   const render = (props) =>
     fuser({ esCliente, esPeluquero }) ? (
-      <Redirect to={redirect_registrado} />
+      <Redirect to={afterLoginUrl ? afterLoginUrl : redirect_registrado} />
     ) : isAuthenticated ? (
       <Component {...props} />
     ) : (

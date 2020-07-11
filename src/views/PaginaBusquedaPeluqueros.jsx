@@ -25,10 +25,12 @@ const PaginaBusquedaPeluqueros = () => {
     tamanio: 6,
     total: 1,
   });
-  const { cargando, setFiltro, limpiarFiltro } = useGetPeluqueros(
-    tamanio,
-    setPaginacion
-  );
+  const {
+    cargando,
+    setFiltro,
+    setFiltroConPrimerPagina,
+    limpiarFiltro,
+  } = useGetPeluqueros(tamanio, setPaginacion);
   const { push } = useHistory();
 
   const handleChange = (event, value) => {
@@ -47,7 +49,7 @@ const PaginaBusquedaPeluqueros = () => {
       <Grid container direction="column">
         <Grid item xs>
           <TabDeFiltradoPorServicio
-            setFiltro={setFiltro}
+            setFiltro={setFiltroConPrimerPagina}
             limpiarFiltro={limpiarFiltro}
           />
         </Grid>
@@ -62,13 +64,18 @@ const PaginaBusquedaPeluqueros = () => {
                 spacing={1}
               >
                 <Grid item md={3}>
-                  <CampoDeBusqueda onClick={setFiltro} clear={limpiarFiltro} />
+                  <CampoDeBusqueda
+                    onClick={setFiltroConPrimerPagina}
+                    clear={limpiarFiltro}
+                  />
                 </Grid>
                 <Grid item>
-                  <CheckBoxsDeTiposDePeluquero setFiltro={setFiltro} />
+                  <CheckBoxsDeTiposDePeluquero
+                    setFiltro={setFiltroConPrimerPagina}
+                  />
                 </Grid>
                 <Grid item>
-                  <SeleccionOrdenarPor setFiltro={setFiltro} />
+                  <SeleccionOrdenarPor setFiltro={setFiltroConPrimerPagina} />
                 </Grid>
                 <Grid item>
                   {!(cargando || peluqueros.length === 0) ? (

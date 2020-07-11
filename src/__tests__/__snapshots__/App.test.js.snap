@@ -1,20 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App App levanta en loading 1`] = `
-<WithStyles(ForwardRef(LinearProgress))
-  color="secondary"
-/>
-`;
-
-exports[`App App levanta sin problemas 1`] = `
-<Fragment>
-  <Header
-    color="primary"
+<NotificacionProvider>
+  <div
+    className="makeStyles-root-1"
   >
-    <ContenidoHeader />
-  </Header>
-  <Can>
-    <Registrado>
+    <Header
+      color="primary"
+    >
+      <ContenidoHeader />
+    </Header>
+    <Component>
       <DrawerSidebar
         sidebarId="primarySidebar"
       >
@@ -23,22 +19,69 @@ exports[`App App levanta sin problemas 1`] = `
         </SidebarContent>
         <CollapseBtnStyled />
       </DrawerSidebar>
-    </Registrado>
-  </Can>
-  <Content>
-    <ContenidoCuerpo />
-  </Content>
-  <div
-    className="makeStyles-footer-1"
-  >
-    <Footer>
-      <WithStyles(ForwardRef(Typography))
-        align="center"
-        variant="caption"
-      >
-        © 2020 - MIT License
-      </WithStyles(ForwardRef(Typography))>
-    </Footer>
+    </Component>
+    <Content
+      className="makeStyles-content-2"
+    >
+      <ErrorAPIProvider>
+        <ContenidoCuerpo />
+      </ErrorAPIProvider>
+    </Content>
+    <div
+      className="makeStyles-footer-3"
+    >
+      <Footer>
+        <WithStyles(ForwardRef(Typography))
+          align="center"
+          variant="caption"
+        >
+          © 2020 - MIT License
+        </WithStyles(ForwardRef(Typography))>
+      </Footer>
+    </div>
   </div>
-</Fragment>
+</NotificacionProvider>
+`;
+
+exports[`App App levanta sin problemas 1`] = `
+<NotificacionProvider>
+  <div
+    className="makeStyles-root-1"
+  >
+    <Header
+      color="primary"
+    >
+      <ContenidoHeader />
+    </Header>
+    <Component>
+      <DrawerSidebar
+        sidebarId="primarySidebar"
+      >
+        <SidebarContent>
+          <ContenidoBarraLateral />
+        </SidebarContent>
+        <CollapseBtnStyled />
+      </DrawerSidebar>
+    </Component>
+    <Content
+      className="makeStyles-content-2"
+    >
+      <ErrorAPIProvider>
+        <ContenidoCuerpo />
+      </ErrorAPIProvider>
+    </Content>
+    <div
+      className="makeStyles-footer-3"
+    >
+      <Footer>
+        <WithStyles(ForwardRef(Typography))
+          align="center"
+          variant="caption"
+        >
+          © 2020 - MIT License
+        </WithStyles(ForwardRef(Typography))>
+      </Footer>
+    </div>
+  </div>
+</NotificacionProvider>
 `;

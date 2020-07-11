@@ -18,7 +18,7 @@ const ListItemIconText = ({ primary, icon: Icon, ...props }) => {
 };
 
 ListItemIconText.propTypes = {
-  primary: PropTypes.string.isRequired,
+  primary: PropTypes.any.isRequired,
   icon: PropTypes.any.isRequired,
 };
 

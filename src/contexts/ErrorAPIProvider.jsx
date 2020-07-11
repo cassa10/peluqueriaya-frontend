@@ -1,15 +1,15 @@
-import React, { createContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import { useHistory } from "react-router-dom";
 import PaginaError from "../views/PaginaError";
-import { useUser } from "./UserProvider";
 
 const ErrorAPIContext = createContext();
+export const useError = () => useContext(ErrorAPIContext);
 
 const ErrorAPIProvider = ({ children }) => {
-  const { error, setError } = useUser();
   const history = useHistory();
+  const [error, setError] = useState();
 
   useEffect(() => {
     return history.listen(() => setError(undefined));
@@ -26,7 +26,7 @@ const ErrorAPIProvider = ({ children }) => {
   };
 
   return (
-    <ErrorAPIContext.Provider value={{}}>
+    <ErrorAPIContext.Provider value={{ setError }}>
       {mostrarContenido()}
     </ErrorAPIContext.Provider>
   );

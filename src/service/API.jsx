@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useUser } from "../contexts/UserProvider";
+import { useAuth0 } from "../contexts/Auth0Provider";
+import { useError } from "../contexts/ErrorAPIProvider";
 
 // eslint-disable-next-line no-undef
 const server = process.env.REACT_APP_APIBACKEND || "http://localhost:8080";
 
 const usarAPI = (metodo) => (
   path,
-  fDatos = () => {},
+  fdatos = () => {},
   parametrosIniciales = null
 ) => {
   const [parametros, setParametros] = useState(parametrosIniciales);
   const [cargando, setCargando] = useState(false);
-  const { getTokenSilently, setError } = useUser();
+  const { setError } = useError();
+  const { getTokenSilently } = useAuth0();
 
   useEffect(() => {
     let cancelar = false;
@@ -26,7 +28,7 @@ const usarAPI = (metodo) => (
           });
           if (!cancelar) {
             setCargando(false);
-            fDatos(data);
+            fdatos(data);
           }
         } catch (e) {
           if (!cancelar) {
@@ -55,15 +57,6 @@ export const useGet = usarAPI((path, { parametros }) => {
   });
   return axios.get(path, { params: params });
 });
-export const usePost = usarAPI((path, { parametros }) =>
-  axios.post(path, parametros)
-);
-export const usePut = usarAPI((path, { parametros }) =>
-  axios.put(path, parametros)
-);
-export const useDelete = usarAPI((path, { parametros }) =>
-  axios.delete(path, { params: parametros })
-);
 
 const headers = (token) => ({ headers: { Authorization: `Bearer ${token}` } });
 

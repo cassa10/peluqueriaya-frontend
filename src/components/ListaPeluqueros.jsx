@@ -9,11 +9,14 @@ import {
   CardActions,
   CardContent,
   Button,
+  Chip,
 } from "@material-ui/core";
 import ModalServiciosPeluquero from "./ModalServiciosPeluquero";
 import Swal from "sweetalert2";
 import formatPrice from "../utils/formatters/formatPrice";
 import PuntajePeluquero from "./PuntajePeluquero";
+import getLogoOrDefault from "../utils/getLogoOrDefault";
+import TypographyWithToolTip from "./TypographyWithToolTip";
 
 const useStyles = makeStyles({
   root: {
@@ -47,6 +50,9 @@ const useStyles = makeStyles({
   buttonPedir: {
     color: "#57a99a",
   },
+  statusPeluqueroBox: {
+    marginBottom: "7px",
+  },
 });
 
 const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
@@ -71,27 +77,26 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
     );
   };
 
-  const construirEstadoPeluquero = (status) => {
-    if (status === "DISPONIBLE") {
-      return (
-        <Typography className={classes.title} gutterBottom>
-          {status}
-        </Typography>
-      );
-    }
-    return (
-      <Typography className={classes.ocupadoTitle} gutterBottom>
-        {status}
-      </Typography>
+  const mostrarEstadoPeluquero = (estaDisponible) =>
+    estaDisponible ? (
+      <Chip
+        style={{ backgroundColor: "#2ecc71", color: "white" }}
+        label="Disponible"
+      />
+    ) : (
+      <Chip
+        style={{ backgroundColor: "#cd5c5c", color: "white" }}
+        label="Ocupado"
+      />
     );
-  };
 
-  const logoPredeterminado = (logoSrc) => {
-    if (logoSrc.length > 0) {
-      return logoSrc;
-    }
-    return "https://2.bp.blogspot.com/-JmAJ1XEBGfE/UTPme5-0HpI/AAAAAAAAARE/bT_fEs-9vQ4/s1600/No-Logo-Available.png";
-  };
+  const construirEstadoPeluquero = (estaDisponible) => (
+    <Grid container direction="column" justify="center" alignItems="center">
+      <div className={classes.statusPeluqueroBox}>
+        {mostrarEstadoPeluquero(estaDisponible)}
+      </div>
+    </Grid>
+  );
 
   const costruirCardPeluquero = (peluquero) => {
     const handleDialogContratar = () => {
@@ -127,10 +132,10 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
             md={2}
           >
             <CardContent>
-              {construirEstadoPeluquero(peluquero.estado)}
+              {construirEstadoPeluquero(peluquero.estaDisponible)}
               <img
                 className={classes.logoImg}
-                src={logoPredeterminado(peluquero.logo)}
+                src={getLogoOrDefault(peluquero.logo)}
                 alt="logo"
               />
               <div>
@@ -142,12 +147,15 @@ const ListaPeluqueros = ({ resultados, botonIrPaginaPrincipal }) => {
                   <br />
                 )}
               </div>
-              <Typography variant="h5" component="h2">
+              <TypographyWithToolTip variant="h5" component="h2">
                 {peluquero.nombre}
-              </Typography>
+              </TypographyWithToolTip>
+              <TypographyWithToolTip variant="body2" component="p">
+                {peluquero.descripcion}
+              </TypographyWithToolTip>
               <hr />
               <Typography variant="body2" component="p">
-                Corte minimo | {formatPrice(peluquero.corteMin)}
+                Servicio Básico | {formatPrice(peluquero.corteMin)}
               </Typography>
             </CardContent>
             <CardActions>

@@ -1,30 +1,48 @@
 import React, { useEffect } from "react";
-import { Route } from "react-router-dom";
-import { useUser } from "../contexts/UserProvider";
+import { Route, Redirect } from "react-router-dom";
 import { URI_LOGIN_CLIENTE, URI_LOGIN_PELUQUERO } from "../utils/constants";
+import { useAuth0 } from "../contexts/Auth0Provider";
+import { useUser } from "../contexts/UserProvider";
+import PaginaCargando from "../components/PaginaCargando";
+import get from "lodash/get";
 
-const pendienteRoute = (redirect_uri) => ({
+const pendienteRoute = (fuser, targetUrl, redirect_registrado) => ({
   component: Component,
   path,
   ...rest
 }) => {
-  const { loading, isAuthenticated, loginWithRedirect } = useUser();
+  const { esCliente, esPeluquero } = useUser();
+  const { isAuthenticated, login } = useAuth0();
+  const afterLoginUrl = get(rest, "location.state.afterLoginUrl");
 
   useEffect(() => {
-    const fn = async () => {
-      if (!loading && !isAuthenticated) {
-        await loginWithRedirect({
-          appState: { targetUrl: redirect_uri },
-        });
+    const registrarSiNecesario = async () => {
+      if (!isAuthenticated) {
+        await login({ targetUrl, afterLoginUrl });
       }
     };
-    fn();
-  }, [loading, isAuthenticated, loginWithRedirect, path]);
+    registrarSiNecesario();
+  }, [afterLoginUrl, isAuthenticated, login]);
 
-  const render = (props) => (isAuthenticated ? <Component {...props} /> : null);
+  const render = (props) =>
+    fuser({ esCliente, esPeluquero }) ? (
+      <Redirect to={afterLoginUrl ? afterLoginUrl : redirect_registrado} />
+    ) : isAuthenticated ? (
+      <Component {...props} />
+    ) : (
+      <PaginaCargando />
+    );
 
   return <Route path={path} render={render} {...rest} />;
 };
 
-export const PendienteClienteRoute = pendienteRoute(URI_LOGIN_CLIENTE);
-export const PendientePeluqueroRoute = pendienteRoute(URI_LOGIN_PELUQUERO);
+export const PendienteClienteRoute = pendienteRoute(
+  ({ esCliente }) => esCliente,
+  URI_LOGIN_CLIENTE,
+  "/turnos"
+);
+export const PendientePeluqueroRoute = pendienteRoute(
+  ({ esPeluquero }) => esPeluquero,
+  URI_LOGIN_PELUQUERO,
+  "/peluquero/turnos"
+);

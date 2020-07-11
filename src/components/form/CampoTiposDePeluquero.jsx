@@ -1,8 +1,7 @@
 import React, { memo, useEffect } from "react";
 import CheckBoxsDeTiposDePeluquero from "../CheckBoxsDeTiposDePeluquero";
 import PropTypes from "prop-types";
-import { ErrorMessage } from "react-hook-form";
-
+import { ErrorMessage } from "@hookform/error-message";
 import { Grid, Typography } from "@material-ui/core";
 
 const CampoTiposDePeluquero = memo(
@@ -29,13 +28,11 @@ const CampoTiposDePeluquero = memo(
           defaultValues={aTipos}
           setFiltro={({ tipos }) => setValue(name, tipos)}
         />
-        <ErrorMessage errors={errors} name="tipos">
-          {({ message }) => (
-            <Typography variant="caption" color="error">
-              {message}
-            </Typography>
-          )}
-        </ErrorMessage>
+        <ErrorMessage
+          errors={errors}
+          name="tipos"
+          as={<Typography variant="caption" color="error" />}
+        />
       </Grid>
     );
   }

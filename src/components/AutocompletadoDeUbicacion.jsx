@@ -1,16 +1,31 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-import { TextField, InputAdornment } from "@material-ui/core";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  Tooltip,
+} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useGetUbicacionConDireccion } from "../service/ServicioDeMapas";
 import EstadoIcon from "./icons/EstadoIcon";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 import MapIcon from "@material-ui/icons/Map";
-import Can, { Cliente } from "../wrappers/Can";
 import { useUser } from "../contexts/UserProvider";
 import HomeIcon from "@material-ui/icons/Home";
 import { makeStyles } from "@material-ui/core/styles";
+import { withSegunUserN } from "../wrappers/withSegunUser";
+
+const CanClienteXorPeluquero = withSegunUserN([
+  {
+    f: ({ esCliente }) => esCliente,
+    fProps: { fubicacion: ({ cliente: { ubicacion } }) => ubicacion },
+  },
+  {
+    f: ({ esCliente, esPeluquero }) => !esCliente && esPeluquero,
+    fProps: { fubicacion: ({ peluquero: { ubicacion } }) => ubicacion },
+  },
+]);
 
 const useStyles = makeStyles(() => ({
   botonMiUbicacion: {
@@ -30,11 +45,8 @@ const AutocompletadoDeUbicacion = ({
   const { cargando, setDireccion } = useGetUbicacionConDireccion(
     setUbicaciones
   );
-  const {
-    user: {
-      cliente: { ubicacion: ubicacionCliente },
-    },
-  } = useUser();
+  const { cliente, peluquero } = useUser();
+  const { pathname } = useLocation();
 
   const autocompletarUbicacionConDireccion = (value) => {
     if (!cargando && !valido && value.trim().length > 10) {
@@ -63,21 +75,25 @@ const AutocompletadoDeUbicacion = ({
         ...params.InputProps,
         startAdornment: (
           <InputAdornment position="start">
-            <Can>
-              <Cliente>
-                <Tooltip title="Usar mi dirección">
-                  <IconButton
-                    color="secondary"
-                    onClick={() => setUbicacion(ubicacionCliente)}
-                    className={classes.botonMiUbicacion}
-                  >
-                    <HomeIcon />
-                  </IconButton>
-                </Tooltip>
-              </Cliente>
-            </Can>
+            <CanClienteXorPeluquero>
+              {({ fubicacion, index }) =>
+                pathname === "/" && (
+                  <Tooltip title="Usar mi dirección" key={index}>
+                    <IconButton
+                      color="secondary"
+                      onClick={() =>
+                        setUbicacion(fubicacion({ cliente, peluquero }))
+                      }
+                      className={classes.botonMiUbicacion}
+                    >
+                      <HomeIcon />
+                    </IconButton>
+                  </Tooltip>
+                )
+              }
+            </CanClienteXorPeluquero>
             {valido && (
-              <Tooltip title="Verifique su dirección en GoogleMaps">
+              <Tooltip title="Verifique su dirección en Google Maps">
                 <IconButton
                   color="secondary"
                   className={classes.botonMiUbicacion}

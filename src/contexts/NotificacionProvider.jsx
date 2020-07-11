@@ -35,7 +35,6 @@ const NotificacionProvider = ({ children }) => {
   const handleClose = (event, reason) => {
     if (reason !== "clickaway") {
       setAbrir(false);
-      setNotificacion(notificacionInicial);
     }
   };
 

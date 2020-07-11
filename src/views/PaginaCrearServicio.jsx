@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import RegistroForm from "../components/form/RegistroForm";
-import { Controller, ErrorMessage, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
+import { yupResolver } from "@hookform/resolvers";
 import Campo from "../components/form/Campo";
 import { Typography, Grid, Input, MenuItem, Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +15,7 @@ import servicioSchema from "../utils/validations/servicioSchema";
 import { useNotificacion } from "../contexts/NotificacionProvider";
 import { useHistory } from "react-router-dom";
 import FilaDeChips from "../components/FilaDeChips";
+import CampoNumerico from "../components/form/CampoNumerico";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -30,7 +33,7 @@ const PaginaCrearServicio = () => {
   useGetTiposDeServicios(setOpcionesTipos);
   const { register, handleSubmit, errors, control } = useForm({
     reValidateMode: "onChange",
-    validationSchema: servicioSchema,
+    resolver: yupResolver(servicioSchema),
   });
   const { setNotificacion } = useNotificacion();
   const { push } = useHistory();
@@ -45,11 +48,18 @@ const PaginaCrearServicio = () => {
 
   return (
     <RegistroForm nombre="Crear servicio" onSubmit={handleSubmit(onSubmit)}>
-      <Campo sm={6} type="number" name="precio" label="Precio" {...formProps} />
       <Campo sm={6} name="nombre" label="Nombre" {...formProps} />
+      <CampoNumerico
+        sm={6}
+        name="precio"
+        label="Precio"
+        prefix="$"
+        errores={errors}
+        control={control}
+      />
       <Grid item xs={12}>
         <Typography gutterBottom>
-          ¿Que tipo de servicio esta ofreciendo? Elijá al menos uno
+          ¿Que tipo de servicio está ofreciendo? Elija al menos uno
         </Typography>
         <Controller
           as={
@@ -89,13 +99,11 @@ const PaginaCrearServicio = () => {
           control={control}
           defaultValue={[]}
         />
-        <ErrorMessage errors={errors} name="tipos">
-          {({ message }) => (
-            <Typography variant="caption" color="error">
-              {message}
-            </Typography>
-          )}
-        </ErrorMessage>
+        <ErrorMessage
+          errors={errors}
+          name="tipos"
+          as={<Typography variant="caption" color="error" />}
+        />
       </Grid>
       <BotonSubmit nombre="Crear" disabled={cargando} />
     </RegistroForm>

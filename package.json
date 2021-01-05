@@ -10,7 +10,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@mui-treasury/layout": "^4.5.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-plugin-import": "^1.13.0",
     "clsx": "^1.1.1",
     "customize-cra": "^1.0.0",
